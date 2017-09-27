@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Антон Овчинников](https://up.htmlacademy.ru/ecmascript/3/user/267535).
-* Наставник: `Неизвестно`.
+* Наставник: [Кирилл Пензин](https://up.htmlacademy.ru/ecmascript/3/user/91821).
 
 ---
 
