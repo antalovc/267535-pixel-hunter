@@ -1,4 +1,4 @@
-(function () {
+window.screenManager = (function () {
 
   const KEYCODE_ARROW_LEFT = 37;
   const KEYCODE_ARROW_RIGHT = 39;
@@ -10,21 +10,24 @@
   });
   const mainElement = document.querySelector(`main.central`);
 
-  let currentScreenElementIndex = 0;
+  let currentScreenIndex = 0;
+
+  const setScreen = function (screenIndex) {
+    screenIndex = Math.max(0, Math.min(screenIndex, screenElements.length - 1));
+
+    if (screenIndex !== currentScreenIndex) {
+      currentScreenIndex = screenIndex;
+      mainElement.innerHTML = ``;
+      mainElement.appendChild(screenElements[currentScreenIndex].cloneNode(true));
+    }
+  };
 
   const switchScreen = function (next) {
     if (typeof next === `undefined`) {
       next = true;
     }
 
-    if (next) {
-      currentScreenElementIndex = Math.max(0, Math.min(++currentScreenElementIndex, screenElements.length - 1));
-    } else {
-      currentScreenElementIndex = Math.max(0, Math.min(--currentScreenElementIndex, screenElements.length - 1));
-    }
-
-    mainElement.innerHTML = ``;
-    mainElement.appendChild(screenElements[currentScreenElementIndex].cloneNode(true));
+    setScreen(next ? currentScreenIndex + 1 : currentScreenIndex - 1);
   };
 
   document.addEventListener(`keydown`, function (evt) {
@@ -41,5 +44,9 @@
       }
     }
   });
+
+  return {
+    setScreen
+  };
 
 })();
