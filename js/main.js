@@ -46,7 +46,8 @@ window.screenManager = (function () {
   });
 
   return {
-    setScreen
+    setScreen,
+    switchScreen
   };
 
 })();
