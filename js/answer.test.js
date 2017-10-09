@@ -1,9 +1,7 @@
-import * as chai from 'chai';
-// import * as mocha from 'gulp-mocha';
+import assert from 'assert';
 import Answer from './answer.js';
 
 // mocha.setup(`tdd`);
-const assert = chai.assert;
 const strictEqual = assert.strictEqual;
 
 const TESTING_TIME = 100;

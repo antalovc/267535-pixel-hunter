@@ -1,9 +1,7 @@
-import * as chai from 'chai';
-// import * as mocha from 'gulp-mocha';
+import assert from 'assert';
 import Timer from './timer.js';
 
 // mocha.setup(`tdd`);
-const assert = chai.assert;
 
 const timerObject = new Timer();
 const TIMING_PERIOD = 3; // seconds

@@ -1,10 +1,8 @@
-import * as chai from 'chai';
-//  import * as mocha from 'gulp-mocha';
+import assert from 'assert';
 import Answer from './answer.js';
 import {computeResult, RESULT_CONFIGS} from './compute-result.js';
 
 // mocha.setup(`tdd`);
-const assert = chai.assert;
 const strictEqual = assert.strictEqual;
 
 const createAnswersArray = (n, validity, time) => {
