@@ -2,7 +2,6 @@ import assert from 'assert';
 import Answer from './answer.js';
 import {computeResult, RESULT_CONFIGS} from './compute-result.js';
 
-// mocha.setup(`tdd`);
 const strictEqual = assert.strictEqual;
 
 const createAnswersArray = (n, validity, time) => {
@@ -13,15 +12,15 @@ const createAnswersArray = (n, validity, time) => {
   return result;
 };
 
-describe(`"computeResult" function test`, () => {
+suite(`"computeResult" function test`, () => {
 
-  it(`Testing minimal amount of correct answers`, () => {
+  test(`Testing minimal amount of correct answers`, () => {
     strictEqual(computeResult(createAnswersArray(RESULT_CONFIGS.CORRECTS_TO_WIN - 1, false, 10), RESULT_CONFIGS.MAX_LIVES), RESULT_CONFIGS.POINTS_WHEN_LOST, `should return correct amount of points when there is too few correct answers`);
     assert(computeResult(createAnswersArray(RESULT_CONFIGS.CORRECTS_TO_WIN, true, 10), RESULT_CONFIGS.MAX_LIVES) > RESULT_CONFIGS.POINTS_WHEN_LOST, `should return correct amount of points when there is just enough correct answers`);
     assert(computeResult(createAnswersArray(RESULT_CONFIGS.CORRECTS_TO_WIN + 1, true, 10), RESULT_CONFIGS.MAX_LIVES) > RESULT_CONFIGS.POINTS_WHEN_LOST, `should return correct amount of points when there are more than enough correct answers`);
   });
 
-  it(`Testing point computation`, () => {
+  test(`Testing point computation`, () => {
     const nPointsForMaxLives = RESULT_CONFIGS.MAX_LIVES * RESULT_CONFIGS.POINTS_LIVE_SPARE;
     const nPointsForMaxMinus1Lives = (RESULT_CONFIGS.MAX_LIVES - 1) * RESULT_CONFIGS.POINTS_LIVE_SPARE;
     const nPointsAllFast = RESULT_CONFIGS.CORRECTS_TO_WIN * (RESULT_CONFIGS.POINTS_ANSWER_VALID + RESULT_CONFIGS.POINTS_ANSWER_FAST);
@@ -37,5 +36,3 @@ describe(`"computeResult" function test`, () => {
   });
 
 });
-
-// mocha.run();
