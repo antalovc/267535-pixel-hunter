@@ -1,4 +1,4 @@
-import screenIntroElement from './screen-intro';
-import setScreen from './drawer-screens';
+import screenIntroElement from './screen-intro.js';
+import setScreen from './drawer-screens.js';
 
 setScreen(screenIntroElement);

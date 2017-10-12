@@ -1,6 +1,6 @@
 import {createElementFromTemplate} from './util.js';
-import setScreen from './drawerScreens.js';
-import screenRulesElement from './screenRules.js';
+import setScreen from './drawer-screens.js';
+import screenRulesElement from './screen-rules.js';
 
 const template = `
   <div class="greeting central--blur">

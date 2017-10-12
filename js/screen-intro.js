@@ -1,6 +1,6 @@
 import {createElementFromTemplate} from './util.js';
-import setScreen from './drawerScreens.js';
-import screenGreetingElement from './screenGreeting.js';
+import setScreen from './drawer-screens.js';
+import screenGreetingElement from './screen-greeting.js';
 
 const template = `
   <div id="main" class="central__content">

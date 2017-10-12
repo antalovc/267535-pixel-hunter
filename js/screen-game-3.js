@@ -1,7 +1,7 @@
 import {createElementFromTemplate} from './util.js';
-import setScreen from './drawerScreens.js';
-import screenGreetingElement from './screenGreeting.js';
-import screenStatsElement from './screenStats.js';
+import setScreen from './drawer-screens.js';
+import screenGreetingElement from './screen-greeting.js';
+import screenStatsElement from './screen-stats.js';
 
 const template = `
   <header class="header">
