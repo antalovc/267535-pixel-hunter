@@ -5,11 +5,11 @@ export default class Answer {
     this._isValid = isValid;
   }
 
-  isValid() {
+  get isValid() {
     return this._isValid;
   }
 
-  getTime() {
+  get time() {
     return this._time;
   }
 

@@ -15,11 +15,11 @@ const computeResult = (answers, spareLives) => {
   let result = 0;
   let nCorrect = 0;
   answers.forEach((answer) => {
-    const isValid = answer.isValid();
+    const isValid = answer.isValid;
     nCorrect += isValid ? 1 : 0;
     result += isValid ? RESULT_CONFIGS.POINTS_ANSWER_VALID : 0;
-    result += isValid && answer.getTime() < RESULT_CONFIGS.TIME_ANSWER_FAST ? RESULT_CONFIGS.POINTS_ANSWER_FAST : 0;
-    result += isValid && answer.getTime() > RESULT_CONFIGS.TIME_ANSWER_SLOW ? RESULT_CONFIGS.POINTS_ANSWER_SLOW : 0;
+    result += isValid && answer.time < RESULT_CONFIGS.TIME_ANSWER_FAST ? RESULT_CONFIGS.POINTS_ANSWER_FAST : 0;
+    result += isValid && answer.time > RESULT_CONFIGS.TIME_ANSWER_SLOW ? RESULT_CONFIGS.POINTS_ANSWER_SLOW : 0;
   });
 
   if (nCorrect < RESULT_CONFIGS.CORRECTS_TO_WIN) {
