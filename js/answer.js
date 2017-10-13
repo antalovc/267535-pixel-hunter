@@ -1,12 +1,12 @@
 export default class Answer {
 
-  constructor(isValid, time) {
+  constructor(isCorrect, time) {
     this._time = time;
-    this._isValid = isValid;
+    this._isCorrect = isCorrect;
   }
 
-  get isValid() {
-    return this._isValid;
+  get isCorrect() {
+    return this._isCorrect;
   }
 
   get time() {

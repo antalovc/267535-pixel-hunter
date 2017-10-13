@@ -1,24 +1,9 @@
-import {createElementFromTemplate} from './util.js';
-import setScreen from './drawer-screens.js';
-import screenGreetingElement from './screen-greeting.js';
-import screenGame2Element from './screen-game-2.js';
+import {createElementFromTemplate, addSelfRemovingEventListener} from './util.js';
+import getHeader from './element-header';
+import getFooter from './element-footer';
 
-const template = `
-  <header class="header">
-    <div class="header__back">
-      <button class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.svg" width="101" height="44">
-      </button>
-    </div>
-    <h1 class="game__timer">NN</h1>
-    <div class="game__lives">
-      <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    </div>
-  </header>
-  <div class="game">
+export default (main) => {
+  const screenElement = createElementFromTemplate(`div`, `
     <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
     <form class="game__content">
       <div class="game__option">
@@ -57,29 +42,20 @@ const template = `
         <li class="stats__result stats__result--unknown"></li>
         <li class="stats__result stats__result--unknown"></li>
       </ul>
-    </div>
-  </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+    </div>`, `game`);
 
-const screenElement = createElementFromTemplate(template);
+  const gameContentElement = screenElement.querySelector(`.game__content`);
+  gameContentElement.addEventListener(`click`, () => {
+    if (gameContentElement.querySelectorAll(`.game__answer :checked`).length === 2) {
+      setScreen(screenGame2Element);
+    }
+  });
 
-screenElement.querySelector(`.back`).addEventListener(`click`, () => {
-  setScreen(screenGreetingElement);
-});
-const gameContentElement = screenElement.querySelector(`.game__content`);
-gameContentElement.addEventListener(`click`, () => {
-  if (gameContentElement.querySelectorAll(`.game__answer :checked`).length === 2) {
-    setScreen(screenGame2Element);
-  }
-});
+  const screenConfig = new Map();
 
-export default screenElement;
+  screenConfig.set(`header`, getHeader(game));
+  screenConfig.set(`contents`, screenElement);
+  screenConfig.set(`footer`, getFooter());
+
+  return screenConfig;
+};

@@ -1,17 +1,9 @@
 import {createElementFromTemplate} from './util.js';
-import setScreen from './drawer-screens.js';
-import screenGreetingElement from './screen-greeting.js';
+import getHeader from './element-header';
+import getFooter from './element-footer';
 
-const template = `
-  <header class="header">
-    <div class="header__back">
-      <button class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.svg" width="101" height="44">
-      </button>
-    </div>
-  </header>
-  <div class="result">
+export default () => {
+  const screenElement = createElementFromTemplate(`div`, `
     <h1>Победа!</h1>
     <table class="result__table">
       <tr>
@@ -109,23 +101,13 @@ const template = `
       <tr>
         <td colspan="5" class="result__total  result__total--final">950</td>
       </tr>
-    </table>
-  </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+    </table>`, `result`);
 
-const screenElement = createElementFromTemplate(template);
+  const screenConfig = new Map();
 
-screenElement.querySelector(`.back`).addEventListener(`click`, () => {
-  setScreen(screenGreetingElement);
-});
+  screenConfig.set(`header`, getHeader());
+  screenConfig.set(`contents`, screenElement);
+  screenConfig.set(`footer`, getFooter());
 
-export default screenElement;
+  return screenConfig;
+};

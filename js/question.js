@@ -1,16 +1,23 @@
-export default class Answer {
+import Answer from './answer.js';
 
-  constructor(isValid, time) {
-    this._time = time;
-    this._isValid = isValid;
+export default class Question {
+
+  constructor(pictures) {
+    this._pictures = pictures;
+    this._answer = null;
+    this._timer = null;
   }
 
-  get isValid() {
-    return this._isValid;
+  get answer() {
+    return this._answer;
   }
 
-  get time() {
-    return this._time;
+  set answer(isCorrect) {
+    this._answer = new Answer(isCorrect, 15);
+  }
+
+  getTimeLeft() {
+    return this._timer.timeLeft;
   }
 
 }

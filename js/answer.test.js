@@ -8,8 +8,8 @@ const TESTING_TIME = 100;
 suite(`"Answer" class test`, () => {
 
   test(`Testing class constructor`, () => {
-    strictEqual((new Answer(true, 0)).isValid, true, `valid answer should be created correctly`);
-    strictEqual((new Answer(false, 0)).isValid, false, `invalid answer should be created correctly`);
+    strictEqual((new Answer(true, 0)).isCorrect, true, `valid answer should be created correctly`);
+    strictEqual((new Answer(false, 0)).isCorrect, false, `invalid answer should be created correctly`);
     strictEqual((new Answer(true, TESTING_TIME)).time, TESTING_TIME, `answer time should be set correctly`);
   });
 
