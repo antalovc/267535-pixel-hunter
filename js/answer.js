@@ -13,5 +13,20 @@ export default class Answer {
     return this._time;
   }
 
+  isFast() {
+    return this._time < Answer.FAST_TIME;
+  }
+
+  isSlow() {
+    return this._time > Answer.SLOW_TIME;
+  }
+
+  static get SLOW_TIME() {
+    return 20;
+  };
+
+  static get FAST_TIME() {
+    return 10;
+  }
 }
 

@@ -51,7 +51,9 @@ class Main {
   }
 
   stepGame() {
-    this._game.step();
+    if (this.isGameRunning()) {
+      this._game.step();
+    }
     this.setNextGameScreen();
   }
 

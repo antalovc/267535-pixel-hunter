@@ -21,8 +21,20 @@ export default class Game {
     return this._livesTotal;
   }
 
+  get questionsTotal() {
+    return this._questionsTotal;
+  }
+
+  get livesTotal() {
+    return this._livesTotal;
+  }
+
   get lives() {
     return this._lives;
+  }
+
+  get questions() {
+    return this._questions;
   }
 
   get currentQuestion() {
