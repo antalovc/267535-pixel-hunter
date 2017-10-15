@@ -1,4 +1,4 @@
-import {createElementFromTemplate, addSelfRemovingEventListener} from './util.js';
+import {createElementFromTemplate} from './util.js';
 import getHeader from './element-header';
 import getFooter from './element-footer';
 

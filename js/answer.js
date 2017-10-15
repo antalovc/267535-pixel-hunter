@@ -23,7 +23,7 @@ export default class Answer {
 
   static get SLOW_TIME() {
     return 20;
-  };
+  }
 
   static get FAST_TIME() {
     return 10;

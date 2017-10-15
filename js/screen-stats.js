@@ -10,7 +10,7 @@ export default (main) => {
   let gameStats = questions.reduce((result, question) => {
     const answer = question.answer;
     let postFix = `wrong`;
-    if (answer.isCorrect  ) {
+    if (answer.isCorrect) {
       if (answer.isFast) {
         postFix = `fast`;
       } else if (answer.isSlow) {

@@ -15,7 +15,7 @@ const computeResult = (answers, spareLives) => {
   let result = 0;
   let nCorrect = 0;
   answers.forEach((answer) => {
-    const isValid = answer.isValid;
+    const isValid = answer.isCorrect;
     nCorrect += isValid ? 1 : 0;
     result += isValid ? RESULT_CONFIGS.POINTS_ANSWER_VALID : 0;
     result += isValid && answer.time < RESULT_CONFIGS.TIME_ANSWER_FAST ? RESULT_CONFIGS.POINTS_ANSWER_FAST : 0;
