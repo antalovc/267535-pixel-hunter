@@ -6,7 +6,7 @@ export default class Question2 extends QuestionBase {
   constructor(answeredCallback) {
     super(answeredCallback);
 
-    this._questionType = QuestionBase.QUESTION_TYPE.TYPE_3;
+    this._questionType = QuestionBase.QUESTION_TYPE.TYPE_2;
     this._pictures = getPictures(this._questionType);
   }
 

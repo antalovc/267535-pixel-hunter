@@ -9,7 +9,7 @@ export default (main) => {
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
       <div class="game__option">
-        <img src="http://placehold.it/705x455" alt="Option 1" width="705" height="455">
+        <img src="${currentQuestion.pictures[0].path}" alt="Option 1" width="705" height="455">
         <label class="game__answer  game__answer--photo">
           <input name="question1" type="radio" value="photo">
           <span>Фото</span>
@@ -35,10 +35,17 @@ export default (main) => {
       </ul>
     </div>`, `game`);
 
-  screenElement.querySelectorAll(`.game__answer`).forEach((element) => {
-    element.addEventListener(`click`, () => {
-      main.stepGame();
+  const answerRadioElements = Array.from(screenElement.querySelectorAll(`input[type="radio"]`));
+  const answerCallback = (evt) => {
+    const input = evt.target;
+    currentQuestion.subanswer(input.value === `photo`, () => {
+      answerRadioElements.forEach((element) => {
+        element.removeEventListener(`change`, answerCallback);
+      });
     });
+  };
+  answerRadioElements.forEach((element) => {
+    element.addEventListener(`change`, answerCallback);
   });
 
   const screenConfig = new Map();

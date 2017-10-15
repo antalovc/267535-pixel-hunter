@@ -7,9 +7,13 @@ export default class Game {
     this._questionsTotal = nQuestions;
 
     this._lives = nLives;
-    this._questions = [createQuestion(() => {
+    this._answeredCallback = (isCorrect) => {
+      if (!isCorrect) {
+        this._lives--;
+      }
       this._main.stepGame();
-    })];
+    };
+    this._questions = [createQuestion(this._answeredCallback)];
     this._main = main;
   }
 
@@ -25,18 +29,13 @@ export default class Game {
     return this._questions.length ? this._questions[this._questions.length - 1] : null;
   }
 
-  step(isCorrect) {
-    if (!isCorrect) {
-      this._lives--;
-    }
-    this._questions.push = createQuestion(() => {
-      this._main.stepGame();
-    });
+  step() {
+    this._questions.push(createQuestion(this._answeredCallback));
     return this;
   }
 
   isRunning() {
-    return this._questions.length < this._questionsTotal && this._lives;
+    return this._questions.length <= this._questionsTotal && this._lives;
   }
 
 }

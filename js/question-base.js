@@ -20,11 +20,15 @@ export default class QuestionBase {
   set answer(isCorrect) {
     // A0 : currently set answer time to 15
     this._answer = new Answer(isCorrect, 15);
-    this._onAnsweredCallback();
+    this._onAnsweredCallback(isCorrect);
   }
 
   get questionType() {
     return this._questionType;
+  }
+
+  get pictures() {
+    return this._pictures;
   }
 
   subanswer() {

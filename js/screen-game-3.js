@@ -1,20 +1,21 @@
-import {createElementFromTemplate, addSelfRemovingEventListener} from './util.js';
+import {createElementFromTemplate} from './util.js';
 import getHeader from './element-header';
 import getFooter from './element-footer';
 
 export default (main) => {
+
+  const currentQuestion = main.game.currentQuestion;
+  const picturesElements = currentQuestion.pictures.reduce((result, picture, index) => {
+    return result + `
+      <div class="game__option">
+        <img src="${picture.path}" alt="Option ${index + 1}" width="304" height="455">
+      </div>\n`;
+  }, ``);
+
   const screenElement = createElementFromTemplate(`div`, `
-    <p class="game__task">Найдите рисунок среди изображений</p>
+    <p class="game__task">${currentQuestion.isIntrusPhoto ? `Найдите фото среди изображений` : `Найдите рисунок среди изображений`}</p>
     <form class="game__content  game__content--triple">
-      <div class="game__option">
-        <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
-      </div>
-      <div class="game__option  game__option--selected">
-        <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
-      </div>
-      <div class="game__option">
-        <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
-      </div>
+      ${picturesElements}
     </form>
     <div class="stats">
       <ul class="stats">
@@ -31,10 +32,16 @@ export default (main) => {
       </ul>
     </div>`, `game`);
 
-
-  //addSelfRemovingEventListener(screenElement.querySelectorAll(`.game__option`), `click`, () => {
-  //  main.stepGame();
-  //});
+  const answerOptionElements = Array.from(screenElement.querySelectorAll(`.game__option`));
+  const answerCallback = (evt) => {
+    answerOptionElements.forEach((optionElement) => {
+      optionElement.removeEventListener(`click`, answerCallback);
+    });
+    currentQuestion.subanswer(parseInt(evt.target.querySelector(`img`).alt.slice(-1), 10));
+  };
+  answerOptionElements.forEach((element) => {
+    element.addEventListener(`click`, answerCallback);
+  });
 
   const screenConfig = new Map();
 
