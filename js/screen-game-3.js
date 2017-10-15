@@ -31,17 +31,16 @@ export default (main) => {
       </ul>
     </div>`, `game`);
 
-  screenElement.querySelectorAll(`.game__option`).forEach((element) => {
-    element.addEventListener(`click`, () => {
-      setScreen(screenStatsElement);
-    });
-  });
+
+  //addSelfRemovingEventListener(screenElement.querySelectorAll(`.game__option`), `click`, () => {
+  //  main.stepGame();
+  //});
 
   const screenConfig = new Map();
 
-  screenConfig.set(`header`, getHeader(game));
+  screenConfig.set(`header`, getHeader(main.game));
   screenConfig.set(`contents`, screenElement);
   screenConfig.set(`footer`, getFooter());
 
   return screenConfig;
-}
+};

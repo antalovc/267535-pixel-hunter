@@ -4,7 +4,7 @@ const TIME_MSEC_TO_SEC = 1000;
 class Timer {
 
   constructor(timeout, callback) {
-    this.initialise(timeout, callback);
+    //this.initialise(timeout, callback);
   }
 
   initialise(timeout, callback) {

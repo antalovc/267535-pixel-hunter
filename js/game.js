@@ -1,16 +1,16 @@
-import getPictures from './data/get-data-dummy.js';
-import {getRandomArrayItem} from './util.js';
-import Question from './question.js';
+import createQuestion from './create-question.js';
 
 export default class Game {
 
-  constructor(nLives, nQuestions) {
+  constructor(main, nLives, nQuestions) {
     this._livesTotal = nLives;
     this._questionsTotal = nQuestions;
 
     this._lives = nLives;
-    this._questions = this.generateQuestions();
-    this._currentQuestion = 0;
+    this._questions = [createQuestion(() => {
+      this._main.stepGame();
+    })];
+    this._main = main;
   }
 
   get livesTotal() {
@@ -22,28 +22,21 @@ export default class Game {
   }
 
   get currentQuestion() {
-    return this._questions[this._currentQuestion];
-  }
-
-  generateQuestions() {
-    const res = [];
-    for (let i = 0; i < this._questionsTotal; i++) {
-      res.push(new Question(getPictures(getRandomArrayItem([1, 2, 3]))));
-    }
-    return res;
+    return this._questions.length ? this._questions[this._questions.length - 1] : null;
   }
 
   step(isCorrect) {
     if (!isCorrect) {
       this._lives--;
     }
-    this.currentQuestion.answer = isCorrect;
-    this._currentQuestion++;
+    this._questions.push = createQuestion(() => {
+      this._main.stepGame();
+    });
     return this;
   }
 
   isRunning() {
-    return this._currentQuestion === this._questionsTotal - 1 && this._lives;
+    return this._questions.length < this._questionsTotal && this._lives;
   }
 
 }

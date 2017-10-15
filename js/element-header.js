@@ -20,9 +20,9 @@ export default (game) => {
       </button>
     </div>
     ${game && game.isRunning ? `
-      <h1 class="game__timer">${game.currentQuestion.getTimeLeft()}</h1>
+      <h1 class="game__timer">${game.currentQuestion.timeLeft}</h1>
       <div class="game__lives">
-        ${drawLives(game.currentQuestion)}
+        ${drawLives()}
       </div>` : ``}`, `header`);
 
   addSelfRemovingEventListener(footerElement.querySelector(`.back`), `click`, () => {

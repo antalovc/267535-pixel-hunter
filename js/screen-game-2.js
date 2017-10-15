@@ -3,6 +3,8 @@ import getHeader from './element-header';
 import getFooter from './element-footer';
 
 export default (main) => {
+
+  const currentQuestion = main.game.currentQuestion;
   const screenElement = createElementFromTemplate(`div`, `
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
@@ -35,13 +37,13 @@ export default (main) => {
 
   screenElement.querySelectorAll(`.game__answer`).forEach((element) => {
     element.addEventListener(`click`, () => {
-      setScreen(screenGame3Element);
+      main.stepGame();
     });
   });
 
   const screenConfig = new Map();
 
-  screenConfig.set(`header`, getHeader(game));
+  screenConfig.set(`header`, getHeader(main.game));
   screenConfig.set(`contents`, screenElement);
   screenConfig.set(`footer`, getFooter());
 

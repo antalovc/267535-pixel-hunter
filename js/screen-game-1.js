@@ -45,15 +45,16 @@ export default (main) => {
     </div>`, `game`);
 
   const gameContentElement = screenElement.querySelector(`.game__content`);
-  gameContentElement.addEventListener(`click`, () => {
+
+  addSelfRemovingEventListener(screenElement.querySelector(`.game__content`), `click`, () => {
     if (gameContentElement.querySelectorAll(`.game__answer :checked`).length === 2) {
-      setScreen(screenGame2Element);
+      main.stepGame();
     }
   });
 
   const screenConfig = new Map();
 
-  screenConfig.set(`header`, getHeader(game));
+  screenConfig.set(`header`, getHeader(main.game));
   screenConfig.set(`contents`, screenElement);
   screenConfig.set(`footer`, getFooter());
 

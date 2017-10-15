@@ -1,4 +1,4 @@
-const setChildrenFromTemplate = (element, template) => {
+/* const setChildrenFromTemplate = (element, template) => {
   const templateElement = document.createElement(`div`);
   templateElement.innerHTML = template;
 
@@ -6,6 +6,13 @@ const setChildrenFromTemplate = (element, template) => {
   Array.from(templateElement.childNodes).forEach((child) => {
     element.appendChild(child);
   });
+}; */
+const getRandomIntegerFromRange = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const getRandomBoolean = () => {
+  return Math.random() >= 0.5;
 };
 
 const createElementFromTemplate = (type, template, className, id) => {
@@ -36,4 +43,10 @@ const addSelfRemovingEventListener = (element, eventType, callback, preventDefau
 
 };
 
-export {createElementFromTemplate, setChildrenFromTemplate, getRandomArrayItem, addSelfRemovingEventListener};
+const generateSingleTrueArray = (length) => {
+  const res = new Array(length).fill(false);
+  res[getRandomIntegerFromRange(0, length - 1)] = true;
+  return res;
+};
+
+export {createElementFromTemplate, getRandomArrayItem, addSelfRemovingEventListener, generateSingleTrueArray, getRandomBoolean};
