@@ -47,7 +47,7 @@ export default class Game {
   }
 
   isRunning() {
-    return this._questions.length <= this._questionsTotal && this._lives;
+    return this._questions.length < this._questionsTotal && this._lives;
   }
 
 }

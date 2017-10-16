@@ -9,7 +9,7 @@ export default (main) => {
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
       <div class="game__option">
-        <img src="${currentQuestion.pictures[0].path}" alt="Option 1" width="705" height="455">
+        <img src="${currentQuestion.pictures[0].path}" alt="Option 1" width="100%" height="100%">
         <label class="game__answer  game__answer--photo">
           <input name="question1" type="radio" value="photo">
           <span>Фото</span>

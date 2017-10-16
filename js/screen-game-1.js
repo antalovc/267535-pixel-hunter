@@ -8,7 +8,7 @@ export default (main) => {
   const picturesElements = currentQuestion.pictures.reduce((result, picture, index) => {
     return result + `
       <div class="game__option">
-        <img src="${picture.path}" alt="Option ${index + 1}" width="468" height="458">
+        <img src="${picture.path}" alt="Option ${index + 1}" width="100%" height="100%">
         <label class="game__answer game__answer--photo">
           <input name="question${index + 1}" type="radio" value="photo">
           <span>Фото</span>

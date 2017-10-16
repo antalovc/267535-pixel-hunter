@@ -37,24 +37,18 @@ class Main {
     ScreensManager.setCurrentConfig(getScreenRulesConfig(this));
   }
 
-  setNextGameScreen() {
-    if (this.isGameRunning()) {
-      ScreensManager.setCurrentConfig(this._gameScreensConfigs[this._game.currentQuestion.questionType](this));
-    } else {
-      ScreensManager.setCurrentConfig(getScreenStatsConfig(this));
-    }
-  }
-
   startGame() {
     this._game = new Game(this, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
-    this.setNextGameScreen();
+    ScreensManager.setCurrentConfig(this._gameScreensConfigs[this._game.currentQuestion.questionType](this));
   }
 
   stepGame() {
     if (this.isGameRunning()) {
       this._game.step();
+      ScreensManager.setCurrentConfig(this._gameScreensConfigs[this._game.currentQuestion.questionType](this));
+    } else {
+      ScreensManager.setCurrentConfig(getScreenStatsConfig(this));
     }
-    this.setNextGameScreen();
   }
 
   isGameRunning() {

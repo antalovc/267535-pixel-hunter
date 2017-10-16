@@ -8,7 +8,7 @@ export default (main) => {
   const picturesElements = currentQuestion.pictures.reduce((result, picture, index) => {
     return result + `
       <div class="game__option">
-        <img src="${picture.path}" alt="Option ${index + 1}" width="304" height="455">
+        <img src="${picture.path}" alt="Option ${index + 1}" width="100%" height="100%">
       </div>\n`;
   }, ``);
 
