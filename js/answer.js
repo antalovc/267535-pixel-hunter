@@ -13,11 +13,11 @@ export default class Answer {
     return this._time;
   }
 
-  isFast() {
+  get isFast() {
     return this.time < Answer.FAST_TIME;
   }
 
-  isSlow() {
+  get isSlow() {
     return this.time > Answer.SLOW_TIME;
   }
 
