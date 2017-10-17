@@ -43,11 +43,11 @@ class Timer {
     this.initialise(timeout, callback);
   }
 
-  getTimeLeft() {
+  get timeLeft() {
     return this._timeLeft;
   }
 
-  getTimeElapsed() {
+  get timeElapsed() {
     return this._timeElapsed;
   }
 

@@ -1,17 +1,32 @@
 export default class Answer {
 
-  constructor(isValid, time) {
+  constructor(isCorrect, time) {
     this._time = time;
-    this._isValid = isValid;
+    this._isCorrect = isCorrect;
   }
 
-  isValid() {
-    return this._isValid;
+  get isCorrect() {
+    return this._isCorrect;
   }
 
-  getTime() {
+  get time() {
     return this._time;
   }
 
+  get isFast() {
+    return this.time < Answer.FAST_TIME;
+  }
+
+  get isSlow() {
+    return this.time > Answer.SLOW_TIME;
+  }
+
+  static get SLOW_TIME() {
+    return 20;
+  }
+
+  static get FAST_TIME() {
+    return 10;
+  }
 }
 
