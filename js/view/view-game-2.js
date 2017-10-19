@@ -1,15 +1,18 @@
-import {createElementFromTemplate} from './util.js';
-import getHeader from './element-header';
-import getFooter from './element-footer';
+import ViewAbstract from "./view-abstract.js";
 
-export default (main) => {
+export default class ViewGame2 extends ViewAbstract {
 
-  const currentQuestion = main.game.currentQuestion;
-  const screenElement = createElementFromTemplate(`div`, `
+  constructor(question) {
+    super();
+    this._currentQuestion = question;
+  }
+
+  get template() {
+    return `
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
       <div class="game__option" width="705" height="455">
-        <img src="${currentQuestion.pictures[0].path}" alt="Option 1">
+        <img src="${this._currentQuestion.pictures[0].path}" alt="Option 1">
         <label class="game__answer  game__answer--photo">
           <input name="question1" type="radio" value="photo">
           <span>Фото</span>
@@ -33,26 +36,34 @@ export default (main) => {
         <li class="stats__result stats__result--fast"></li>
         <li class="stats__result stats__result--unknown"></li>
       </ul>
-    </div>`, `game`);
+    </div>`;
+  }
 
-  const answerRadioElements = Array.from(screenElement.querySelectorAll(`input[type="radio"]`));
-  const answerCallback = (evt) => {
-    const input = evt.target;
-    currentQuestion.subanswer(input.value === `photo`, () => {
-      answerRadioElements.forEach((element) => {
-        element.removeEventListener(`change`, answerCallback);
+  get templateTag() {
+    return `div`;
+  }
+
+  get templateClass() {
+    return `game`;
+  }
+
+  get templateId() {
+    return ``;
+  }
+
+  bind() {
+    Array.from(this.element.querySelectorAll(`input[type="radio"]`)).forEach((element) => {
+      element.addEventListener(`change`, (evt) => {
+        this.onSubAnswer(evt.target.value === `photo`);
       });
     });
-  };
-  answerRadioElements.forEach((element) => {
-    element.addEventListener(`change`, answerCallback);
-  });
+  }
 
-  const screenConfig = new Map();
+  update() {
+    return this;
+  }
 
-  screenConfig.set(`header`, getHeader(main.game));
-  screenConfig.set(`contents`, screenElement);
-  screenConfig.set(`footer`, getFooter());
+  onSubAnswer() {
+  }
 
-  return screenConfig;
-};
+}

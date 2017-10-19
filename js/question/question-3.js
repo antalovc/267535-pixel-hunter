@@ -1,5 +1,5 @@
 import QuestionBase from './question-base.js';
-import getPictures from './data/get-data-dummy.js';
+import getPictures from '../data/get-data-dummy.js';
 
 export default class Question3 extends QuestionBase {
 

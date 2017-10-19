@@ -15,8 +15,8 @@ const getRandomBoolean = () => {
   return Math.random() >= 0.5;
 };
 
-const createElementFromTemplate = (type, template, className, id) => {
-  const containerElement = document.createElement(type);
+const createElementFromTemplate = (tagName, template, className, id) => {
+  const containerElement = document.createElement(tagName);
   if (className) {
     containerElement.className = className;
   }
@@ -31,7 +31,7 @@ const getRandomArrayItem = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-const addSelfRemovingEventListener = (element, eventType, callback, preventDefault) => {
+/* const addSelfRemovingEventListener = (element, eventType, callback, preventDefault) => {
   const callbackWrapper = (evt) => {
     if (preventDefault) {
       evt.preventDefault();
@@ -41,7 +41,7 @@ const addSelfRemovingEventListener = (element, eventType, callback, preventDefau
   };
   element.addEventListener(`click`, callbackWrapper);
 
-};
+};*/
 
 const generateSingleTrueArray = (length) => {
   const res = new Array(length).fill(false);
@@ -49,4 +49,4 @@ const generateSingleTrueArray = (length) => {
   return res;
 };
 
-export {createElementFromTemplate, getRandomArrayItem, addSelfRemovingEventListener, generateSingleTrueArray, getRandomBoolean};
+export {createElementFromTemplate, getRandomArrayItem, generateSingleTrueArray, getRandomBoolean};

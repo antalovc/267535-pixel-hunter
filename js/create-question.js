@@ -1,7 +1,7 @@
-import QuestionBase from './question-base.js';
-import Question1 from './question-1.js';
-import Question2 from './question-2.js';
-import Question3 from './question-3.js';
+import QuestionBase from './question/question-base.js';
+import Question1 from './question/question-1.js';
+import Question2 from './question/question-2.js';
+import Question3 from './question/question-3.js';
 import {getRandomArrayItem} from './util.js';
 
 export default (onAnsweredCallback) => {

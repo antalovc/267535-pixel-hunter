@@ -1,5 +1,5 @@
 import QuestionBase from './question-base.js';
-import getPictures from './data/get-data-dummy.js';
+import getPictures from '../data/get-data-dummy.js';
 
 export default class Question1 extends QuestionBase {
 
@@ -12,13 +12,12 @@ export default class Question1 extends QuestionBase {
     this._subanswers = [null, null];
   }
 
-  subanswer(nPicture, isPhoto, callback) {
+  subanswer(nPicture, isPhoto) {
     this._subanswers[nPicture - 1] = this._pictures[nPicture - 1].isPhoto === isPhoto;
 
     if (this._subanswers.every((subanswer) => {
       return subanswer !== null;
     })) {
-      callback();
       this.answer = this._subanswers.every((subanswer) => {
         return subanswer;
       });

@@ -1,5 +1,5 @@
-import Answer from './answer.js';
-import createTimer from './create-timer';
+import Answer from '../answer.js';
+import createTimer from '../create-timer';
 
 export default class QuestionBase {
 
