@@ -101,12 +101,13 @@ export default class ScreenRenderer {
   }
 
   setScreen(view, hasHeader) {
-    if (hasHeader && !this._viewHeader) {
+    const isHeaderShown = this._viewHeader && this._viewHeader.element.parentNode === this._mainElement;
+    if (hasHeader && !isHeaderShown) {
       this._viewHeader = getHeader(this._main);
       this._mainElement.insertBefore(this._viewHeader.element, this._mainElement.firstChild);
     } else if (hasHeader) {
       this._viewHeader.update(this._main);
-    } else if (this._viewHeader) {
+    } else if (isHeaderShown) {
       this._mainElement.removeChild(this._viewHeader.element);
     }
 
