@@ -25,8 +25,8 @@ export default class ViewTimer extends ViewAbstract {
 
   update(game) {
     const timer = game.currentQuestion.timer;
-    timer.onTick = (timeElapsed) => {
-      this.updateCounter(timeElapsed);
+    timer.onTick = () => {
+      this.updateCounter(timer.timeElapsed);
     };
     this._time = timer.timeElapsed;
     this._element.innerHTML = `${this._time}`;

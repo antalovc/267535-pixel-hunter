@@ -12,6 +12,7 @@ export default class QuestionBase {
     this._timer = createTimer(() => {
       this.answer = false;
     });
+    this._timer.start();
     this._onAnsweredCallback = onAnsweredCallback;
   }
 

@@ -18,7 +18,7 @@ class Timer {
   tick() {
     this._timeLeft--;
     this._timeElapsed++;
-    this.onTick(this._timeElapsed);
+    this.onTick();
     if (!this._timeLeft) {
       this.stop();
       this._call();
@@ -63,9 +63,8 @@ class Timer {
   }
 }
 
-export default (timeout, callback) => {
-  const timer = new Timer(timeout, callback);
-  timer.start();
+export default (callback, timeout) => {
+  const timer = new Timer(callback, timeout);
   return timer;
 };
 

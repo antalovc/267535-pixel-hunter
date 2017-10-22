@@ -26,18 +26,18 @@ suite(`"Timer" class test`, () => {
 
   test(`Testing timings and callbacks`, (done) => {
     let ok = false;
-    const timerObject = createTimer(null, TIMING_TIMEOUT, () => {
+    const timerObject = createTimer(() => {
       ok = true;
-    });
+    }, TIMING_TIMEOUT);
     timerObject.start();
     setTimeout(() => {
       try {
         strictEqual(ok, true, `timer should call the callback after it run out`);
 
-        strictEqual(timerObject.timeLeft, 0, `timer should have left time set to left time of 0 seconds after it run out`);
+        strictEqual(timerObject.timeLeft, 0, `timer should have left time set to 0 seconds after it run out`);
         strictEqual(timerObject.timeElapsed, TIMING_TIMEOUT, `timer should have elapsed time set to timeout time of ${TIMING_TIMEOUT} seconds after after it run out`);
 
-        timerObject.reset(TIMING_TIMEOUT);
+        timerObject.reset(null, TIMING_TIMEOUT);
 
         strictEqual(timerObject.timeLeft, TIMING_TIMEOUT, `timer should have left time set to timeout time of ${TIMING_TIMEOUT} seconds after reset`);
         strictEqual(timerObject.timeElapsed, 0, `timer should have elapsed time set to 0 seconds after reset`);
