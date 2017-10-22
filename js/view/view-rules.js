@@ -38,7 +38,8 @@ export default class ViewRules extends ViewAbstract {
   }
 
   get playerNameElement() {
-    return this._playerNameElement = this._playerNameElement || this._element.querySelector(`.rules__input`);
+    this._playerNameElement = this._playerNameElement || this._element.querySelector(`.rules__input`);
+    return this._playerNameElement;
   }
 
   get playerName() {

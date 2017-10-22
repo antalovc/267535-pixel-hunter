@@ -1,14 +1,15 @@
-const TICK_TIME = 1; // seconds
+const TIME_TICK = 1; // seconds
 const TIME_MSEC_TO_SEC = 1000;
+const TIME_MAX = 30; // seconds
 
 class Timer {
 
-  constructor(timeout, callback) {
-    this.initialise(timeout, callback);
+  constructor(callback, timeout) {
+    this.initialise(callback, timeout);
   }
 
-  initialise(timeout, callback) {
-    this._timeLeft = timeout > 0 ? timeout : 0;
+  initialise(callback, timeout) {
+    this._timeLeft = timeout > 0 ? timeout : TIME_MAX;
     this._timeElapsed = 0;
     this._callback = callback;
     this._timer = null;
@@ -17,6 +18,7 @@ class Timer {
   tick() {
     this._timeLeft--;
     this._timeElapsed++;
+    this.onTick(this._timeElapsed);
     if (!this._timeLeft) {
       this.stop();
       this._call();
@@ -28,7 +30,7 @@ class Timer {
     if (me._timeLeft) {
       this._timer = setInterval(() => {
         me.tick();
-      }, TICK_TIME * TIME_MSEC_TO_SEC);
+      }, TIME_TICK * TIME_MSEC_TO_SEC);
     } else {
       me._call();
     }
@@ -56,10 +58,15 @@ class Timer {
       this._callback();
     }
   }
+
+  onTick() {
+  }
 }
 
 export default (timeout, callback) => {
-  return new Timer(timeout, callback);
+  const timer = new Timer(timeout, callback);
+  timer.start();
+  return timer;
 };
 
 

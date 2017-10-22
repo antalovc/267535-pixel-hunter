@@ -1,5 +1,5 @@
 const TIME_SLOW = 20; // seconds
-const TIME_FAST = 20; // seconds
+const TIME_FAST = 10; // seconds
 
 export default class Answer {
 
