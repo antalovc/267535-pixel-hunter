@@ -1,11 +1,11 @@
 import ViewGame2 from '../view/view-game-2.js';
 
-export default (question) => {
-  const game2 = new ViewGame2(question);
+export default (main) => {
+  const game2 = new ViewGame2(main);
 
   game2.onSubAnswer = (isPhoto) => {
-    question.subanswer(isPhoto);
-  }
+    main.game.currentQuestion.subanswer(isPhoto);
+  };
 
   return game2;
 };

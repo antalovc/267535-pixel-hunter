@@ -1,4 +1,4 @@
-import ViewHeader from '../view/view-header';
+import ViewHeader from '../view/view-header.js';
 
 export default (main) => {
   const header = new ViewHeader(main);

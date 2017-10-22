@@ -1,11 +1,10 @@
-import {Statistics} from '../statistics.js';
 import ViewAbstract from "./view-abstract.js";
 
-export default class ViewGreeting extends ViewAbstract {
+export default class ViewStats extends ViewAbstract {
 
   constructor(main) {
     super();
-    this._statistics = new Statistics(main.game);
+    this._statistics = main.game.statistics;
   }
 
   get template() {
@@ -14,9 +13,7 @@ export default class ViewGreeting extends ViewAbstract {
       <table class="result__table">
         <tr>
           <td class="result__number">1.</td>
-          <td colspan="2">
-             ${this._statistics.statsTemplate}
-          </td>
+          <td class="result__bar" colspan="2"></td>
           <td class="result__points">×&nbsp;100</td>
           <td class="result__total">${this._statistics.correctsPoints}</td>
         </tr>
@@ -59,7 +56,14 @@ export default class ViewGreeting extends ViewAbstract {
     return ``;
   }
 
-  bind() {
+  update(main) {
+    this._statistics = main.game.statistics;
+    this._element = this.render();
+    return this;
+  }
+
+  addInnerViews() {
+    this._element.querySelector(`.result__bar`).appendChild(this._statistics.statsBar.element);
   }
 
 }

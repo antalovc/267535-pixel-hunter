@@ -12,7 +12,7 @@ import QuestionBase from './question/question-base.js';
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
-export default class ScreenRenderer {
+export default class ScreenManager {
 
   constructor(main) {
     this._main = main;
@@ -55,27 +55,27 @@ export default class ScreenRenderer {
     return this._viewGreeting;
   }
   get viewRules() {
-    this._viewRules = this._viewRules ? this._viewRules : getRules(this._main);
+    this._viewRules = this._viewRules ? this._viewRules.update(this._main) : getRules(this._main);
     return this._viewRules;
   }
 
   get viewGame1() {
-    this._viewGame1 = this._viewGame1 ? this._viewGame1.update() : getGame1(this._main.game.currentQuestion);
+    this._viewGame1 = this._viewGame1 ? this._viewGame1.update(this._main) : getGame1(this._main);
     return this._viewGame1;
   }
 
   get viewGame2() {
-    this._viewGame2 = this._viewGame2 ? this._viewGame2.update() : getGame2(this._main.game.currentQuestion);
+    this._viewGame2 = this._viewGame2 ? this._viewGame2.update(this._main) : getGame2(this._main);
     return this._viewGame2;
   }
 
   get viewGame3() {
-    this._viewGame3 = this._viewGame3 ? this._viewGame3.update() : getGame3(this._main.game.currentQuestion);
+    this._viewGame3 = this._viewGame3 ? this._viewGame3.update(this._main) : getGame3(this._main);
     return this._viewGame3;
   }
 
   get viewStats() {
-    this._viewStats = this._viewStats ? this._viewStats : getStats(this._main);
+    this._viewStats = this._viewStats ? this._viewStats.update(this._main) : getStats(this._main);
     return this._viewStats;
   }
 

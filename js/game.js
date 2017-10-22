@@ -1,8 +1,9 @@
 import createQuestion from './create-question.js';
+import {Statistics} from './statistics.js';
 
 export default class Game {
 
-  constructor(main, nLives, nQuestions) {
+  constructor(main, playerName, nLives, nQuestions) {
     this._livesTotal = nLives;
     this._questionsTotal = nQuestions;
 
@@ -14,7 +15,11 @@ export default class Game {
       this._main.stepGame();
     };
     this._questions = [createQuestion(this._answeredCallback)];
+    this._statistics = null;
+
     this._main = main;
+    this._playerName = playerName;
+    this._finished = false;
   }
 
   get livesTotal() {
@@ -41,13 +46,34 @@ export default class Game {
     return this._questions.length ? this._questions[this._questions.length - 1] : null;
   }
 
+  get statistics() {
+    this._statistics = this._statistics || new Statistics(this);
+    return this._statistics;
+  }
+
+  get playerName() {
+    return this._playerName;
+  }
+
+  get hasNextQuestion() {
+    return this._questions.length < this._questionsTotal && this._lives;
+  }
+
+  get isRunning() {
+    return !this._finished && this._lives;
+  }
+
   step() {
     this._questions.push(createQuestion(this._answeredCallback));
+    this.statistics.update();
     return this;
   }
 
-  isRunning() {
-    return this._questions.length < this._questionsTotal && this._lives;
+  stop() {
+    this._finished = true;
+    this.statistics.update();
+    return this;
   }
+
 
 }

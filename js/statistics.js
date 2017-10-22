@@ -1,3 +1,5 @@
+import getStatsBar from "./element/stats-bar.js";
+
 const STATISTICS_CONFIG = {
   POINTS_ANSWER_VALID: 100,
   POINTS_ANSWER_FAST: 50,
@@ -9,6 +11,7 @@ const answerFastDescription = `fast`;
 const answerSlowDescription = `slow`;
 const answerCorrectDescription = `correct`;
 const answerWrongDescription = `wrong`;
+const answerUnknownDescription = `unknown`;
 
 class Statistics {
 
@@ -16,33 +19,17 @@ class Statistics {
     this._game = game;
     this._questions = game.questions;
 
-    this._stats = {
-      correctsAmount: 0,
-      fastsAmount: 0,
-      slowsAmount: 0,
-      livesAmount: game.lives,
-      answerDescriptions: []
-    };
+    this.calculateResulting();
 
-    this._questions.forEach((question) => {
-      const stats = this._stats;
-      let answerDescriptions = stats.answerDescriptions;
-      const answer = question.answer;
-      if (answer.isCorrect) {
-        stats.correctsAmount++;
-        if (answer.isFast) {
-          answerDescriptions.push(answerFastDescription);
-          stats.fastsAmount++;
-        } else if (answer.isSlow) {
-          answerDescriptions.push(answerSlowDescription);
-          stats.slowsAmount++;
-        } else {
-          answerDescriptions.push(answerCorrectDescription);
-        }
-      } else {
-        answerDescriptions.push(answerWrongDescription);
-      }
-    });
+    this._statsBar = null;
+  }
+
+  get questions() {
+    return this._questions;
+  }
+
+  get questionsTotal() {
+    return this._stats.questionsTotal;
   }
 
   get totalPoints() {
@@ -85,18 +72,50 @@ class Statistics {
     return this._stats.answerDescriptions;
   }
 
-  get statsTemplate() {
-    let gameStats = this.answerDescriptions.reduce((result, description) => {
-      return result + `<li class="stats__result stats__result--${description}"></li>\n`;
-    }, ``);
+  get statsBar() {
+    this._statsBar = this._statsBar || getStatsBar(this);
+    return this._statsBar;
+  }
 
-    for (let i = this._questions.length; i < this._game.questionsTotal; i++) {
-      gameStats += `<li class="stats__result stats__result--unknown"></li>\n`;
-    }
-    return `
-      <ul class="stats">
-        ${gameStats}
-      </ul>`;
+  update() {
+    this.calculateResulting();
+    this.statsBar.update(this._game);
+  }
+
+  resetStats() {
+    this._stats = {
+      correctsAmount: 0,
+      fastsAmount: 0,
+      slowsAmount: 0,
+      livesAmount: this._game.lives,
+      answerDescriptions: [],
+      questionsTotal: this._game.questionsTotal
+    };
+  }
+
+  calculateResulting() {
+    this.resetStats();
+    this._questions.forEach((question) => {
+      const stats = this._stats;
+      let answerDescriptions = stats.answerDescriptions;
+      const answer = question.answer;
+      if (!answer) {
+        answerDescriptions.push(answerUnknownDescription);
+      } else if (answer.isCorrect) {
+        stats.correctsAmount++;
+        if (answer.isFast) {
+          answerDescriptions.push(answerFastDescription);
+          stats.fastsAmount++;
+        } else if (answer.isSlow) {
+          answerDescriptions.push(answerSlowDescription);
+          stats.slowsAmount++;
+        } else {
+          answerDescriptions.push(answerCorrectDescription);
+        }
+      } else {
+        answerDescriptions.push(answerWrongDescription);
+      }
+    });
   }
 }
 

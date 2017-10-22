@@ -1,11 +1,11 @@
 import ViewGame3 from '../view/view-game-3.js';
 
-export default (question) => {
-  const game3 = new ViewGame3(question);
+export default (main) => {
+  const game3 = new ViewGame3(main);
 
   game3.onSubAnswer = (nIntrus) => {
-    question.subanswer(nIntrus);
-  }
+    main.game.currentQuestion.subanswer(nIntrus);
+  };
 
   return game3;
 };

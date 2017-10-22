@@ -37,6 +37,14 @@ export default class ViewRules extends ViewAbstract {
     return ``;
   }
 
+  get playerNameElement() {
+    return this._playerNameElement = this._playerNameElement || this._element.querySelector(`.rules__input`);
+  }
+
+  get playerName() {
+    return this.playerNameElement.value;
+  }
+
   bind() {
     const viewElement = this.element;
     const formInputElement = viewElement.querySelector(`.rules__input`);
@@ -51,6 +59,11 @@ export default class ViewRules extends ViewAbstract {
       evt.preventDefault();
       this.onStartClicked();
     });
+  }
+
+  update() {
+    this.playerNameElement.value = ``;
+    return this;
   }
 
   onStartClicked() {

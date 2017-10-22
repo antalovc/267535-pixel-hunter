@@ -1,44 +1,13 @@
-import ViewAbstract from "./view-abstract.js";
+import ViewGameAbstract from "./view-game-abstract.js";
 
-export default class ViewGame1 extends ViewAbstract {
-
-  constructor(question) {
-    super();
-    this._currentQuestion = question;
-  }
+export default class ViewGame1 extends ViewGameAbstract {
 
   get template() {
     return `
     <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
     <form class="game__content">
       ${this.picturesElements}
-    </form>
-    <div class="stats">
-      <ul class="stats">
-        <li class="stats__result stats__result--wrong"></li>
-        <li class="stats__result stats__result--slow"></li>
-        <li class="stats__result stats__result--fast"></li>
-        <li class="stats__result stats__result--correct"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--unknown"></li>
-      </ul>
-    </div>`;
-  }
-
-  get templateTag() {
-    return `div`;
-  }
-
-  get templateClass() {
-    return `game`;
-  }
-
-  get templateId() {
-    return ``;
+    </form>`;
   }
 
   bind() {
@@ -52,7 +21,15 @@ export default class ViewGame1 extends ViewAbstract {
     });
   }
 
-  update() {
+  update(main) {
+    this._currentQuestion = main.game.currentQuestion;
+    Array.from(this._element.querySelectorAll(`.game__content img`)).forEach((img, index) => {
+      img.setAttribute(`src`, this._currentQuestion.pictures[index].path);
+    });
+    Array.from(this._element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {
+      radio.checked = false;
+    });
+    super.update(main);
     return this;
   }
 

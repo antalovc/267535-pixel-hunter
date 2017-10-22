@@ -4,7 +4,7 @@ export default (main) => {
   const rules = new ViewRules(main);
 
   rules.onStartClicked = () => {
-    main.startGame();
+    main.startGame(rules.playerName);
   };
 
   return rules;

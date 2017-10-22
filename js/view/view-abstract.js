@@ -18,6 +18,15 @@ export default class ViewAbstract {
     throw new Error(`Abstract method called`);
   }
 
+  get element() {
+    if (!this._element) {
+      this._element = this.render();
+      this.bind();
+      this.addInnerViews();
+    }
+    return this._element;
+  }
+
   render() {
     return createElementFromTemplate(this.templateTag, this.template, this.templateClass, this.templateId);
   }
@@ -25,19 +34,11 @@ export default class ViewAbstract {
   bind() {
   }
 
-  unbind() {
+  addInnerViews() {
   }
 
   update() {
     return this;
-  }
-
-  get element() {
-    if (!this._element) {
-      this._element = this.render();
-      this.bind();
-    }
-    return this._element;
   }
 
 }

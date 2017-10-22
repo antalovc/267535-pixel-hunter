@@ -1,4 +1,4 @@
-import ScreenRenderer from './screen-renderer.js';
+import ScreenManager from './screen-manager.js';
 import Game from './game.js';
 
 const NUMBER_GAME_LIVES = 3;
@@ -8,39 +8,40 @@ class Main {
 
   constructor() {
     this._game = null;
-    this._screenRenderer = new ScreenRenderer(this);
-    this._screenRenderer.setScreenIntro();
+    this._screenManager = new ScreenManager(this);
+    this._screenManager.setScreenIntro();
   }
 
   get game() {
     return this._game;
   }
 
+  get isGameHasNextQuestion() {
+    return (this._game && this._game.hasNextQuestion);
+  }
+
   greet() {
     this._game = null;
-    this._screenRenderer.setScreenGreeting();
+    this._screenManager.setScreenGreeting();
   }
 
   prepare() {
-    this._screenRenderer.setScreenRules();
+    this._screenManager.setScreenRules();
   }
 
-  startGame() {
-    this._game = new Game(this, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
-    this._screenRenderer.setScreenGame();
+  startGame(playerName) {
+    this._game = new Game(this, playerName, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
+    this._screenManager.setScreenGame();
   }
 
   stepGame() {
-    if (this.isGameRunning()) {
+    if (this.isGameHasNextQuestion) {
       this._game.step();
-      this._screenRenderer.setScreenGame();
+      this._screenManager.setScreenGame();
     } else {
-      this._screenRenderer.setScreenStats();
+      this._game.stop();
+      this._screenManager.setScreenStats();
     }
-  }
-
-  isGameRunning() {
-    return (this._game && this._game.isRunning());
   }
 
 }
