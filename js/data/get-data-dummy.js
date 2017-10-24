@@ -5,19 +5,19 @@ import {getRandomArrayItem, generateSingleTrueArray, getRandomBoolean} from "../
 const DATA_DUMMY = {
   PAINTINGS: [
     // People
-    `./dummy_data/CF42609C8.jpg`,
+    `https://k42.kn3.net/CF42609C8.jpg`,
     // Animals
-    `./dummy_data/D2F0370D6.jpg`,
+    `https://k42.kn3.net/D2F0370D6.jpg`,
     // Nature
-    `./dummy_data/5C7060EC5.jpg`
+    `https://k32.kn3.net/5C7060EC5.jpg`
   ],
   PHOTOS: [
     // People
-    `./dummy_data/1KegWPz.jpg`,
+    `http://i.imgur.com/1KegWPz.jpg`,
     // Animals
-    `./dummy_data/DiHM5Zb.jpg`,
+    `https://i.imgur.com/DiHM5Zb.jpg`,
     // Nature
-    `./dummy_data/DKR1HtB.jpg`
+    `http://i.imgur.com/DKR1HtB.jpg`
   ]
 };
 
