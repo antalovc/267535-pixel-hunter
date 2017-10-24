@@ -1,4 +1,4 @@
-import ScreenManager from './screen-manager.js';
+import Application from './application.js';
 import Game from './game.js';
 
 const NUMBER_GAME_LIVES = 3;
@@ -8,8 +8,8 @@ class Main {
 
   constructor() {
     this._game = null;
-    this._screenManager = new ScreenManager(this);
-    this._screenManager.showIntro();
+    this._app = new Application(this);
+    this._app.showIntro();
   }
 
   get game() {
@@ -22,25 +22,25 @@ class Main {
 
   greet() {
     this._game = null;
-    this._screenManager.showGreeting();
+    this._app.showGreeting();
   }
 
   prepare() {
-    this._screenManager.showRules();
+    this._app.showRules();
   }
 
   startGame(playerName) {
     this._game = new Game(this, playerName, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
-    this._screenManager.showGame();
+    this._app.showGame();
   }
 
   stepGame() {
     if (this.isGameHasNextQuestion) {
       this._game.step();
-      this._screenManager.showGame();
+      this._app.showGame();
     } else {
       this._game.stop();
-      this._screenManager.showStats();
+      this._app.showStats();
     }
   }
 
