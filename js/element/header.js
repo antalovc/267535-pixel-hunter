@@ -1,11 +1,22 @@
 import ViewHeader from '../view/view-header.js';
 
-export default (main) => {
-  const header = new ViewHeader(main);
+class Header {
 
-  header.onBackClicked = () => {
-    main.greet();
-  };
+  constructor(app) {
+    this._app = app;
+    this._headerView = new ViewHeader(app.main);
+    this._headerView.onBackClicked = () => {
+      app.main.greet();
+    };
+  }
 
-  return header;
-};
+  init() {
+    this._headerView.update(this._app.main);
+  }
+
+  get element() {
+    return this._headerView.element;
+  }
+}
+
+export default Header;

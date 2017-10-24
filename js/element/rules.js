@@ -1,11 +1,23 @@
 import ViewRules from '../view/view-rules.js';
 
-export default (main) => {
-  const rules = new ViewRules(main);
+class Rules {
 
-  rules.onStartClicked = () => {
-    main.startGame(rules.playerName);
-  };
+  constructor(app) {
+    this._app = app;
+    this._rulesView = new ViewRules(app.main);
+    this._rulesView.onStartClicked = () => {
+      app.main.startGame(this._rulesView.playerName);
+    };
+  }
 
-  return rules;
-};
+  init() {
+    this._rulesView.update(this._app.main);
+    this._app.setScreen(this, this._app.HAS_HEADER);
+  }
+
+  get element() {
+    return this._rulesView.element;
+  }
+}
+
+export default Rules;

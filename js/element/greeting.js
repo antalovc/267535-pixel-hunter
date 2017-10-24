@@ -1,11 +1,23 @@
 import ViewGreeting from '../view/view-greeting.js';
 
-export default (main) => {
-  const greeting = new ViewGreeting(main);
+class Greeting {
 
-  greeting.onContinueClicked = () => {
-    main.prepare();
-  };
+  constructor(app) {
+    this._app = app;
+    this._greetingView = new ViewGreeting(app.main);
+    this._greetingView.onContinueClicked = () => {
+      app.main.prepare();
+    };
+  }
 
-  return greeting;
-};
+  init() {
+    this._greetingView.update(this._app.main);
+    this._app.setScreen(this, this._app.NO_HEADER);
+  }
+
+  get element() {
+    return this._greetingView.element;
+  }
+}
+
+export default Greeting;

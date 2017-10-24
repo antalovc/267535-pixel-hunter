@@ -1,11 +1,23 @@
 import ViewGame1 from '../view/view-game-1.js';
 
-export default (main) => {
-  const game1 = new ViewGame1(main);
+class Game1 {
 
-  game1.onSubAnswer = (nPicture, isPhoto) => {
-    main.game.currentQuestion.subanswer(nPicture, isPhoto);
-  };
+  constructor(app) {
+    this._app = app;
+    this._game1View = new ViewGame1(app.main);
+    this._game1View.onSubAnswer = (nPicture, isPhoto) => {
+      app.main.game.currentQuestion.subanswer(nPicture, isPhoto);
+    };
+  }
 
-  return game1;
-};
+  init() {
+    this._game1View.update(this._app.main);
+    this._app.setScreen(this, this._app.HAS_HEADER);
+  }
+
+  get element() {
+    return this._game1View.element;
+  }
+}
+
+export default Game1;

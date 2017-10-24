@@ -1,121 +1,133 @@
-import getHeader from './element/header.js';
-import getFooter from './element/footer.js';
-import getIntro from './element/intro.js';
-import getGreeting from './element/greeting.js';
-import getRules from './element/rules.js';
-import getGame1 from './element/game-1.js';
-import getGame2 from './element/game-2.js';
-import getGame3 from './element/game-3.js';
-import getStats from './element/stats.js';
+import Header from './element/header.js';
+import Footer from './element/footer.js';
+import Intro from './element/intro.js';
+import Greeting from './element/greeting.js';
+import Rules from './element/rules.js';
+import Game1 from './element/game-1.js';
+import Game2 from './element/game-2.js';
+import Game3 from './element/game-3.js';
+import Stats from './element/stats.js';
 import QuestionBase from './question/question-base.js';
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
-export default class ScreenManager {
+export default class Application {
 
   constructor(main) {
     this._main = main;
-    this._viewHeader = null;
-    this._viewFooter = getFooter();
+    this._header = null;
+    this._footer = new Footer();
     this._viewContent = null;
 
-    this._viewIntro = null;
-    this._viewGreeting = null;
-    this._viewRules = null;
-    this._viewGame1 = null;
-    this._viewGame2 = null;
-    this._viewGame3 = null;
-    this._viewStats = null;
+    this._intro = null;
+    this._greeting = null;
+    this._rules = null;
+    this._game1 = null;
+    this._game2 = null;
+    this._game3 = null;
+    this._stats = null;
 
     this._gameViews = {
       [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
-        return this.viewGame1;
+        return this.game1;
       },
       [QuestionBase.QUESTION_TYPE.TYPE_2]: () => {
-        return this.viewGame2;
+        return this.game2;
       },
       [QuestionBase.QUESTION_TYPE.TYPE_3]: () => {
-        return this.viewGame3;
+        return this.game3;
       }
     };
 
     this._mainElement = document.querySelector(`main.central`);
     this._mainElement.innerHTML = ``;
-    this._mainElement.appendChild(this._viewFooter.element);
+    this._mainElement.appendChild(this._footer.element);
   }
 
-  get viewIntro() {
-    this._viewIntro = this._viewIntro ? this._viewIntro : getIntro(this._main);
-    return this._viewIntro;
+  get main() {
+    return this._main;
   }
 
-  get viewGreeting() {
-    this._viewGreeting = this._viewGreeting ? this._viewGreeting : getGreeting(this._main);
-    return this._viewGreeting;
-  }
-  get viewRules() {
-    this._viewRules = this._viewRules ? this._viewRules.update(this._main) : getRules(this._main);
-    return this._viewRules;
+  get NO_HEADER() {
+    return NO_HEADER;
   }
 
-  get viewGame1() {
-    this._viewGame1 = this._viewGame1 ? this._viewGame1.update(this._main) : getGame1(this._main);
-    return this._viewGame1;
+  get HAS_HEADER() {
+    return HAS_HEADER;
   }
 
-  get viewGame2() {
-    this._viewGame2 = this._viewGame2 ? this._viewGame2.update(this._main) : getGame2(this._main);
-    return this._viewGame2;
+  get intro() {
+    this._intro = this._intro ? this._intro : new Intro(this);
+    return this._intro;
   }
 
-  get viewGame3() {
-    this._viewGame3 = this._viewGame3 ? this._viewGame3.update(this._main) : getGame3(this._main);
-    return this._viewGame3;
+  get greeting() {
+    this._greeting = this._greeting ? this._greeting : new Greeting(this);
+    return this._greeting;
+  }
+  get rules() {
+    this._rules = this._rules ? this._rules : new Rules(this);
+    return this._rules;
   }
 
-  get viewStats() {
-    this._viewStats = this._viewStats ? this._viewStats.update(this._main) : getStats(this._main);
-    return this._viewStats;
+  get game1() {
+    this._game1 = this._game1 ? this._game1 : new Game1(this);
+    return this._game1;
   }
 
-  setScreenIntro() {
-    this.setScreen(this.viewIntro, NO_HEADER);
+  get game2() {
+    this._game2 = this._game2 ? this._game2 : new Game2(this);
+    return this._game2;
   }
 
-  setScreenGreeting() {
-    this.setScreen(this.viewGreeting, NO_HEADER);
+  get game3() {
+    this._game3 = this._game3 ? this._game3 : new Game3(this);
+    return this._game3;
   }
 
-  setScreenRules() {
-    this.setScreen(this.viewRules, HAS_HEADER);
+  get stats() {
+    this._stats = this._stats ? this._stats : new Stats(this);
+    return this._stats;
   }
 
-  setScreenGame() {
-    const view = this._gameViews[this._main.game.currentQuestion.questionType]();
-    this.setScreen(view, HAS_HEADER);
+  showIntro() {
+    this.intro.init();
   }
 
-  setScreenStats() {
-    this.setScreen(this.viewStats, HAS_HEADER);
+  showGreeting() {
+    this.greeting.init();
+  }
+
+  showRules() {
+    this.rules.init();
+  }
+
+  showGame() {
+    const presenter = this._gameViews[this._main.game.currentQuestion.questionType]();
+    presenter.init();
+  }
+
+  showStats() {
+    this.stats.init();
   }
 
   setScreen(view, hasHeader) {
-    const isHeaderShown = this._viewHeader && this._viewHeader.element.parentNode === this._mainElement;
+    const isHeaderShown = this._header && this._header.element.parentNode === this._mainElement;
     if (hasHeader && !isHeaderShown) {
-      this._viewHeader = getHeader(this._main);
-      this._mainElement.insertBefore(this._viewHeader.element, this._mainElement.firstChild);
+      this._header = new Header(this);
+      this._mainElement.insertBefore(this._header.element, this._mainElement.firstChild);
     } else if (hasHeader) {
-      this._viewHeader.update(this._main);
+      this._header.init(this._main);
     } else if (isHeaderShown) {
-      this._mainElement.removeChild(this._viewHeader.element);
+      this._mainElement.removeChild(this._header.element);
     }
 
     if (this._viewContent) {
       this._mainElement.removeChild(this._viewContent.element);
     }
     this._viewContent = view;
-    this._mainElement.insertBefore(view.element, this._viewFooter.element);
+    this._mainElement.insertBefore(view.element, this._footer.element);
   }
 
 }

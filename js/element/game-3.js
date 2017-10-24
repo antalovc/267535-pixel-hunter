@@ -1,11 +1,23 @@
 import ViewGame3 from '../view/view-game-3.js';
 
-export default (main) => {
-  const game3 = new ViewGame3(main);
+class Game3 {
 
-  game3.onSubAnswer = (nIntrus) => {
-    main.game.currentQuestion.subanswer(nIntrus);
-  };
+  constructor(app) {
+    this._app = app;
+    this._game3View = new ViewGame3(app.main);
+    this._game3View.onSubAnswer = (nIntrus) => {
+      app.main.game.currentQuestion.subanswer(nIntrus);
+    };
+  }
 
-  return game3;
-};
+  init() {
+    this._game3View.update(this._app.main);
+    this._app.setScreen(this, this._app.HAS_HEADER);
+  }
+
+  get element() {
+    return this._game3View.element;
+  }
+}
+
+export default Game3;

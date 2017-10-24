@@ -1,6 +1,14 @@
 import ViewFooter from '../view/view-footer.js';
 
-export default (main) => {
-  const footer = new ViewFooter(main);
-  return footer;
-};
+class Footer {
+
+  constructor(main) {
+    this._footerView = new ViewFooter(main);
+  }
+
+  get element() {
+    return this._footerView.element;
+  }
+}
+
+export default Footer;

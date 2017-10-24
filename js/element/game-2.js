@@ -1,11 +1,25 @@
 import ViewGame2 from '../view/view-game-2.js';
 
-export default (main) => {
-  const game2 = new ViewGame2(main);
+class Game2 {
 
-  game2.onSubAnswer = (isPhoto) => {
-    main.game.currentQuestion.subanswer(isPhoto);
-  };
+  constructor(app) {
+    this._app = app;
+    this._game2View = new ViewGame2(app.main);
+    this._game2View.onSubAnswer = (isPhoto) => {
+      app.main.game.currentQuestion.subanswer(isPhoto);
+    };
+  }
 
-  return game2;
-};
+  init() {
+    this._game2View.update(this._app.main);
+    this._app.setScreen(this, this._app.HAS_HEADER);
+  }
+
+  get element() {
+    return this._game2View.element;
+  }
+}
+
+export default Game2;
+
+

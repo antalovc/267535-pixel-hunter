@@ -1,6 +1,6 @@
-import ViewAbstract from "./view-abstract.js";
-import getLives from "../element/lives.js";
-import getTimer from "../element/timer.js";
+import ViewAbstract from './view-abstract.js';
+import getLives from '../element/lives.js';
+import getTimer from '../element/timer.js';
 
 export default class ViewHeader extends ViewAbstract {
 

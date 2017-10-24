@@ -1,4 +1,4 @@
-import ViewAbstract from "./view-abstract.js";
+import ViewAbstract from './view-abstract.js';
 
 export default class ViewRules extends ViewAbstract {
 
@@ -38,7 +38,7 @@ export default class ViewRules extends ViewAbstract {
   }
 
   get playerNameElement() {
-    this._playerNameElement = this._playerNameElement || this._element.querySelector(`.rules__input`);
+    this._playerNameElement = this._playerNameElement || this.element.querySelector(`.rules__input`);
     return this._playerNameElement;
   }
 

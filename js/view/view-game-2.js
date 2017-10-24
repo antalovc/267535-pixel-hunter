@@ -1,4 +1,4 @@
-import ViewGameAbstract from "./view-game-abstract.js";
+import ViewGameAbstract from './view-game-abstract.js';
 
 export default class ViewGame2 extends ViewGameAbstract {
 
@@ -30,8 +30,8 @@ export default class ViewGame2 extends ViewGameAbstract {
 
   update(main) {
     this._currentQuestion = main.game.currentQuestion;
-    this._element.querySelector(`img`).setAttribute(`src`, this._currentQuestion.pictures[0].path);
-    Array.from(this._element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {
+    this.element.querySelector(`img`).setAttribute(`src`, this._currentQuestion.pictures[0].path);
+    Array.from(this.element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {
       radio.checked = false;
     });
     super.update(main);

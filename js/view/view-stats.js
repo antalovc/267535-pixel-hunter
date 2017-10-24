@@ -1,4 +1,4 @@
-import ViewAbstract from "./view-abstract.js";
+import ViewAbstract from './view-abstract.js';
 
 export default class ViewStats extends ViewAbstract {
 
@@ -58,12 +58,12 @@ export default class ViewStats extends ViewAbstract {
 
   update(main) {
     this._statistics = main.game.statistics;
-    this._element = this.render();
+    this._element = null;
     return this;
   }
 
   addInnerViews() {
-    this._element.querySelector(`.result__bar`).appendChild(this._statistics.statsBar.element);
+    this.element.querySelector(`.result__bar`).appendChild(this._statistics.statsBar.element);
   }
 
 }

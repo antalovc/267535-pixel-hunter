@@ -9,7 +9,7 @@ class Main {
   constructor() {
     this._game = null;
     this._screenManager = new ScreenManager(this);
-    this._screenManager.setScreenIntro();
+    this._screenManager.showIntro();
   }
 
   get game() {
@@ -22,25 +22,25 @@ class Main {
 
   greet() {
     this._game = null;
-    this._screenManager.setScreenGreeting();
+    this._screenManager.showGreeting();
   }
 
   prepare() {
-    this._screenManager.setScreenRules();
+    this._screenManager.showRules();
   }
 
   startGame(playerName) {
     this._game = new Game(this, playerName, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
-    this._screenManager.setScreenGame();
+    this._screenManager.showGame();
   }
 
   stepGame() {
     if (this.isGameHasNextQuestion) {
       this._game.step();
-      this._screenManager.setScreenGame();
+      this._screenManager.showGame();
     } else {
       this._game.stop();
-      this._screenManager.setScreenStats();
+      this._screenManager.showStats();
     }
   }
 
