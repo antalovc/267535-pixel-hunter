@@ -1,5 +1,5 @@
 import Picture from '../picture.js';
-import QuestionBase from '../question-base.js';
+import QuestionBase from '../question/question-base.js';
 import {getRandomArrayItem, generateSingleTrueArray, getRandomBoolean} from "../util.js";
 
 const DATA_DUMMY = {

@@ -1,3 +1,6 @@
+const TIME_SLOW = 20; // seconds
+const TIME_FAST = 10; // seconds
+
 export default class Answer {
 
   constructor(isCorrect, time) {
@@ -14,19 +17,11 @@ export default class Answer {
   }
 
   get isFast() {
-    return this.time < Answer.FAST_TIME;
+    return this.time < TIME_FAST;
   }
 
   get isSlow() {
-    return this.time > Answer.SLOW_TIME;
-  }
-
-  static get SLOW_TIME() {
-    return 20;
-  }
-
-  static get FAST_TIME() {
-    return 10;
+    return this.time > TIME_SLOW;
   }
 }
 
