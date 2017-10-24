@@ -1,5 +1,4 @@
 import Answer from '../answer.js';
-import createTimer from '../create-timer';
 
 export default class QuestionBase {
 
@@ -9,10 +8,6 @@ export default class QuestionBase {
     this._questionType = 0;
 
     this._answer = null;
-    this._timer = createTimer(() => {
-      this.answer = false;
-    });
-    this._timer.start();
     this._onAnsweredCallback = onAnsweredCallback;
   }
 
@@ -21,8 +16,7 @@ export default class QuestionBase {
   }
 
   set answer(isCorrect) {
-    this._answer = new Answer(isCorrect, this.timer.timeElapsed);
-    this._timer.stop();
+    this._answer = new Answer(isCorrect);
     this._onAnsweredCallback(isCorrect);
   }
 
@@ -36,10 +30,6 @@ export default class QuestionBase {
 
   subanswer() {
     throw new Error(`Abstract method called`);
-  }
-
-  get timer() {
-    return this._timer;
   }
 
   static get QUESTION_TYPE() {

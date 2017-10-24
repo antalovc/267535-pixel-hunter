@@ -12,6 +12,10 @@ export default class Answer {
     return this._isCorrect;
   }
 
+  set time(time) {
+    this._time = time;
+  }
+
   get time() {
     return this._time;
   }

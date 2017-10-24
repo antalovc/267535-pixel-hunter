@@ -28,13 +28,13 @@ export default class ViewGame2 extends ViewGameAbstract {
     });
   }
 
-  update(main) {
-    this._currentQuestion = main.game.currentQuestion;
+  update(game) {
+    this._currentQuestion = game.currentQuestion;
     this.element.querySelector(`img`).setAttribute(`src`, this._currentQuestion.pictures[0].path);
     Array.from(this.element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {
       radio.checked = false;
     });
-    super.update(main);
+    super.update(game);
     return this;
   }
 

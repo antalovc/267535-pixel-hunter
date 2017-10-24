@@ -2,10 +2,10 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewGameAbstract extends ViewAbstract {
 
-  constructor(main) {
+  constructor(game) {
     super();
-    this._currentQuestion = main.game.currentQuestion;
-    this._statistics = main.game.statistics;
+    this._currentQuestion = game.currentQuestion;
+    this._statistics = game.statistics;
   }
 
   get templateTag() {
@@ -24,8 +24,8 @@ export default class ViewGameAbstract extends ViewAbstract {
     throw new Error(`Abstract method called`);
   }
 
-  update(main) {
-    this._statistics = main.game.statistics;
+  update(game) {
+    this._statistics = game.statistics;
     if (this._statistics.statsBar.element.parentNode !== this.element) {
       this._element.appendChild(this._statistics.statsBar.element);
     }

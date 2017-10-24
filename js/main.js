@@ -21,6 +21,9 @@ class Main {
   }
 
   greet() {
+    if (this._game) {
+      this._game.stop();
+    }
     this._game = null;
     this._app.showGreeting();
   }

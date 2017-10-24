@@ -1,5 +1,6 @@
 import createQuestion from './create-question.js';
 import {Statistics} from './statistics.js';
+import createTimer from './create-timer.js';
 
 export default class Game {
 
@@ -8,13 +9,21 @@ export default class Game {
     this._questionsTotal = nQuestions;
 
     this._lives = nLives;
+
+
+    this._timer = createTimer(() => {
+      this.currentQuestion.answer = false;
+    });
+
     this._answeredCallback = (isCorrect) => {
       if (!isCorrect) {
         this._lives--;
       }
+      this.currentQuestion.answer.time = this._timer.timeElapsed;
       this._main.stepGame();
     };
     this._questions = [createQuestion(this._answeredCallback)];
+    this._timer.start();
     this._statistics = null;
 
     this._main = main;
@@ -55,6 +64,10 @@ export default class Game {
     return this._playerName;
   }
 
+  get timer() {
+    return this._timer;
+  }
+
   get hasNextQuestion() {
     return this._questions.length < this._questionsTotal && this._lives;
   }
@@ -65,12 +78,15 @@ export default class Game {
 
   step() {
     this._questions.push(createQuestion(this._answeredCallback));
+    this._timer.reset();
+    this._timer.start();
     this.statistics.update();
     return this;
   }
 
   stop() {
     this._finished = true;
+    this._timer.stop();
     this.statistics.update();
     return this;
   }

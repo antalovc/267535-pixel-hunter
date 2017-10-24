@@ -11,7 +11,7 @@ class Timer {
   initialise(callback, timeout) {
     this._timeLeft = timeout > 0 ? timeout : TIME_MAX;
     this._timeElapsed = 0;
-    this._callback = callback;
+    this._callback = callback ? callback : null;
     this._timer = null;
   }
 
@@ -40,9 +40,9 @@ class Timer {
     clearInterval(this._timer);
   }
 
-  reset(timeout, callback) {
+  reset(callback, timeout) {
     clearInterval(this._timer);
-    this.initialise(timeout, callback);
+    this.initialise(callback ? callback : this._callback, timeout);
   }
 
   get timeLeft() {
