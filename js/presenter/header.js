@@ -6,6 +6,7 @@ class Header {
     this._app = app;
     this._headerView = new ViewHeader(app.main);
     this._headerView.onBackClicked = () => {
+      app.main.timer.reset();
       app.main.greet();
     };
   }

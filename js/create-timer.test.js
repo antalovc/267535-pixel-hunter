@@ -12,13 +12,13 @@ const TIMING_TEST_MAX_DURATION = (TIMING_MAX_DELAY + TIMING_MAX_DELAY * 2) * TIM
 suite(`"Timer" class test`, () => {
 
   test(`Testing class constructor`, () => {
-    const timerObject = createTimer(null, TIMING_TIMEOUT);
+    const timerObject = createTimer(TIMING_TIMEOUT);
     strictEqual(timerObject.timeLeft, TIMING_TIMEOUT, `timer should be created with timeout time set to ${TIMING_TIMEOUT}`);
     strictEqual(timerObject.timeElapsed, 0, `timer should be created with elapsed time set to 0`);
   });
 
   test(`Testing tick() function`, () => {
-    const timerObject = createTimer(null, TIMING_TIMEOUT);
+    const timerObject = createTimer(TIMING_TIMEOUT);
     timerObject.tick();
     strictEqual(timerObject.timeLeft, TIMING_TIMEOUT - 1, `timer should decrease its left time by 1 after tick`);
     strictEqual(timerObject.timeElapsed, 1, `timer should increase its elapsed time by 1 after tick`);
@@ -26,9 +26,10 @@ suite(`"Timer" class test`, () => {
 
   test(`Testing timings and callbacks`, (done) => {
     let ok = false;
-    const timerObject = createTimer(() => {
+    const timerObject = createTimer(TIMING_TIMEOUT);
+    timerObject.callback = () => {
       ok = true;
-    }, TIMING_TIMEOUT);
+    };
     timerObject.start();
     setTimeout(() => {
       try {
@@ -37,7 +38,7 @@ suite(`"Timer" class test`, () => {
         strictEqual(timerObject.timeLeft, 0, `timer should have left time set to 0 seconds after it run out`);
         strictEqual(timerObject.timeElapsed, TIMING_TIMEOUT, `timer should have elapsed time set to timeout time of ${TIMING_TIMEOUT} seconds after after it run out`);
 
-        timerObject.reset(null, TIMING_TIMEOUT);
+        timerObject.reset(TIMING_TIMEOUT);
 
         strictEqual(timerObject.timeLeft, TIMING_TIMEOUT, `timer should have left time set to timeout time of ${TIMING_TIMEOUT} seconds after reset`);
         strictEqual(timerObject.timeElapsed, 0, `timer should have elapsed time set to 0 seconds after reset`);

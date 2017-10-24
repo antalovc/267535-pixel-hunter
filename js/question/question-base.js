@@ -2,13 +2,12 @@ import Answer from '../answer.js';
 
 export default class QuestionBase {
 
-  constructor(onAnsweredCallback) {
+  constructor() {
     // overwritable
     this._pictures = null;
     this._questionType = 0;
 
     this._answer = null;
-    this._onAnsweredCallback = onAnsweredCallback;
   }
 
   get answer() {
@@ -17,7 +16,7 @@ export default class QuestionBase {
 
   set answer(isCorrect) {
     this._answer = new Answer(isCorrect);
-    this._onAnsweredCallback(isCorrect);
+    this.onAnswer(isCorrect);
   }
 
   get questionType() {
@@ -30,6 +29,9 @@ export default class QuestionBase {
 
   subanswer() {
     throw new Error(`Abstract method called`);
+  }
+
+  onAnswer() {
   }
 
   static get QUESTION_TYPE() {

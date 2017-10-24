@@ -1,11 +1,12 @@
 import ViewAbstract from './view-abstract.js';
-import getLives from '../element/lives.js';
-import getTimer from '../element/timer.js';
+import getLives from '../presenter/lives.js';
+import getTimer from '../presenter/timer.js';
 
 export default class ViewHeader extends ViewAbstract {
 
   constructor(main) {
     super();
+    this._main = main;
     this._game = main.game;
     this._timer = null;
     this._lives = null;
@@ -34,7 +35,7 @@ export default class ViewHeader extends ViewAbstract {
   }
 
   get timerView() {
-    this._timer = this._timer || getTimer(this._game);
+    this._timer = this._timer || getTimer(this._main);
     return this._timer;
   }
 

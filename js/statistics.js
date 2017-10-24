@@ -1,4 +1,4 @@
-import getStatsBar from './element/stats-bar.js';
+import getStatsBar from './presenter/stats-bar.js';
 
 const STATISTICS_CONFIG = {
   POINTS_ANSWER_VALID: 100,
