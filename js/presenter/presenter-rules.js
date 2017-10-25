@@ -1,6 +1,6 @@
 import ViewRules from '../view/view-rules.js';
 
-class Rules {
+export default class PresenterRules {
 
   constructor(app) {
     this._app = app;
@@ -19,5 +19,3 @@ class Rules {
     return this._rulesView.element;
   }
 }
-
-export default Rules;

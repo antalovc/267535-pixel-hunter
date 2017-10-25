@@ -1,6 +1,6 @@
-import ViewGameAbstract from './view-game-abstract.js';
+import ViewQuestionAbstract from './view-question-abstract.js';
 
-export default class ViewGame3 extends ViewGameAbstract {
+export default class ViewQuestion3 extends ViewQuestionAbstract {
 
   get template() {
     return `

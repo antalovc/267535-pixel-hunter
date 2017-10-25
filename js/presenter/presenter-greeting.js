@@ -1,6 +1,6 @@
 import ViewGreeting from '../view/view-greeting.js';
 
-class Greeting {
+export default class PresenterGreeting {
 
   constructor(app) {
     this._app = app;
@@ -19,5 +19,3 @@ class Greeting {
     return this._greetingView.element;
   }
 }
-
-export default Greeting;

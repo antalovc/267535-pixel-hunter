@@ -1,6 +1,6 @@
 import ViewHeader from '../view/view-header.js';
 
-class Header {
+export default class PresenterHeader {
 
   constructor(app) {
     this._app = app;
@@ -19,5 +19,3 @@ class Header {
     return this._headerView.element;
   }
 }
-
-export default Header;

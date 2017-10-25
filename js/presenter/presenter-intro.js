@@ -1,6 +1,6 @@
 import ViewIntro from '../view/view-intro.js';
 
-class Intro {
+export default class PresenterIntro {
 
   constructor(app) {
     this._app = app;
@@ -19,5 +19,3 @@ class Intro {
     return this._introView.element;
   }
 }
-
-export default Intro;

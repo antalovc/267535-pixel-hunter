@@ -1,6 +1,6 @@
 import ViewFooter from '../view/view-footer.js';
 
-class Footer {
+export default class PresenterFooter {
 
   constructor(main) {
     this._footerView = new ViewFooter(main);
@@ -10,5 +10,3 @@ class Footer {
     return this._footerView.element;
   }
 }
-
-export default Footer;

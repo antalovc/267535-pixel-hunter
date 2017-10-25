@@ -36,5 +36,4 @@ export default class ViewIntro extends ViewAbstract {
   onIntroClicked() {
   }
 
-
 }

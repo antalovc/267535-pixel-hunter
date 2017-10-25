@@ -1,15 +1,15 @@
-class GameAbstract {
+class PresenterQuestionAbstract {
 
   constructor(app) {
     this._app = app;
-    this._gameView = null;
+    this._questionView = null;
   }
 
   init() {
     const timer = this._app.main.timer;
     const game = this._app.main.game;
 
-    this._gameView.update(game);
+    this._questionView.update(game);
     this._app.setScreen(this, this._app.HAS_HEADER);
 
     game.currentQuestion.onAnswer = (isCorrect) => {
@@ -22,8 +22,8 @@ class GameAbstract {
   }
 
   get element() {
-    return this._gameView.element;
+    return this._questionView.element;
   }
 }
 
-export default GameAbstract;
+export default PresenterQuestionAbstract;

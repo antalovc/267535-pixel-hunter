@@ -1,12 +1,12 @@
-import Header from './presenter/header.js';
-import Footer from './presenter/footer.js';
-import Intro from './presenter/intro.js';
-import Greeting from './presenter/greeting.js';
-import Rules from './presenter/rules.js';
-import Game1 from './presenter/game-1.js';
-import Game2 from './presenter/game-2.js';
-import Game3 from './presenter/game-3.js';
-import Stats from './presenter/stats.js';
+import Header from './presenter/presenter-header.js';
+import Footer from './presenter/presenter-footer.js';
+import Intro from './presenter/presenter-intro.js';
+import Greeting from './presenter/presenter-greeting.js';
+import Rules from './presenter/presenter-rules.js';
+import Question1 from './presenter/presenter-question-1.js';
+import Question2 from './presenter/presenter-question-2.js';
+import Question3 from './presenter/presenter-question-3.js';
+import Stats from './presenter/presenter-stats.js';
 import QuestionBase from './question/question-base.js';
 
 const HAS_HEADER = true;
@@ -28,15 +28,15 @@ export default class Application {
     this._game3 = null;
     this._stats = null;
 
-    this._gameViews = {
+    this._questionViews = {
       [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
-        return this.game1;
+        return this.question1;
       },
       [QuestionBase.QUESTION_TYPE.TYPE_2]: () => {
-        return this.game2;
+        return this.question2;
       },
       [QuestionBase.QUESTION_TYPE.TYPE_3]: () => {
-        return this.game3;
+        return this.question3;
       }
     };
 
@@ -71,18 +71,18 @@ export default class Application {
     return this._rules;
   }
 
-  get game1() {
-    this._game1 = this._game1 ? this._game1 : new Game1(this);
+  get question1() {
+    this._game1 = this._game1 ? this._game1 : new Question1(this);
     return this._game1;
   }
 
-  get game2() {
-    this._game2 = this._game2 ? this._game2 : new Game2(this);
+  get question2() {
+    this._game2 = this._game2 ? this._game2 : new Question2(this);
     return this._game2;
   }
 
-  get game3() {
-    this._game3 = this._game3 ? this._game3 : new Game3(this);
+  get question3() {
+    this._game3 = this._game3 ? this._game3 : new Question3(this);
     return this._game3;
   }
 
@@ -103,8 +103,8 @@ export default class Application {
     this.rules.init();
   }
 
-  showGame() {
-    const presenter = this._gameViews[this._main.game.currentQuestion.questionType]();
+  showQuestion() {
+    const presenter = this._questionViews[this._main.game.currentQuestion.questionType]();
     presenter.init();
   }
 

@@ -1,6 +1,6 @@
 import ViewAbstract from './view-abstract.js';
 
-export default class ViewGameAbstract extends ViewAbstract {
+export default class ViewQuestionAbstract extends ViewAbstract {
 
   constructor(game) {
     super();

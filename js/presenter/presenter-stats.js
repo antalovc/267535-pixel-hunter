@@ -1,6 +1,6 @@
 import ViewStats from '../view/view-stats.js';
 
-class Stats {
+export default class PresenterStats {
 
   constructor(app) {
     this._app = app;
@@ -16,5 +16,3 @@ class Stats {
     return this._statsView.element;
   }
 }
-
-export default Stats;

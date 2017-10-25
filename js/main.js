@@ -36,13 +36,13 @@ class Main {
 
   startGame(playerName) {
     this._game = new Game(this, playerName, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
-    this._app.showGame();
+    this._app.showQuestion();
   }
 
   stepGame() {
     if (this.isGameHasNextQuestion) {
       this._game.step();
-      this._app.showGame();
+      this._app.showQuestion();
     } else {
       this._game.stop();
       this._app.showStats();
