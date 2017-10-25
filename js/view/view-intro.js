@@ -1,4 +1,4 @@
-import ViewAbstract from "./view-abstract.js";
+import ViewAbstract from './view-abstract.js';
 
 export default class ViewIntro extends ViewAbstract {
 

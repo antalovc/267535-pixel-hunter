@@ -1,19 +1,13 @@
 import Answer from '../answer.js';
-import createTimer from '../create-timer';
 
 export default class QuestionBase {
 
-  constructor(onAnsweredCallback) {
+  constructor() {
     // overwritable
     this._pictures = null;
     this._questionType = 0;
 
     this._answer = null;
-    this._timer = createTimer(() => {
-      this.answer = false;
-    });
-    this._timer.start();
-    this._onAnsweredCallback = onAnsweredCallback;
   }
 
   get answer() {
@@ -21,9 +15,8 @@ export default class QuestionBase {
   }
 
   set answer(isCorrect) {
-    this._answer = new Answer(isCorrect, this.timer.timeElapsed);
-    this._timer.stop();
-    this._onAnsweredCallback(isCorrect);
+    this._answer = new Answer(isCorrect);
+    this.onAnswer(isCorrect);
   }
 
   get questionType() {
@@ -38,8 +31,7 @@ export default class QuestionBase {
     throw new Error(`Abstract method called`);
   }
 
-  get timer() {
-    return this._timer;
+  onAnswer() {
   }
 
   static get QUESTION_TYPE() {

@@ -1,10 +1,13 @@
-import ViewAbstract from "./view-abstract.js";
+import ViewAbstract from './view-abstract.js';
 
 export default class ViewTimer extends ViewAbstract {
 
-  constructor(game) {
+  constructor(main) {
     super();
-    this._time = game.currentQuestion.timeLeft;
+    this._timer = main.timer;
+    this._timer.onTick = () => {
+      this.updateCounter();
+    };
   }
 
   get template() {
@@ -23,19 +26,13 @@ export default class ViewTimer extends ViewAbstract {
     return ``;
   }
 
-  update(game) {
-    const timer = game.currentQuestion.timer;
-    timer.onTick = () => {
-      this.updateCounter(timer.timeElapsed);
-    };
-    this._time = timer.timeElapsed;
-    this._element.innerHTML = `${this._time}`;
+  update() {
+    this.updateCounter();
     return this;
   }
 
-  updateCounter(time) {
-    this._time = time;
-    this._element.innerHTML = `${this._time}`;
+  updateCounter() {
+    this._element.innerHTML = `${this._timer.timeElapsed}`;
   }
 
 }

@@ -4,14 +4,14 @@ const TIME_MAX = 30; // seconds
 
 class Timer {
 
-  constructor(callback, timeout) {
-    this.initialise(callback, timeout);
+  constructor(timeout) {
+    this._callback = null;
+    this.initialise(timeout);
   }
 
-  initialise(callback, timeout) {
+  initialise(timeout) {
     this._timeLeft = timeout > 0 ? timeout : TIME_MAX;
     this._timeElapsed = 0;
-    this._callback = callback;
     this._timer = null;
   }
 
@@ -40,9 +40,9 @@ class Timer {
     clearInterval(this._timer);
   }
 
-  reset(timeout, callback) {
+  reset(timeout) {
     clearInterval(this._timer);
-    this.initialise(timeout, callback);
+    this.initialise(timeout);
   }
 
   get timeLeft() {
@@ -51,6 +51,10 @@ class Timer {
 
   get timeElapsed() {
     return this._timeElapsed;
+  }
+
+  set callback(callback) {
+    this._callback = callback;
   }
 
   _call() {

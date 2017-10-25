@@ -8,13 +8,12 @@ export default class Game {
     this._questionsTotal = nQuestions;
 
     this._lives = nLives;
-    this._answeredCallback = (isCorrect) => {
-      if (!isCorrect) {
-        this._lives--;
-      }
-      this._main.stepGame();
+
+    main.timer.callback = () => {
+      this.currentQuestion.answer = false;
     };
-    this._questions = [createQuestion(this._answeredCallback)];
+
+    this._questions = [createQuestion()];
     this._statistics = null;
 
     this._main = main;
@@ -63,8 +62,17 @@ export default class Game {
     return !this._finished && this._lives;
   }
 
+  answer(isCorrect, time) {
+    if (!isCorrect) {
+      this._lives--;
+    }
+    this.currentQuestion.answer.time = time;
+    this._main.stepGame();
+
+  }
+
   step() {
-    this._questions.push(createQuestion(this._answeredCallback));
+    this._questions.push(createQuestion());
     this.statistics.update();
     return this;
   }

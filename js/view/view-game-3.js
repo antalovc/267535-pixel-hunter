@@ -1,4 +1,4 @@
-import ViewGameAbstract from "./view-game-abstract.js";
+import ViewGameAbstract from './view-game-abstract.js';
 
 export default class ViewGame3 extends ViewGameAbstract {
 
@@ -18,12 +18,12 @@ export default class ViewGame3 extends ViewGameAbstract {
     });
   }
 
-  update(main) {
-    this._currentQuestion = main.game.currentQuestion;
-    Array.from(this._element.querySelectorAll(`.game__content img`)).forEach((img, index) => {
+  update(game) {
+    this._currentQuestion = game.currentQuestion;
+    Array.from(this.element.querySelectorAll(`.game__content img`)).forEach((img, index) => {
       img.setAttribute(`src`, this._currentQuestion.pictures[index].path);
     });
-    super.update(main);
+    super.update(game);
     return this;
   }
 
