@@ -8,14 +8,18 @@ import Question2 from './presenter/presenter-question-2.js';
 import Question3 from './presenter/presenter-question-3.js';
 import Stats from './presenter/presenter-stats.js';
 import QuestionBase from './question/question-base.js';
+import Game from './game.js';
+import createTimer from './create-timer.js';
+
+const NUMBER_GAME_LIVES = 3;
+const NUMBER_GAME_QUESTIONS = 10;
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
-export default class Application {
+class Application {
 
-  constructor(main) {
-    this._main = main;
+  constructor() {
     this._header = null;
     this._footer = new Footer();
     this._viewContent = null;
@@ -43,11 +47,27 @@ export default class Application {
     this._mainElement = document.querySelector(`main.central`);
     this._mainElement.innerHTML = ``;
     this._mainElement.appendChild(this._footer.element);
+
+    this._game = null;
+    this._timer = createTimer();
+    this.showIntro();
   }
 
-  get main() {
-    return this._main;
+  // game getters part ===========================================
+
+  get game() {
+    return this._game;
   }
+
+  get isGameHasNextQuestion() {
+    return (this._game && this._game.hasNextQuestion);
+  }
+
+  get timer() {
+    return this._timer;
+  }
+
+  // views getters part ==========================================
 
   get NO_HEADER() {
     return NO_HEADER;
@@ -91,6 +111,37 @@ export default class Application {
     return this._stats;
   }
 
+  // game part ===================================================
+
+  greet() {
+    if (this._game) {
+      this._game.stop();
+    }
+    this._game = null;
+    this.showGreeting();
+  }
+
+  prepare() {
+    this.showRules();
+  }
+
+  startGame(playerName) {
+    this._game = new Game(this, playerName, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
+    this.showQuestion();
+  }
+
+  stepGame() {
+    if (this.isGameHasNextQuestion) {
+      this._game.step();
+      this.showQuestion();
+    } else {
+      this._game.stop();
+      this.showStats();
+    }
+  }
+
+  // views part ==================================================
+
   showIntro() {
     this.intro.init();
   }
@@ -104,7 +155,7 @@ export default class Application {
   }
 
   showQuestion() {
-    const presenter = this._questionViews[this._main.game.currentQuestion.questionType]();
+    const presenter = this._questionViews[this._game.currentQuestion.questionType]();
     presenter.init();
   }
 
@@ -118,7 +169,7 @@ export default class Application {
       this._header = new Header(this);
       this._mainElement.insertBefore(this._header.element, this._mainElement.firstChild);
     } else if (hasHeader) {
-      this._header.init(this._main);
+      this._header.init(this);
     } else if (isHeaderShown) {
       this._mainElement.removeChild(this._header.element);
     }
@@ -131,3 +182,5 @@ export default class Application {
   }
 
 }
+
+export default new Application();

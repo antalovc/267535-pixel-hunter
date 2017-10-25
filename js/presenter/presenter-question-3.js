@@ -5,9 +5,9 @@ export default class PresenterQuestion3 extends PresenterQuestionAbstract {
 
   constructor(app) {
     super(app);
-    this._questionView = new ViewQuestion3(app.main.game);
+    this._questionView = new ViewQuestion3(app.game);
     this._questionView.onSubAnswer = (nIntrus) => {
-      app.main.game.currentQuestion.subanswer(nIntrus);
+      app.game.currentQuestion.subanswer(nIntrus);
     };
   }
 

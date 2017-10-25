@@ -6,8 +6,8 @@ class PresenterQuestionAbstract {
   }
 
   init() {
-    const timer = this._app.main.timer;
-    const game = this._app.main.game;
+    const timer = this._app.timer;
+    const game = this._app.game;
 
     this._questionView.update(game);
     this._app.setScreen(this, this._app.HAS_HEADER);

@@ -3,20 +3,20 @@ import {Statistics} from './statistics.js';
 
 export default class Game {
 
-  constructor(main, playerName, nLives, nQuestions) {
+  constructor(app, playerName, nLives, nQuestions) {
     this._livesTotal = nLives;
     this._questionsTotal = nQuestions;
 
     this._lives = nLives;
 
-    main.timer.callback = () => {
+    app.timer.callback = () => {
       this.currentQuestion.answer = false;
     };
 
     this._questions = [createQuestion()];
     this._statistics = null;
 
-    this._main = main;
+    this._app = app;
     this._playerName = playerName;
     this._finished = false;
   }
@@ -67,7 +67,7 @@ export default class Game {
       this._lives--;
     }
     this.currentQuestion.answer.time = time;
-    this._main.stepGame();
+    this._app.stepGame();
 
   }
 

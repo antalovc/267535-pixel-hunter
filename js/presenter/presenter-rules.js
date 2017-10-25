@@ -4,14 +4,14 @@ export default class PresenterRules {
 
   constructor(app) {
     this._app = app;
-    this._rulesView = new ViewRules(app.main);
+    this._rulesView = new ViewRules(app);
     this._rulesView.onStartClicked = () => {
-      app.main.startGame(this._rulesView.playerName);
+      app.startGame(this._rulesView.playerName);
     };
   }
 
   init() {
-    this._rulesView.update(this._app.main);
+    this._rulesView.update(this._app);
     this._app.setScreen(this, this._app.HAS_HEADER);
   }
 
