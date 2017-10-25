@@ -29,7 +29,6 @@ export default class ViewQuestionAbstract extends ViewAbstract {
     if (this._statistics.statsBar.element.parentNode !== this.element) {
       this._element.appendChild(this._statistics.statsBar.element);
     }
-    return this;
   }
 
   addInnerViews() {

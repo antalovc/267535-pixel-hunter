@@ -4,10 +4,10 @@ import getTimer from '../presenter/get-timer.js';
 
 export default class ViewHeader extends ViewAbstract {
 
-  constructor(main) {
+  constructor(app) {
     super();
-    this._main = main;
-    this._game = main.game;
+    this._app = app;
+    this._game = app.game;
     this._timer = null;
     this._lives = null;
   }
@@ -35,7 +35,7 @@ export default class ViewHeader extends ViewAbstract {
   }
 
   get timerView() {
-    this._timer = this._timer || getTimer(this._main);
+    this._timer = this._timer || getTimer(this._app);
     return this._timer;
   }
 
@@ -57,11 +57,10 @@ export default class ViewHeader extends ViewAbstract {
     }
   }
 
-  update(main) {
-    this._game = main.game;
+  update(app) {
+    this._game = app.game;
     this.updateTimer();
     this.updateLives();
-    return this;
   }
 
   updateTimer() {

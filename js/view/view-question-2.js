@@ -35,7 +35,6 @@ export default class ViewQuestion2 extends ViewQuestionAbstract {
       radio.checked = false;
     });
     super.update(game);
-    return this;
   }
 
   onSubAnswer() {

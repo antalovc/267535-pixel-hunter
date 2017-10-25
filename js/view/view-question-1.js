@@ -30,7 +30,6 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
       radio.checked = false;
     });
     super.update(game);
-    return this;
   }
 
   get picturesElements() {

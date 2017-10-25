@@ -38,7 +38,6 @@ export default class ViewAbstract {
   }
 
   update() {
-    return this;
   }
 
 }

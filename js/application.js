@@ -17,6 +17,14 @@ const NUMBER_GAME_QUESTIONS = 10;
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
+/* const ROUTES_KEYS = {
+  INTRO: ``,
+  GREET: `greet`,
+  RULES: `rules`,
+  QUESTION: `question`,
+  STATS: `stats`
+}; */
+
 class Application {
 
   constructor() {
@@ -50,7 +58,13 @@ class Application {
 
     this._game = null;
     this._timer = createTimer();
+
     this.showIntro();
+    /* this.routes = [
+
+    ];
+    window.onhashchange = this.onHashChanged;
+    this.onHashChanged();*/
   }
 
   // game getters part ===========================================
@@ -143,24 +157,24 @@ class Application {
   // views part ==================================================
 
   showIntro() {
-    this.intro.init();
+    this.intro.init(this);
   }
 
   showGreeting() {
-    this.greeting.init();
+    this.greeting.init(this);
   }
 
   showRules() {
-    this.rules.init();
+    this.rules.init(this);
   }
 
   showQuestion() {
     const presenter = this._questionViews[this._game.currentQuestion.questionType]();
-    presenter.init();
+    presenter.init(this);
   }
 
   showStats() {
-    this.stats.init();
+    this.stats.init(this);
   }
 
   setScreen(view, hasHeader) {
@@ -180,6 +194,19 @@ class Application {
     this._viewContent = view;
     this._mainElement.insertBefore(view.element, this._footer.element);
   }
+
+  // init ========================================================
+
+  /* init(hash) {
+    const controller = this.routes[hash];
+    if (controller) {
+      controller.init();
+    }
+  }
+
+  onHashChanged() {
+    this.init(location.hash.replace(`#`, ``));
+  } */
 
 }
 

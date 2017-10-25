@@ -24,7 +24,6 @@ export default class ViewQuestion3 extends ViewQuestionAbstract {
       img.setAttribute(`src`, this._currentQuestion.pictures[index].path);
     });
     super.update(game);
-    return this;
   }
 
   get picturesElements() {

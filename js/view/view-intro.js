@@ -2,11 +2,6 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewIntro extends ViewAbstract {
 
-  constructor(main) {
-    super();
-    this._main = main;
-  }
-
   get template() {
     return `
     <div id="intro" class="intro">

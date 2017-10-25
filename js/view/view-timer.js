@@ -2,9 +2,9 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewTimer extends ViewAbstract {
 
-  constructor(main) {
+  constructor(app) {
     super();
-    this._timer = main.timer;
+    this._timer = app.timer;
     this._timer.onTick = () => {
       this.updateCounter();
     };
@@ -28,7 +28,6 @@ export default class ViewTimer extends ViewAbstract {
 
   update() {
     this.updateCounter();
-    return this;
   }
 
   updateCounter() {

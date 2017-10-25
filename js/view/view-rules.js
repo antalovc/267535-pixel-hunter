@@ -2,11 +2,6 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewRules extends ViewAbstract {
 
-  constructor(main) {
-    super();
-    this._main = main;
-  }
-
   get template() {
     return `
       <h1 class="rules__title">Правила</h1>
@@ -64,7 +59,6 @@ export default class ViewRules extends ViewAbstract {
 
   update() {
     this.playerNameElement.value = ``;
-    return this;
   }
 
   onStartClicked() {

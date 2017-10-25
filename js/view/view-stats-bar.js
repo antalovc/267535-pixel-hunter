@@ -26,7 +26,6 @@ export default class ViewStatsBar extends ViewAbstract {
   update(game) {
     this._game = game;
     this.element.innerHTML = `${this.items}`;
-    return this;
   }
 
   get items() {

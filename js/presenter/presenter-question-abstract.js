@@ -1,16 +1,15 @@
 class PresenterQuestionAbstract {
 
-  constructor(app) {
-    this._app = app;
+  constructor() {
     this._questionView = null;
   }
 
-  init() {
-    const timer = this._app.timer;
-    const game = this._app.game;
+  init(app) {
+    const timer = app.timer;
+    const game = app.game;
 
     this._questionView.update(game);
-    this._app.setScreen(this, this._app.HAS_HEADER);
+    app.setScreen(this, app.HAS_HEADER);
 
     game.currentQuestion.onAnswer = (isCorrect) => {
       timer.stop();

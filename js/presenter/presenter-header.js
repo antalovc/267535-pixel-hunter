@@ -3,7 +3,6 @@ import ViewHeader from '../view/view-header.js';
 export default class PresenterHeader {
 
   constructor(app) {
-    this._app = app;
     this._headerView = new ViewHeader(app);
     this._headerView.onBackClicked = () => {
       app.timer.reset();
@@ -11,8 +10,8 @@ export default class PresenterHeader {
     };
   }
 
-  init() {
-    this._headerView.update(this._app);
+  init(app) {
+    this._headerView.update(app);
   }
 
   get element() {

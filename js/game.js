@@ -74,13 +74,11 @@ export default class Game {
   step() {
     this._questions.push(createQuestion());
     this.statistics.update();
-    return this;
   }
 
   stop() {
     this._finished = true;
     this.statistics.update();
-    return this;
   }
 
 
