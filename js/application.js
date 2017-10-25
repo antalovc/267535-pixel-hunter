@@ -23,9 +23,9 @@ export default class Application {
     this._intro = null;
     this._greeting = null;
     this._rules = null;
-    this._game1 = null;
-    this._game2 = null;
-    this._game3 = null;
+    this._question1 = null;
+    this._question2 = null;
+    this._question3 = null;
     this._stats = null;
 
     this._questionViews = {
@@ -72,18 +72,18 @@ export default class Application {
   }
 
   get question1() {
-    this._game1 = this._game1 ? this._game1 : new Question1(this);
-    return this._game1;
+    this._question1 = this._question1 ? this._question1 : new Question1(this);
+    return this._question1;
   }
 
   get question2() {
-    this._game2 = this._game2 ? this._game2 : new Question2(this);
-    return this._game2;
+    this._question2 = this._question2 ? this._question2 : new Question2(this);
+    return this._question2;
   }
 
   get question3() {
-    this._game3 = this._game3 ? this._game3 : new Question3(this);
-    return this._game3;
+    this._question3 = this._question3 ? this._question3 : new Question3(this);
+    return this._question3;
   }
 
   get stats() {
