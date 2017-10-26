@@ -1,4 +1,5 @@
 import getStatsBar from './presenter/get-stats-bar.js';
+import Answer from './answer.js';
 
 const STATISTICS_CONFIG = {
   POINTS_ANSWER_VALID: 100,
@@ -7,25 +8,15 @@ const STATISTICS_CONFIG = {
   POINTS_LIVE_SPARE: 50
 };
 
-const answerFastDescription = `fast`;
-const answerSlowDescription = `slow`;
-const answerCorrectDescription = `correct`;
-const answerWrongDescription = `wrong`;
-const answerUnknownDescription = `unknown`;
-
 class Statistics {
 
   constructor(game) {
+    this._stats = null;
     this._game = game;
-    this._questions = game.questions;
 
     this.calculateResulting();
 
     this._statsBar = null;
-  }
-
-  get questions() {
-    return this._questions;
   }
 
   get questionsTotal() {
@@ -68,8 +59,8 @@ class Statistics {
     return this.livesAmount * STATISTICS_CONFIG.POINTS_LIVE_SPARE;
   }
 
-  get answerDescriptions() {
-    return this._stats.answerDescriptions;
+  get answers() {
+    return this._stats.answers;
   }
 
   get statsBar() {
@@ -79,7 +70,7 @@ class Statistics {
 
   update() {
     this.calculateResulting();
-    this.statsBar.update(this._game);
+    this.statsBar.update(this);
   }
 
   resetStats() {
@@ -88,32 +79,27 @@ class Statistics {
       fastsAmount: 0,
       slowsAmount: 0,
       livesAmount: this._game.lives,
-      answerDescriptions: [],
+      answers: this._game.answers,
       questionsTotal: this._game.questionsTotal
     };
   }
 
   calculateResulting() {
     this.resetStats();
-    this._questions.forEach((question) => {
+    this._game.answers.forEach((answer) => {
       const stats = this._stats;
-      let answerDescriptions = stats.answerDescriptions;
-      const answer = question.answer;
-      if (!answer) {
-        answerDescriptions.push(answerUnknownDescription);
-      } else if (answer.isCorrect) {
-        stats.correctsAmount++;
-        if (answer.isFast) {
-          answerDescriptions.push(answerFastDescription);
+      switch (answer) {
+        case Answer.ANSWER_DESCRIPTIONS.FAST:
+          stats.correctsAmount++;
           stats.fastsAmount++;
-        } else if (answer.isSlow) {
-          answerDescriptions.push(answerSlowDescription);
+          break;
+        case Answer.ANSWER_DESCRIPTIONS.SLOW:
+          stats.correctsAmount++;
           stats.slowsAmount++;
-        } else {
-          answerDescriptions.push(answerCorrectDescription);
-        }
-      } else {
-        answerDescriptions.push(answerWrongDescription);
+          break;
+        case Answer.ANSWER_DESCRIPTIONS.CORRECT:
+          stats.correctsAmount++;
+          break;
       }
     });
   }

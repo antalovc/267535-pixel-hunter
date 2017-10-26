@@ -11,19 +11,14 @@ import QuestionBase from './question/question-base.js';
 import Game from './game.js';
 import createTimer from './create-timer.js';
 
-const NUMBER_GAME_LIVES = 3;
-const NUMBER_GAME_QUESTIONS = 10;
-
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
 /* const ROUTES_KEYS = {
   INTRO: ``,
   GREET: `greet`,
-  RULES: `rules`,
-  QUESTION: `question`,
-  STATS: `stats`
-}; */
+  RULES: `rules`
+};*/
 
 class Application {
 
@@ -60,9 +55,11 @@ class Application {
     this._timer = createTimer();
 
     this.showIntro();
-    /* this.routes = [
-
-    ];
+    /* this.readyRoutes = {
+      [ROUTES_KEYS.INTRO]: this.introduce,
+      [ROUTES_KEYS.GREET]: this.greet,
+      [ROUTES_KEYS.RULES]: this.prepare
+    };
     window.onhashchange = this.onHashChanged;
     this.onHashChanged();*/
   }
@@ -127,11 +124,15 @@ class Application {
 
   // game part ===================================================
 
+  introduce() {
+    this.showIntro();
+  }
+
   greet() {
     if (this._game) {
       this._game.stop();
+      this._game = null;
     }
-    this._game = null;
     this.showGreeting();
   }
 
@@ -140,7 +141,7 @@ class Application {
   }
 
   startGame(playerName) {
-    this._game = new Game(this, playerName, NUMBER_GAME_LIVES, NUMBER_GAME_QUESTIONS);
+    this._game = new Game(this, playerName);
     this.showQuestion();
   }
 
@@ -198,15 +199,19 @@ class Application {
   // init ========================================================
 
   /* init(hash) {
-    const controller = this.routes[hash];
-    if (controller) {
-      controller.init();
+    const readyRoute = this.readyRoutes[hash];
+    if (readyRoute) {
+      readyRoute.apply(this);
+    } else {
+      this._game = new Game(this);
+      this._game.state = hash;
+      this.stepGame();
     }
   }
 
   onHashChanged() {
     this.init(location.hash.replace(`#`, ``));
-  } */
+  }*/
 
 }
 

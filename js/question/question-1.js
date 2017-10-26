@@ -18,9 +18,9 @@ export default class Question1 extends QuestionBase {
     if (this._subanswers.every((subanswer) => {
       return subanswer !== null;
     })) {
-      this.answer = this._subanswers.every((subanswer) => {
+      this.answer(this._subanswers.every((subanswer) => {
         return subanswer;
-      });
+      }));
     }
   }
 }

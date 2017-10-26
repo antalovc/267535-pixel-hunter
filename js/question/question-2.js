@@ -11,6 +11,6 @@ export default class Question2 extends QuestionBase {
   }
 
   subanswer(isPhoto) {
-    this.answer = this._pictures[0].isPhoto === isPhoto;
+    this.answer(this._pictures[0].isPhoto === isPhoto);
   }
 }
