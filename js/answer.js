@@ -26,11 +26,11 @@ export default class Answer {
   }
 
   static get TIME_SLOW() {
-    return Answer.TIME_SLOW;
+    return TIME_SLOW;
   }
 
   static get TIME_FAST() {
-    return Answer.TIME_FAST;
+    return TIME_FAST;
   }
 
   static get ANSWER_DESCRIPTIONS() {

@@ -9,4 +9,5 @@ export default class PresenterFooter {
   get element() {
     return this._footerView.element;
   }
+
 }

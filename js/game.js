@@ -45,6 +45,10 @@ export default class Game {
     this._finished = false;
   }
 
+  get app() {
+    return this._app;
+  }
+
   get livesTotal() {
     return this._livesTotal;
   }
@@ -54,7 +58,7 @@ export default class Game {
   }
 
   get lives() {
-    return this._lives;
+    return this._lives >= 0 ? this._lives : 0;
   }
 
   get questions() {
@@ -79,11 +83,11 @@ export default class Game {
   }
 
   get hasNextQuestion() {
-    return this._answers.length < this._questionsTotal && this._lives;
+    return this._answers.length < this._questionsTotal && this.lives;
   }
 
   get isRunning() {
-    return !this._finished && this._lives;
+    return !this._finished && this.lives;
   }
 
   get state() {
@@ -103,10 +107,11 @@ export default class Game {
     const statesObject = state.split(STATE_DELIMITER).reduce((result, parameter) => {
       const splitPosition = parameter.indexOf(STATE_EQUALER);
       result[parameter.slice(0, splitPosition)] = parameter.slice(splitPosition + 1);
+      return result;
     }, {});
 
-    if (Object.values(ROUTES_PARAMS).each((value) => {
-      return statesObject[value];
+    if (Object.values(ROUTES_PARAMS).every((value) => {
+      return statesObject.hasOwnProperty(value);
     })) {
       this._answers = this.generateAnswers(statesObject[ROUTES_PARAMS.STATS]);
       this._lives = statesObject[ROUTES_PARAMS.LIVES];

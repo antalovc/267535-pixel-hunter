@@ -1,4 +1,3 @@
-import getStatsBar from './presenter/get-stats-bar.js';
 import Answer from './answer.js';
 
 const STATISTICS_CONFIG = {
@@ -64,13 +63,12 @@ class Statistics {
   }
 
   get statsBar() {
-    this._statsBar = this._statsBar || getStatsBar(this);
-    return this._statsBar;
+    return this._game.app.statsBar;
   }
 
   update() {
     this.calculateResulting();
-    this.statsBar.update(this);
+    this.statsBar.update(this._game.app);
   }
 
   resetStats() {

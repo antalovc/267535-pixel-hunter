@@ -52,8 +52,8 @@ export default class ViewHeader extends ViewAbstract {
 
   addInnerViews() {
     if (this.isGameRunning()) {
-      this._element.appendChild(this.timerElement.element);
-      this._element.appendChild(this.livesElement.element);
+      this._element.appendChild(this.timerView.element);
+      this._element.appendChild(this.livesView.element);
     }
   }
 
