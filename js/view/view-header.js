@@ -78,7 +78,7 @@ export default class ViewHeader extends ViewAbstract {
         this._element.appendChild(element);
       }
       elementObject.update(this._game);
-    } else {
+    } else if (element.parentNode === this._element) {
       this._element.removeChild(element);
     }
   }

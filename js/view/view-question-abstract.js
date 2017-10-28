@@ -20,6 +20,14 @@ export default class ViewQuestionAbstract extends ViewAbstract {
     return ``;
   }
 
+  get taskElement() {
+    return `<p class="game__task">${this._currentQuestion.text}</p>`;
+  }
+
+  get picturesElements() {
+    throw new Error(`Abstract method called`);
+  }
+
   onSubAnswer() {
     throw new Error(`Abstract method called`);
   }

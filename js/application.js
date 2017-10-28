@@ -11,19 +11,21 @@ import QuestionBase from './question/question-base.js';
 import StatsBar from './presenter/presenter-stats-bar.js';
 import Game from './game.js';
 import createTimer from './create-timer.js';
+import DataHandler from './data/data-handler.js';
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
 const ROUTES_KEYS = {
-  INTRO: ``,
-  GREET: `greet`,
+  GREET: ``,
   RULES: `rules`
 };
 
 class Application {
 
   constructor() {
+    this._gameData = null;
+
     this._header = null;
     this._footer = new Footer();
     this._viewContent = null;
@@ -56,13 +58,6 @@ class Application {
     this._game = null;
     this._timer = createTimer();
 
-    this.showIntro();
-    this.readyRoutes = {
-      [ROUTES_KEYS.INTRO]: this.doIntroduce,
-      [ROUTES_KEYS.GREET]: this.doGreet,
-      [ROUTES_KEYS.RULES]: this.doPrepare
-    };
-
     const onHashChanged = () => {
       this.init(location.hash.replace(`#`, ``));
     };
@@ -74,10 +69,6 @@ class Application {
 
   get game() {
     return this._game;
-  }
-
-  get isGameHasNextQuestion() {
-    return (this._game && this._game.hasNextQuestion);
   }
 
   get timer() {
@@ -134,55 +125,38 @@ class Application {
   }
 
   // game part ===================================================
-
-  doIntroduce() {
-    this.showIntro();
+  doIntro() {
+    this.intro.init(this);
   }
 
-  doGreet() {
-    if (this._game) {
-      this._game.stop();
-      this._game = null;
+  doGreet(data) {
+    if (typeof data !== `undefined`) {
+      this._gameData = data;
     }
-    this.showGreeting();
+    this.greeting.init(this);
   }
 
-  doPrepare() {
-    this.showRules();
+  doPrepare(data) {
+    if (typeof data !== `undefined`) {
+      this._gameData = data;
+    }
+    this._game = new Game(this, this._gameData);
+    this.rules.init(this);
   }
 
-  doStepGame() {
-    if (this.isGameHasNextQuestion) {
+  doStepGame(hash) {
+    this._game.state = hash;
+    if (this._game.hasNextQuestion) {
       this._game.step();
-      this.showQuestion();
+      const presenter = this._questionViews[this._game.currentQuestion.type]();
+      presenter.init(this);
     } else {
       this._game.stop();
-      this.showStats();
+      this.stats.init(this);
     }
   }
 
   // views part ==================================================
-
-  showIntro() {
-    this.intro.init(this);
-  }
-
-  showGreeting() {
-    this.greeting.init(this);
-  }
-
-  showRules() {
-    this.rules.init(this);
-  }
-
-  showQuestion() {
-    const presenter = this._questionViews[this._game.currentQuestion.questionType]();
-    presenter.init(this);
-  }
-
-  showStats() {
-    this.stats.init(this);
-  }
 
   setScreen(view, hasHeader) {
     const isHeaderShown = this._header && this._header.element.parentNode === this._mainElement;
@@ -205,32 +179,67 @@ class Application {
   // init ========================================================
 
   init(hash) {
-    const readyRoute = this.readyRoutes[hash];
-    if (readyRoute) {
-      readyRoute.apply(this);
-    } else {
-      this._game = new Game(this);
-      this._game.state = hash;
-      this.doStepGame();
+    switch (hash) {
+      case ROUTES_KEYS.GREET:
+        if (this._gameData) {
+          this.doGreet();
+        } else {
+          this.loadGameData((data) => {
+            this.doGreet(data);
+          });
+        }
+        break;
+      case ROUTES_KEYS.RULES:
+        if (this._gameData) {
+          this.doPrepare(this._gameData);
+        } else {
+          this.loadGameData((data) => {
+            this.doPrepare(data);
+          });
+        }
+        break;
+      default:
+        if (Game.checkState(hash)) {
+          if (this._game) {
+            this.doStepGame(hash);
+          } else {
+            this._game = null;
+            this.loadGameData((data) => {
+              this._gameData = data;
+              this._game = new Game(this, this._gameData);
+              this.doStepGame(hash);
+            });
+          }
+        } else {
+          this._game = null;
+          this.doGreet();
+        }
     }
   }
 
   greet() {
+    this._game = null;
     location.hash = ROUTES_KEYS.GREET;
   }
 
   prepare() {
+    this._game = null;
     location.hash = ROUTES_KEYS.RULES;
   }
 
   startGame(name) {
-    location.hash = (new Game(this, name)).state;
+    this._game.playerName = name;
+    this.stepGame();
   }
 
   stepGame() {
     location.hash = this._game.state;
   }
 
+  loadGameData(callback) {
+    this.doIntro();
+    DataHandler.loadGameData(callback);
+  }
 }
 
 export default new Application();

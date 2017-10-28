@@ -4,10 +4,17 @@ export default class ViewQuestion2 extends ViewQuestionAbstract {
 
   get template() {
     return `
-    <p class="game__task">Угадай, фото или рисунок?</p>
+    ${this.taskElement}
     <form class="game__content  game__content--wide">
-      <div class="game__option" width="705" height="455">
-        <img src="${this._currentQuestion.pictures[0].path}" alt="Option 1">
+      ${this.picturesElements}
+    </form>`;
+  }
+
+  get picturesElements() {
+    const picture = this._currentQuestion.pictures[0];
+    return `
+      <div class="game__option" width="${picture.width}" height="${picture.height}">
+        <img src="${picture.path}" alt="Option 1">
         <label class="game__answer  game__answer--photo">
           <input name="question1" type="radio" value="photo">
           <span>Фото</span>
@@ -15,9 +22,7 @@ export default class ViewQuestion2 extends ViewQuestionAbstract {
         <label class="game__answer  game__answer--wide  game__answer--paint">
           <input name="question1" type="radio" value="paint">
           <span>Рисунок</span>
-        </label>
-      </div>
-    </form>`;
+        </label>`;
   }
 
   bind() {

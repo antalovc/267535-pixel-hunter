@@ -2,11 +2,8 @@ import ViewIntro from '../view/view-intro.js';
 
 export default class PresenterIntro {
 
-  constructor(app) {
+  constructor() {
     this._introView = new ViewIntro();
-    this._introView.onIntroClicked = () => {
-      app.greet();
-    };
   }
 
   init(app) {

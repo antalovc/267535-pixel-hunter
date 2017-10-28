@@ -11,7 +11,7 @@ export default class ViewTimer extends ViewAbstract {
   }
 
   get template() {
-    return `${this._time}`;
+    return `${this._timer.timeElapsed}`;
   }
 
   get templateTag() {

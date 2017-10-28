@@ -1,12 +1,17 @@
 export default class QuestionBase {
 
-  constructor() {
-    this._pictures = null;
-    this._questionType = 0;
+  constructor(data) {
+    this._pictures = data.pictures;
+    this._type = data.type;
+    this._text = data.text;
   }
 
-  get questionType() {
-    return this._questionType;
+  get type() {
+    return this._type;
+  }
+
+  get text() {
+    return this._text;
   }
 
   get pictures() {
@@ -26,9 +31,9 @@ export default class QuestionBase {
 
   static get QUESTION_TYPE() {
     return {
-      TYPE_1: 1,
-      TYPE_2: 2,
-      TYPE_3: 3
+      TYPE_1: `two-of-two`,
+      TYPE_2: `tinder-like`,
+      TYPE_3: `one-of-three`
     };
   }
 

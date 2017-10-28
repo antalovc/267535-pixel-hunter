@@ -11,7 +11,7 @@ export default class PresenterRules {
 
   init(app) {
     this._rulesView.update();
-    app.setScreen(this, app.HAS_HEADER);
+    app.setScreen(this, app.NO_HEADER);
   }
 
   get element() {

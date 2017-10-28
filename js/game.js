@@ -1,9 +1,7 @@
-import createQuestion from './create-question.js';
 import {Statistics} from './statistics.js';
 import Answer from './answer.js';
 
 const NUMBER_GAME_LIVES = 3;
-const NUMBER_GAME_QUESTIONS = 10;
 
 const STATE_DELIMITER = `&`;
 const STATE_EQUALER = `=`;
@@ -27,21 +25,20 @@ const CODE_TO_ANSWER = [
 
 export default class Game {
 
-  constructor(app, playerName) {
+  constructor(app, questions) {
     this._lives = NUMBER_GAME_LIVES;
     this._livesTotal = NUMBER_GAME_LIVES;
-    this._questionsTotal = NUMBER_GAME_QUESTIONS;
 
     app.timer.callback = () => {
       this.currentQuestion.answer(false);
     };
 
-    this._currentQuestion = createQuestion();
+    this._questions = questions;
     this._answers = [];
     this._statistics = null;
 
     this._app = app;
-    this._playerName = playerName || ``;
+    this._playerName = ``;
     this._finished = false;
   }
 
@@ -54,15 +51,11 @@ export default class Game {
   }
 
   get questionsTotal() {
-    return this._questionsTotal;
+    return this._questions.length;
   }
 
   get lives() {
     return this._lives >= 0 ? this._lives : 0;
-  }
-
-  get questions() {
-    return this._questions;
   }
 
   get answers() {
@@ -70,7 +63,7 @@ export default class Game {
   }
 
   get currentQuestion() {
-    return this._currentQuestion;
+    return this._questions[this._answers.length];
   }
 
   get statistics() {
@@ -78,12 +71,16 @@ export default class Game {
     return this._statistics;
   }
 
+  set playerName(playerName) {
+    this._playerName = playerName;
+  }
+
   get playerName() {
     return this._playerName;
   }
 
   get hasNextQuestion() {
-    return this._answers.length < this._questionsTotal && this.lives;
+    return this._answers.length < this.questionsTotal && this.lives;
   }
 
   get isRunning() {
@@ -103,21 +100,26 @@ export default class Game {
     }).join(``);
   }
 
-  set state(state) {
+  static checkState(state) {
     const statesObject = state.split(STATE_DELIMITER).reduce((result, parameter) => {
       const splitPosition = parameter.indexOf(STATE_EQUALER);
       result[parameter.slice(0, splitPosition)] = parameter.slice(splitPosition + 1);
       return result;
     }, {});
 
-    if (Object.values(ROUTES_PARAMS).every((value) => {
+    return Object.values(ROUTES_PARAMS).every((value) => {
       return statesObject.hasOwnProperty(value);
-    })) {
+    }) ? statesObject : false;
+  }
+
+  set state(state) {
+    const statesObject = Game.checkState(state);
+
+    if (statesObject) {
       this._answers = this.generateAnswers(statesObject[ROUTES_PARAMS.STATS]);
-      this._lives = statesObject[ROUTES_PARAMS.LIVES];
+      this._lives = +statesObject[ROUTES_PARAMS.LIVES];
       this._playerName = statesObject[ROUTES_PARAMS.NAME];
     }
-    this._currentQuestion = createQuestion();
     this._statistics = null;
   }
 
@@ -132,12 +134,10 @@ export default class Game {
       this._lives--;
     }
     this._answers.push(Answer.generateDescription(isCorrect, time));
-    this.currentQuestion.answer.time = time;
     this._app.stepGame();
   }
 
   step() {
-    this._currentQuestion = createQuestion();
     this.statistics.update(this);
   }
 
