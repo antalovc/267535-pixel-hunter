@@ -179,6 +179,7 @@ class Application {
   // init ========================================================
 
   init(hash) {
+    this._timer.reset();
     switch (hash) {
       case ROUTES_KEYS.GREET:
         if (this._gameData) {
@@ -200,7 +201,7 @@ class Application {
         break;
       default:
         if (Game.checkState(hash)) {
-          if (this._game) {
+          if (this._game && !this._game.finished) {
             this.doStepGame(hash);
           } else {
             this._game = null;
@@ -219,6 +220,7 @@ class Application {
 
   greet() {
     this._game = null;
+    this._gameData = null;
     location.hash = ROUTES_KEYS.GREET;
   }
 

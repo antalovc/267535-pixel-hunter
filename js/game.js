@@ -87,6 +87,10 @@ export default class Game {
     return !this._finished && this.lives;
   }
 
+  get finished() {
+    return this._finished;
+  }
+
   get state() {
     const nameHash = `${ROUTES_PARAMS.NAME}${STATE_EQUALER}${this._playerName}`;
     const livesHash = `${ROUTES_PARAMS.LIVES}${STATE_EQUALER}${this._lives}`;
