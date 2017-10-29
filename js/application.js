@@ -124,7 +124,86 @@ class Application {
     return this._statsBar;
   }
 
+  // routing part ================================================
+
+  greet() {
+    this._game = null;
+    this._gameData = null;
+    location.hash = ROUTES_KEYS.GREET;
+  }
+
+  prepare() {
+    this._game = null;
+    location.hash = ROUTES_KEYS.RULES;
+  }
+
+  startGame(name) {
+    this._game.playerName = name;
+    this.stepGame();
+  }
+
+  stepGame() {
+    location.hash = this._game.state;
+  }
+
+  initUnknown() {
+    this._game = null;
+    this.doGreet();
+  }
+
+  initGreet() {
+    if (this._gameData) {
+      this.doGreet();
+    } else {
+      this.loadGameData((data) => {
+        this.doGreet(data);
+      });
+    }
+  }
+
+  initPrepare() {
+    if (this._gameData) {
+      this.doPrepare(this._gameData);
+    } else {
+      this.loadGameData((data) => {
+        this.doPrepare(data);
+      });
+    }
+  }
+
+  initGame(hash) {
+    if (this._game && !this._game.finished) {
+      this.doStepGame(hash);
+    } else {
+      this._game = null;
+      this.loadGameData((data) => {
+        this._gameData = data;
+        this._game = new Game(this, this._gameData);
+        this.doStepGame(hash);
+      });
+    }
+  }
+
+  init(hash) {
+    this._timer.reset();
+    switch (hash) {
+      case ROUTES_KEYS.GREET:
+        this.initGreet();
+        break;
+      case ROUTES_KEYS.RULES:
+        this.initPrepare();
+        break;
+      default:
+        if (Game.checkState(hash)) {
+          this.initGame(hash);
+        } else {
+          this.initUnknown();
+        }
+    }
+  }
+
   // game part ===================================================
+
   doIntro() {
     this.intro.init(this);
   }
@@ -156,8 +235,6 @@ class Application {
     }
   }
 
-  // views part ==================================================
-
   setScreen(view, hasHeader) {
     const isHeaderShown = this._header && this._header.element.parentNode === this._mainElement;
     if (hasHeader && !isHeaderShown) {
@@ -174,68 +251,6 @@ class Application {
     }
     this._viewContent = view;
     this._mainElement.insertBefore(view.element, this._footer.element);
-  }
-
-  // init ========================================================
-
-  init(hash) {
-    this._timer.reset();
-    switch (hash) {
-      case ROUTES_KEYS.GREET:
-        if (this._gameData) {
-          this.doGreet();
-        } else {
-          this.loadGameData((data) => {
-            this.doGreet(data);
-          });
-        }
-        break;
-      case ROUTES_KEYS.RULES:
-        if (this._gameData) {
-          this.doPrepare(this._gameData);
-        } else {
-          this.loadGameData((data) => {
-            this.doPrepare(data);
-          });
-        }
-        break;
-      default:
-        if (Game.checkState(hash)) {
-          if (this._game && !this._game.finished) {
-            this.doStepGame(hash);
-          } else {
-            this._game = null;
-            this.loadGameData((data) => {
-              this._gameData = data;
-              this._game = new Game(this, this._gameData);
-              this.doStepGame(hash);
-            });
-          }
-        } else {
-          this._game = null;
-          this.doGreet();
-        }
-    }
-  }
-
-  greet() {
-    this._game = null;
-    this._gameData = null;
-    location.hash = ROUTES_KEYS.GREET;
-  }
-
-  prepare() {
-    this._game = null;
-    location.hash = ROUTES_KEYS.RULES;
-  }
-
-  startGame(name) {
-    this._game.playerName = name;
-    this.stepGame();
-  }
-
-  stepGame() {
-    location.hash = this._game.state;
   }
 
   loadGameData(callback) {
