@@ -3,29 +3,45 @@ const TIME_FAST = 10; // seconds
 
 export default class Answer {
 
-  constructor(isCorrect, time) {
-    this._time = time;
-    this._isCorrect = isCorrect;
+  static generateDescription(isCorrect, time) {
+    let result = ``;
+    if (!isCorrect) {
+      result = Answer.ANSWER_DESCRIPTIONS.WRONG;
+    } else if (Answer.isFast(time)) {
+      result = Answer.ANSWER_DESCRIPTIONS.FAST;
+    } else if (Answer.isSlow(time)) {
+      result = Answer.ANSWER_DESCRIPTIONS.SLOW;
+    } else {
+      result = Answer.ANSWER_DESCRIPTIONS.CORRECT;
+    }
+    return result;
   }
 
-  get isCorrect() {
-    return this._isCorrect;
+  static isFast(time) {
+    return time < TIME_FAST;
   }
 
-  set time(time) {
-    this._time = time;
+  static isSlow(time) {
+    return time > TIME_SLOW;
   }
 
-  get time() {
-    return this._time;
+  static get TIME_SLOW() {
+    return TIME_SLOW;
   }
 
-  get isFast() {
-    return this.time < TIME_FAST;
+  static get TIME_FAST() {
+    return TIME_FAST;
   }
 
-  get isSlow() {
-    return this.time > TIME_SLOW;
+  static get ANSWER_DESCRIPTIONS() {
+    return {
+      FAST: `fast`,
+      CORRECT: `correct`,
+      SLOW: `slow`,
+      WRONG: `wrong`,
+      UNKNOWN: `unknown`
+    };
   }
+
 }
 

@@ -2,11 +2,6 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewGreeting extends ViewAbstract {
 
-  constructor(main) {
-    super();
-    this._main = main;
-  }
-
   get template() {
     return `
       <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>

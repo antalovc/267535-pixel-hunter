@@ -23,17 +23,16 @@ export default class ViewStatsBar extends ViewAbstract {
     return ``;
   }
 
-  update(game) {
-    this._game = game;
+  update(statistics) {
+    this._statistics = statistics;
     this.element.innerHTML = `${this.items}`;
-    return this;
   }
 
   get items() {
-    let items = this._statistics.answerDescriptions.reduce((result, description) => {
+    let items = this._statistics.answers.reduce((result, description) => {
       return result + `<li class="stats__result stats__result--${description}"></li>\n`;
     }, ``);
-    for (let i = this._statistics.questions.length; i < this._statistics.questionsTotal; i++) {
+    for (let i = this._statistics.answers.length; i < this._statistics.questionsTotal; i++) {
       items += `<li class="stats__result stats__result--unknown"></li>\n`;
     }
     return items;

@@ -26,7 +26,6 @@ export default class ViewLives extends ViewAbstract {
   update(game) {
     this._game = game;
     this._element.innerHTML = `${this.heartsElements}`;
-    return this;
   }
 
   get heartsElements() {

@@ -1,13 +1,9 @@
 import QuestionBase from './question-base.js';
-import getPictures from '../data/get-data-dummy.js';
 
 export default class Question1 extends QuestionBase {
 
-  constructor(answeredCallback) {
-    super(answeredCallback);
-
-    this._questionType = QuestionBase.QUESTION_TYPE.TYPE_1;
-    this._pictures = getPictures(this._questionType);
+  constructor(data) {
+    super(data);
 
     this._subanswers = [null, null];
   }
@@ -18,9 +14,9 @@ export default class Question1 extends QuestionBase {
     if (this._subanswers.every((subanswer) => {
       return subanswer !== null;
     })) {
-      this.answer = this._subanswers.every((subanswer) => {
+      this.answer(this._subanswers.every((subanswer) => {
         return subanswer;
-      });
+      }));
     }
   }
 }

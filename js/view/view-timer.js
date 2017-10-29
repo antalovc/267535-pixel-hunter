@@ -2,16 +2,16 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewTimer extends ViewAbstract {
 
-  constructor(main) {
+  constructor(app) {
     super();
-    this._timer = main.timer;
+    this._timer = app.timer;
     this._timer.onTick = () => {
       this.updateCounter();
     };
   }
 
   get template() {
-    return `${this._time}`;
+    return `${this._timer.timeElapsed}`;
   }
 
   get templateTag() {
@@ -28,7 +28,6 @@ export default class ViewTimer extends ViewAbstract {
 
   update() {
     this.updateCounter();
-    return this;
   }
 
   updateCounter() {

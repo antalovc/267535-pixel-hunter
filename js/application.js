@@ -1,21 +1,31 @@
-import Header from './presenter/header.js';
-import Footer from './presenter/footer.js';
-import Intro from './presenter/intro.js';
-import Greeting from './presenter/greeting.js';
-import Rules from './presenter/rules.js';
-import Game1 from './presenter/game-1.js';
-import Game2 from './presenter/game-2.js';
-import Game3 from './presenter/game-3.js';
-import Stats from './presenter/stats.js';
+import Header from './presenter/presenter-header.js';
+import Footer from './presenter/presenter-footer.js';
+import Intro from './presenter/presenter-intro.js';
+import Greeting from './presenter/presenter-greeting.js';
+import Rules from './presenter/presenter-rules.js';
+import Question1 from './presenter/presenter-question-1.js';
+import Question2 from './presenter/presenter-question-2.js';
+import Question3 from './presenter/presenter-question-3.js';
+import Stats from './presenter/presenter-stats.js';
 import QuestionBase from './question/question-base.js';
+import StatsBar from './presenter/presenter-stats-bar.js';
+import Game from './game.js';
+import createTimer from './create-timer.js';
+import DataHandler from './data/data-handler.js';
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
-export default class Application {
+const ROUTES_KEYS = {
+  GREET: ``,
+  RULES: `rules`
+};
 
-  constructor(main) {
-    this._main = main;
+class Application {
+
+  constructor() {
+    this._gameData = null;
+
     this._header = null;
     this._footer = new Footer();
     this._viewContent = null;
@@ -23,31 +33,49 @@ export default class Application {
     this._intro = null;
     this._greeting = null;
     this._rules = null;
-    this._game1 = null;
-    this._game2 = null;
-    this._game3 = null;
+    this._question1 = null;
+    this._question2 = null;
+    this._question3 = null;
     this._stats = null;
+    this._statsBar = null;
 
-    this._gameViews = {
+    this._questionViews = {
       [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
-        return this.game1;
+        return this.question1;
       },
       [QuestionBase.QUESTION_TYPE.TYPE_2]: () => {
-        return this.game2;
+        return this.question2;
       },
       [QuestionBase.QUESTION_TYPE.TYPE_3]: () => {
-        return this.game3;
+        return this.question3;
       }
     };
 
     this._mainElement = document.querySelector(`main.central`);
     this._mainElement.innerHTML = ``;
     this._mainElement.appendChild(this._footer.element);
+
+    this._game = null;
+    this._timer = createTimer();
+
+    const onHashChanged = () => {
+      this.init(location.hash.replace(`#`, ``));
+    };
+    window.onhashchange = onHashChanged;
+    onHashChanged();
   }
 
-  get main() {
-    return this._main;
+  // game getters part ===========================================
+
+  get game() {
+    return this._game;
   }
+
+  get timer() {
+    return this._timer;
+  }
+
+  // views getters part ==========================================
 
   get NO_HEADER() {
     return NO_HEADER;
@@ -71,19 +99,19 @@ export default class Application {
     return this._rules;
   }
 
-  get game1() {
-    this._game1 = this._game1 ? this._game1 : new Game1(this);
-    return this._game1;
+  get question1() {
+    this._question1 = this._question1 ? this._question1 : new Question1(this);
+    return this._question1;
   }
 
-  get game2() {
-    this._game2 = this._game2 ? this._game2 : new Game2(this);
-    return this._game2;
+  get question2() {
+    this._question2 = this._question2 ? this._question2 : new Question2(this);
+    return this._question2;
   }
 
-  get game3() {
-    this._game3 = this._game3 ? this._game3 : new Game3(this);
-    return this._game3;
+  get question3() {
+    this._question3 = this._question3 ? this._question3 : new Question3(this);
+    return this._question3;
   }
 
   get stats() {
@@ -91,25 +119,120 @@ export default class Application {
     return this._stats;
   }
 
-  showIntro() {
-    this.intro.init();
+  get statsBar() {
+    this._statsBar = this._statsBar ? this._statsBar : new StatsBar(this);
+    return this._statsBar;
   }
 
-  showGreeting() {
-    this.greeting.init();
+  // routing part ================================================
+
+  greet() {
+    this._game = null;
+    this._gameData = null;
+    location.hash = ROUTES_KEYS.GREET;
   }
 
-  showRules() {
-    this.rules.init();
+  prepare() {
+    this._game = null;
+    location.hash = ROUTES_KEYS.RULES;
   }
 
-  showGame() {
-    const presenter = this._gameViews[this._main.game.currentQuestion.questionType]();
-    presenter.init();
+  startGame(name) {
+    this._game.playerName = name;
+    this.stepGame();
   }
 
-  showStats() {
-    this.stats.init();
+  stepGame() {
+    location.hash = this._game.state;
+  }
+
+  initUnknown() {
+    this._game = null;
+    this.doGreet();
+  }
+
+  initGreet() {
+    if (this._gameData) {
+      this.doGreet();
+    } else {
+      this.loadGameData((data) => {
+        this.doGreet(data);
+      });
+    }
+  }
+
+  initPrepare() {
+    if (this._gameData) {
+      this.doPrepare(this._gameData);
+    } else {
+      this.loadGameData((data) => {
+        this.doPrepare(data);
+      });
+    }
+  }
+
+  initGame(hash) {
+    if (this._game && !this._game.finished) {
+      this.doStepGame(hash);
+    } else {
+      this._game = null;
+      this.loadGameData((data) => {
+        this._gameData = data;
+        this._game = new Game(this, this._gameData);
+        this.doStepGame(hash);
+      });
+    }
+  }
+
+  init(hash) {
+    this._timer.reset();
+    switch (hash) {
+      case ROUTES_KEYS.GREET:
+        this.initGreet();
+        break;
+      case ROUTES_KEYS.RULES:
+        this.initPrepare();
+        break;
+      default:
+        if (Game.checkState(hash)) {
+          this.initGame(hash);
+        } else {
+          this.initUnknown();
+        }
+    }
+  }
+
+  // game part ===================================================
+
+  doIntro() {
+    this.intro.init(this);
+  }
+
+  doGreet(data) {
+    if (typeof data !== `undefined`) {
+      this._gameData = data;
+    }
+    this.greeting.init(this);
+  }
+
+  doPrepare(data) {
+    if (typeof data !== `undefined`) {
+      this._gameData = data;
+    }
+    this._game = new Game(this, this._gameData);
+    this.rules.init(this);
+  }
+
+  doStepGame(hash) {
+    this._game.state = hash;
+    if (this._game.hasNextQuestion) {
+      this._game.step();
+      const presenter = this._questionViews[this._game.currentQuestion.type]();
+      presenter.init(this);
+    } else {
+      this._game.stop();
+      this.stats.init(this);
+    }
   }
 
   setScreen(view, hasHeader) {
@@ -118,7 +241,7 @@ export default class Application {
       this._header = new Header(this);
       this._mainElement.insertBefore(this._header.element, this._mainElement.firstChild);
     } else if (hasHeader) {
-      this._header.init(this._main);
+      this._header.init(this);
     } else if (isHeaderShown) {
       this._mainElement.removeChild(this._header.element);
     }
@@ -130,4 +253,10 @@ export default class Application {
     this._mainElement.insertBefore(view.element, this._footer.element);
   }
 
+  loadGameData(callback) {
+    this.doIntro();
+    DataHandler.loadGameData(callback);
+  }
 }
+
+export default new Application();

@@ -1,26 +1,17 @@
-import Answer from '../answer.js';
-
 export default class QuestionBase {
 
-  constructor() {
-    // overwritable
-    this._pictures = null;
-    this._questionType = 0;
-
-    this._answer = null;
+  constructor(data) {
+    this._pictures = data.pictures;
+    this._type = data.type;
+    this._text = data.text;
   }
 
-  get answer() {
-    return this._answer;
+  get type() {
+    return this._type;
   }
 
-  set answer(isCorrect) {
-    this._answer = new Answer(isCorrect);
-    this.onAnswer(isCorrect);
-  }
-
-  get questionType() {
-    return this._questionType;
+  get text() {
+    return this._text;
   }
 
   get pictures() {
@@ -31,14 +22,18 @@ export default class QuestionBase {
     throw new Error(`Abstract method called`);
   }
 
+  answer(isCorrect) {
+    this.onAnswer(isCorrect);
+  }
+
   onAnswer() {
   }
 
   static get QUESTION_TYPE() {
     return {
-      TYPE_1: 1,
-      TYPE_2: 2,
-      TYPE_3: 3
+      TYPE_1: `two-of-two`,
+      TYPE_2: `tinder-like`,
+      TYPE_3: `one-of-three`
     };
   }
 

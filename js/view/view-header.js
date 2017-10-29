@@ -1,13 +1,13 @@
 import ViewAbstract from './view-abstract.js';
-import getLives from '../presenter/lives.js';
-import getTimer from '../presenter/timer.js';
+import getLives from '../presenter/get-lives.js';
+import getTimer from '../presenter/get-timer.js';
 
 export default class ViewHeader extends ViewAbstract {
 
-  constructor(main) {
+  constructor(app) {
     super();
-    this._main = main;
-    this._game = main.game;
+    this._app = app;
+    this._game = app.game;
     this._timer = null;
     this._lives = null;
   }
@@ -35,7 +35,7 @@ export default class ViewHeader extends ViewAbstract {
   }
 
   get timerView() {
-    this._timer = this._timer || getTimer(this._main);
+    this._timer = this._timer || getTimer(this._app);
     return this._timer;
   }
 
@@ -52,16 +52,15 @@ export default class ViewHeader extends ViewAbstract {
 
   addInnerViews() {
     if (this.isGameRunning()) {
-      this._element.appendChild(this.timerElement.element);
-      this._element.appendChild(this.livesElement.element);
+      this._element.appendChild(this.timerView.element);
+      this._element.appendChild(this.livesView.element);
     }
   }
 
-  update(main) {
-    this._game = main.game;
+  update(app) {
+    this._game = app.game;
     this.updateTimer();
     this.updateLives();
-    return this;
   }
 
   updateTimer() {
@@ -79,7 +78,7 @@ export default class ViewHeader extends ViewAbstract {
         this._element.appendChild(element);
       }
       elementObject.update(this._game);
-    } else {
+    } else if (element.parentNode === this._element) {
       this._element.removeChild(element);
     }
   }

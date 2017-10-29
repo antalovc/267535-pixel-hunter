@@ -1,6 +1,6 @@
 import ViewAbstract from './view-abstract.js';
 
-export default class ViewGameAbstract extends ViewAbstract {
+export default class ViewQuestionAbstract extends ViewAbstract {
 
   constructor(game) {
     super();
@@ -20,6 +20,14 @@ export default class ViewGameAbstract extends ViewAbstract {
     return ``;
   }
 
+  get taskElement() {
+    return `<p class="game__task">${this._currentQuestion.text}</p>`;
+  }
+
+  get picturesElements() {
+    throw new Error(`Abstract method called`);
+  }
+
   onSubAnswer() {
     throw new Error(`Abstract method called`);
   }
@@ -29,7 +37,6 @@ export default class ViewGameAbstract extends ViewAbstract {
     if (this._statistics.statsBar.element.parentNode !== this.element) {
       this._element.appendChild(this._statistics.statsBar.element);
     }
-    return this;
   }
 
   addInnerViews() {

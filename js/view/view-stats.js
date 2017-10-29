@@ -2,9 +2,9 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewStats extends ViewAbstract {
 
-  constructor(main) {
+  constructor(statistics) {
     super();
-    this._statistics = main.game.statistics;
+    this._statistics = statistics;
   }
 
   get template() {
@@ -56,10 +56,9 @@ export default class ViewStats extends ViewAbstract {
     return ``;
   }
 
-  update(main) {
-    this._statistics = main.game.statistics;
+  update(statistics) {
+    this._statistics = statistics;
     this._element = null;
-    return this;
   }
 
   addInnerViews() {

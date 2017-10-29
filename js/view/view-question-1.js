@@ -1,13 +1,30 @@
-import ViewGameAbstract from './view-game-abstract.js';
+import ViewQuestionAbstract from './view-question-abstract.js';
 
-export default class ViewGame1 extends ViewGameAbstract {
+export default class ViewQuestion1 extends ViewQuestionAbstract {
 
   get template() {
     return `
-    <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
+    ${this.taskElement}
     <form class="game__content">
       ${this.picturesElements}
     </form>`;
+  }
+
+  get picturesElements() {
+    return this._currentQuestion.pictures.reduce((result, picture, index) => {
+      return result + `
+      <div class="game__option" width="${picture.width}" height="${picture.height}">
+        <img src="${picture.path}" alt="Option ${index + 1}">
+        <label class="game__answer game__answer--photo">
+          <input name="question${index + 1}" type="radio" value="photo">
+          <span>Фото</span>
+        </label>
+        <label class="game__answer game__answer--paint">
+          <input name="question${index + 1}" type="radio" value="paint">
+          <span>Рисунок</span>
+        </label>
+      </div>\n`;
+    }, ``);
   }
 
   bind() {
@@ -30,24 +47,6 @@ export default class ViewGame1 extends ViewGameAbstract {
       radio.checked = false;
     });
     super.update(game);
-    return this;
-  }
-
-  get picturesElements() {
-    return this._currentQuestion.pictures.reduce((result, picture, index) => {
-      return result + `
-      <div class="game__option" width="468" height="458">
-        <img src="${picture.path}" alt="Option ${index + 1}">
-        <label class="game__answer game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="photo">
-          <span>Фото</span>
-        </label>
-        <label class="game__answer game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="paint">
-          <span>Рисунок</span>
-        </label>
-      </div>\n`;
-    }, ``);
   }
 
   onSubAnswer() {

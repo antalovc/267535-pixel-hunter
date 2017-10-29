@@ -1,13 +1,22 @@
-import ViewGameAbstract from './view-game-abstract.js';
+import ViewQuestionAbstract from './view-question-abstract.js';
 
-export default class ViewGame3 extends ViewGameAbstract {
+export default class ViewQuestion3 extends ViewQuestionAbstract {
 
   get template() {
     return `
-    <p class="game__task">${this._currentQuestion.isIntrusPhoto ? `Найдите фото среди изображений` : `Найдите рисунок среди изображений`}</p>
+    ${this.taskElement}
     <form class="game__content  game__content--triple">
       ${this.picturesElements}
     </form>`;
+  }
+
+  get picturesElements() {
+    return this._currentQuestion.pictures.reduce((result, picture, index) => {
+      return result + `
+      <div class="game__option" width="${picture.width}" height="${picture.height}">
+        <img src="${picture.path}" alt="Option ${index + 1}">
+      </div>\n`;
+    }, ``);
   }
 
   bind() {
@@ -24,16 +33,6 @@ export default class ViewGame3 extends ViewGameAbstract {
       img.setAttribute(`src`, this._currentQuestion.pictures[index].path);
     });
     super.update(game);
-    return this;
-  }
-
-  get picturesElements() {
-    return this._currentQuestion.pictures.reduce((result, picture, index) => {
-      return result + `
-      <div class="game__option" width="304" height="455">
-        <img src="${picture.path}" alt="Option ${index + 1}">
-      </div>\n`;
-    }, ``);
   }
 
   onSubAnswer() {
