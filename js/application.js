@@ -10,8 +10,8 @@ import Stats from './presenter/presenter-stats.js';
 import QuestionBase from './question/question-base.js';
 import StatsBar from './presenter/presenter-stats-bar.js';
 import Game from './game.js';
-import createTimer from './create-timer.js';
 import DataHandler from './data/data-handler.js';
+import createTimer from './create-timer.js';
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
