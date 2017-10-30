@@ -1,4 +1,5 @@
 import Answer from './answer.js';
+import StatsBar from './presenter/presenter-stats-bar.js';
 
 const STATISTICS_CONFIG = {
   POINTS_ANSWER_VALID: 100,
@@ -63,12 +64,13 @@ class Statistics {
   }
 
   get statsBar() {
-    return this._game.app.statsBar;
+    this._statsBar = this._statsBar ? this._statsBar : new StatsBar(this);
+    return this._statsBar;
   }
 
   update() {
     this.calculateResulting();
-    this.statsBar.update(this._game.app);
+    this.statsBar.update(this);
   }
 
   resetStats() {

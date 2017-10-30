@@ -8,7 +8,6 @@ import Question2 from './presenter/presenter-question-2.js';
 import Question3 from './presenter/presenter-question-3.js';
 import Stats from './presenter/presenter-stats.js';
 import QuestionBase from './question/question-base.js';
-import StatsBar from './presenter/presenter-stats-bar.js';
 import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
@@ -37,7 +36,6 @@ class Application {
     this._question2 = null;
     this._question3 = null;
     this._stats = null;
-    this._statsBar = null;
 
     this._questionViews = {
       [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
@@ -117,11 +115,6 @@ class Application {
   get stats() {
     this._stats = this._stats ? this._stats : new Stats(this);
     return this._stats;
-  }
-
-  get statsBar() {
-    this._statsBar = this._statsBar ? this._statsBar : new StatsBar(this);
-    return this._statsBar;
   }
 
   // routing part ================================================
