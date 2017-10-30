@@ -2,10 +2,10 @@ import ViewAbstract from './view-abstract.js';
 
 export default class ViewStatsTable extends ViewAbstract {
 
-  constructor(statistics, index) {
+  constructor(statistics) {
     super();
     this._statistics = statistics;
-    this._index = index;
+    this._index = 0;
   }
 
   get template() {
@@ -71,11 +71,15 @@ export default class ViewStatsTable extends ViewAbstract {
       </tr>`;
   }
 
-  update(statistics, index) {
+  set index(index) {
+    this.element.querySelector(`.result__number`).innerHTML = index;
+  }
+
+  update(statistics) {
     this._statistics = statistics;
-    this._index = index;
     this._element = null;
   }
+
 
   addInnerViews() {
     this.element.querySelector(`.result__bar`).appendChild(this._statistics.statsBar.element);

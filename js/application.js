@@ -224,7 +224,10 @@ class Application {
       presenter.init(this);
     } else {
       this._game.stop();
-      this.stats.init(this);
+      DataHandler.loadStatsData(this._game.playerName, (previousStatistics) => {
+        this.stats.init(this, previousStatistics);
+        DataHandler.saveStatsData(this._game.playerName, this._game.results);
+      });
     }
   }
 

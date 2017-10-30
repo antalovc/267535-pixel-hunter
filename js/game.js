@@ -92,6 +92,13 @@ export default class Game {
     return `${nameHash}${STATE_DELIMITER}${livesHash}${STATE_DELIMITER}${statsHash}`;
   }
 
+  get results() {
+    return {
+      stats: this._statistics.answers,
+      lives: this._statistics.lives
+    };
+  }
+
   static checkState(state) {
     const statesObject = state.split(STATE_DELIMITER).reduce((result, parameter) => {
       const splitPosition = parameter.indexOf(STATE_EQUALER);
@@ -135,12 +142,12 @@ export default class Game {
   }
 
   step() {
-    this.statistics.update();
+    this._statistics.update();
   }
 
   stop() {
     this._finished = true;
-    this.statistics.update(true);
+    this._statistics.update(true);
   }
 
 }

@@ -12,13 +12,17 @@ const STATISTICS_CONFIG = {
 
 class Statistics {
 
-  constructor() {
+  constructor(config) {
     this._stats = null;
-    this._lives = Game.livesTotal;
-    this._answers = [];
-
     this._statsBar = null;
     this._statsTable = null;
+
+    const isConfigured = typeof config !== `undefined`;
+    this._lives = isConfigured ? config.lives : Game.livesTotal;
+    this._answers = isConfigured ? config.answers : [];
+    if (isConfigured) {
+      this.calculateResulting();
+    }
   }
 
   get lives() {
