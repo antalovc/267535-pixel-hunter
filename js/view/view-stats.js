@@ -9,7 +9,7 @@ export default class ViewStats extends ViewAbstract {
 
   get template() {
     return `
-      <h1>${this._statistics.livesAmount ? `Победа!` : `Fail`}</h1>
+      <h1>${this._statistics.lives ? `Победа!` : `Fail`}</h1>
       <table class="result__table">
         <tr>
           <td class="result__number">1.</td>
@@ -27,7 +27,7 @@ export default class ViewStats extends ViewAbstract {
         <tr>
           <td></td>
           <td class="result__extra">Бонус за жизни:</td>
-          <td class="result__extra">${this._statistics.livesAmount}&nbsp;<span class="stats__result stats__result--alive"></span></td>
+          <td class="result__extra">${this._statistics.lives}&nbsp;<span class="stats__result stats__result--alive"></span></td>
           <td class="result__points">×&nbsp;50</td>
           <td class="result__total">${this._statistics.livesPoints}</td>
         </tr>
