@@ -1,4 +1,4 @@
-import ViewStatsBar from '../view/view-stats-bar';
+import ViewStatsBar from '../view/view-stats-bar.js';
 
 export default class PresenterStatsBar {
 

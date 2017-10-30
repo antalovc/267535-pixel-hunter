@@ -1,6 +1,7 @@
 import Answer from './answer.js';
 import Game from './game.js';
 import StatsBar from './presenter/presenter-stats-bar.js';
+import StatsTable from './presenter/presenter-stats-table.js';
 
 const STATISTICS_CONFIG = {
   POINTS_ANSWER_VALID: 100,
@@ -17,6 +18,7 @@ class Statistics {
     this._answers = [];
 
     this._statsBar = null;
+    this._statsTable = null;
   }
 
   get lives() {
@@ -52,6 +54,11 @@ class Statistics {
     return this._statsBar;
   }
 
+  get statsTable() {
+    this._statsTable = this._statsTable ? this._statsTable : new StatsTable(this);
+    return this._statsTable;
+  }
+
   get correctsPoints() {
     return this.correctsAmount * STATISTICS_CONFIG.POINTS_ANSWER_VALID;
   }
@@ -85,10 +92,11 @@ class Statistics {
   }
 
   update(calculateResulting) {
+    this.statsBar.update(this);
     if (calculateResulting) {
       this.calculateResulting();
+      this.statsTable.update(this);
     }
-    this.statsBar.update(this);
   }
 
   resetStats() {
