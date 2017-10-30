@@ -96,10 +96,10 @@ class Statistics {
   }
 
   update(calculateResulting) {
-    this.statsBar.update(this);
+    this.statsBar.init(this);
     if (calculateResulting) {
       this.calculateResulting();
-      this.statsTable.update(this);
+      this.statsTable.init(this);
     }
   }
 

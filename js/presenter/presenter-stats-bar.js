@@ -6,7 +6,7 @@ export default class PresenterStatsBar {
     this._statsBarView = new ViewStatsBar(statistics);
   }
 
-  update(statistics) {
+  init(statistics) {
     this._statsBarView.update(statistics);
   }
 
