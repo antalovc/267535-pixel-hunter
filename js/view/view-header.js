@@ -1,6 +1,6 @@
 import ViewAbstract from './view-abstract.js';
-import getLives from '../presenter/get-lives.js';
-import getTimer from '../presenter/get-timer.js';
+import Lives from '../presenter/presenter-lives.js';
+import Timer from '../presenter/presenter-timer.js';
 
 export default class ViewHeader extends ViewAbstract {
 
@@ -35,12 +35,12 @@ export default class ViewHeader extends ViewAbstract {
   }
 
   get timerView() {
-    this._timer = this._timer || getTimer(this._app);
+    this._timer = this._timer || new Timer(this._app);
     return this._timer;
   }
 
   get livesView() {
-    this._lives = this._lives || getLives(this._game);
+    this._lives = this._lives || new Lives(this._app);
     return this._lives;
   }
 
@@ -77,7 +77,7 @@ export default class ViewHeader extends ViewAbstract {
       if (element.parentNode !== this._element) {
         this._element.appendChild(element);
       }
-      elementObject.update(this._game);
+      elementObject.init(this._app);
     } else if (element.parentNode === this._element) {
       this._element.removeChild(element);
     }
