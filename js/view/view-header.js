@@ -2,6 +2,8 @@ import ViewAbstract from './view-abstract.js';
 import Lives from '../presenter/presenter-lives.js';
 import Timer from '../presenter/presenter-timer.js';
 
+const CLASS_BUTTON_BACK = `back`;
+
 export default class ViewHeader extends ViewAbstract {
 
   constructor(app) {
@@ -15,7 +17,7 @@ export default class ViewHeader extends ViewAbstract {
   get template() {
     return `
     <div class="header__back">
-      <button class="back">
+      <button class="${CLASS_BUTTON_BACK}">
         <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
         <img src="img/logo_small.svg" width="101" height="44">
       </button>
@@ -45,7 +47,7 @@ export default class ViewHeader extends ViewAbstract {
   }
 
   bind() {
-    this.element.querySelector(`.back`).addEventListener(`click`, () => {
+    this.element.querySelector(`.${CLASS_BUTTON_BACK}`).addEventListener(`click`, () => {
       this.onBackClicked();
     });
   }

@@ -1,11 +1,13 @@
 import ViewQuestionAbstract from './view-question-abstract.js';
 
+const CLASS_GAME_CONTENT = `game__content`;
+
 export default class ViewQuestion1 extends ViewQuestionAbstract {
 
   get template() {
     return `
     ${this.taskElement}
-    <form class="game__content">
+    <form class="${CLASS_GAME_CONTENT}">
       ${this.picturesElements}
     </form>`;
   }
@@ -40,7 +42,7 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
 
   update(game) {
     this._currentQuestion = game.currentQuestion;
-    Array.from(this.element.querySelectorAll(`.game__content img`)).forEach((img, index) => {
+    Array.from(this.element.querySelectorAll(`.${CLASS_GAME_CONTENT} img`)).forEach((img, index) => {
       img.setAttribute(`src`, this._currentQuestion.pictures[index].path);
     });
     Array.from(this.element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {

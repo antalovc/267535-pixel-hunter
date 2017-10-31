@@ -1,5 +1,8 @@
 import ViewAbstract from './view-abstract.js';
 
+const CLASS_RESULT_NUMBER = `result__number`;
+const CLASS_RESULT_BAR = `result__bar`;
+
 export default class ViewStatsTable extends ViewAbstract {
 
   constructor(statistics) {
@@ -27,8 +30,8 @@ export default class ViewStatsTable extends ViewAbstract {
   get winTemplate() {
     return `
       <tr>
-        <td class="result__number">${this._index}.</td>
-        <td class="result__bar" colspan="2"></td>
+        <td class="${CLASS_RESULT_NUMBER}">${this._index}.</td>
+        <td class="${CLASS_RESULT_BAR}" colspan="2"></td>
         <td class="result__points">×&nbsp;100</td>
         <td class="result__total">${this._statistics.correctsPoints}</td>
       </tr>
@@ -64,15 +67,15 @@ export default class ViewStatsTable extends ViewAbstract {
   get lossTemplate() {
     return `
        <tr>
-        <td class="result__number">${this._index}.</td>
-        <td class="result__bar" colspan="2"></td>
+        <td class="${CLASS_RESULT_NUMBER}">${this._index}.</td>
+        <td class="${CLASS_RESULT_BAR}" colspan="2"></td>
         <td class="result__total"></td>
         <td class="result__total  result__total--final">fail</td>
       </tr>`;
   }
 
   set index(index) {
-    this.element.querySelector(`.result__number`).innerHTML = index;
+    this.element.querySelector(`.${CLASS_RESULT_NUMBER}`).innerHTML = index;
   }
 
   update(statistics) {
@@ -82,7 +85,7 @@ export default class ViewStatsTable extends ViewAbstract {
 
 
   addInnerViews() {
-    this.element.querySelector(`.result__bar`).appendChild(this._statistics.statsBar.element);
+    this.element.querySelector(`.${CLASS_RESULT_BAR}`).appendChild(this._statistics.statsBar.element);
   }
 
 }

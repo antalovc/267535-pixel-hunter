@@ -1,5 +1,7 @@
 import ViewAbstract from './view-abstract.js';
 
+const CLASS_GREETING_CONTINUE = `greeting__continue`;
+
 export default class ViewGreeting extends ViewAbstract {
 
   get template() {
@@ -14,7 +16,7 @@ export default class ViewGreeting extends ViewAbstract {
           Фотореализм обманчив и коварен.<br>
           Помни, главное — смотреть очень внимательно.</p>
       </div>
-      <div class="greeting__continue">
+      <div class="${CLASS_GREETING_CONTINUE}">
         <span>
           <img src="img/arrow_right.svg" width="64" height="64" alt="Next">
         </span>
@@ -34,7 +36,7 @@ export default class ViewGreeting extends ViewAbstract {
   }
 
   bind() {
-    this.element.querySelector(`.greeting__continue`).addEventListener(`click`, () => {
+    this.element.querySelector(`.${CLASS_GREETING_CONTINUE}`).addEventListener(`click`, () => {
       this.onContinueClicked();
     });
   }

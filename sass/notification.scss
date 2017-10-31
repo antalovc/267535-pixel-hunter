@@ -1,0 +1,58 @@
+@import "fonts";
+
+.notification {
+  position: fixed;
+  top: 40px;
+
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+
+  width: 400px;
+  height: 160px;
+  margin-left: auto;
+  margin-right: auto;
+
+  z-index: 20;
+
+  padding: 20px 20px;
+
+  font-size: 22px;
+  line-height: 35px;
+  border: 10px solid #df4e4e;
+  background: #a8c8c4 linear-gradient(to bottom left, #ccdeeb, #84b39e) no-repeat;
+}
+
+.notification__buttons {
+  width: 340px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.notification button {  display: inline-block;
+  width: 160px;
+  padding: 10px 33px;
+
+  vertical-align: top;
+  text-align: center;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  background-color: #000000;
+  border: none;
+
+  cursor: pointer;
+
+  &--final {
+    @include bold-text;
+  }
+}

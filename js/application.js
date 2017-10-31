@@ -7,6 +7,7 @@ import Question1 from './presenter/presenter-question-1.js';
 import Question2 from './presenter/presenter-question-2.js';
 import Question3 from './presenter/presenter-question-3.js';
 import Stats from './presenter/presenter-stats.js';
+import Notification from './presenter/presenter-notification.js';
 import QuestionBase from './question/question-base.js';
 import Game from './game.js';
 import DataHandler from './data/data-handler.js';
@@ -36,6 +37,7 @@ class Application {
     this._question2 = null;
     this._question3 = null;
     this._stats = null;
+    this._notification = null;
 
     this._questionViews = {
       [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
@@ -117,6 +119,11 @@ class Application {
     return this._stats;
   }
 
+  get notification() {
+    this._notification = this._notification ? this._notification : new Notification(this);
+    return this._notification;
+  }
+
   // routing part ================================================
 
   greet() {
@@ -190,6 +197,14 @@ class Application {
 
   // game part ===================================================
 
+  tryNotify() {
+    if (this._game.isRunning) {
+      this.notification.init();
+    } else {
+      this.greet();
+    }
+  }
+
   doIntro() {
     this.intro.init(this);
   }
@@ -239,6 +254,14 @@ class Application {
     }
     this._viewContent = view;
     this._mainElement.insertBefore(view.element, this._footer.element);
+  }
+
+  addNotification(view) {
+    this._viewContent.element.insertAdjacentElement(`beforebegin`, view);
+  }
+
+  removeNotification(view) {
+    this._mainElement.removeChild(view);
   }
 
   loadGameData(callback) {
