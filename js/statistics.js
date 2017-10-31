@@ -103,6 +103,11 @@ class Statistics {
     }
   }
 
+  reset() {
+    this._lives = Game.livesTotal;
+    this._answers = [];
+  }
+
   resetStats() {
     this._stats = {
       correctsAmount: 0,

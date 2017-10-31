@@ -120,13 +120,10 @@ class Application {
   // routing part ================================================
 
   greet() {
-    this._game = null;
-    this._gameData = null;
     location.hash = ROUTES_KEYS.GREET;
   }
 
   prepare() {
-    this._game = null;
     location.hash = ROUTES_KEYS.RULES;
   }
 
@@ -140,7 +137,6 @@ class Application {
   }
 
   initUnknown() {
-    this._game = null;
     this.doGreet();
   }
 
@@ -148,30 +144,27 @@ class Application {
     if (this._gameData) {
       this.doGreet();
     } else {
-      this.loadGameData((data) => {
-        this.doGreet(data);
+      this.loadGameData(() => {
+        this.doGreet();
       });
     }
   }
 
   initPrepare() {
     if (this._gameData) {
-      this.doPrepare(this._gameData);
+      this.doPrepare();
     } else {
-      this.loadGameData((data) => {
-        this.doPrepare(data);
+      this.loadGameData(() => {
+        this.doPrepare();
       });
     }
   }
 
   initGame(hash) {
-    if (this._game && !this._game.finished) {
+    if (this._game) {
       this.doStepGame(hash);
     } else {
-      this._game = null;
-      this.loadGameData((data) => {
-        this._gameData = data;
-        this._game = new Game(this, this._gameData);
+      this.loadGameData(() => {
         this.doStepGame(hash);
       });
     }
@@ -201,24 +194,19 @@ class Application {
     this.intro.init(this);
   }
 
-  doGreet(data) {
-    if (typeof data !== `undefined`) {
-      this._gameData = data;
-    }
+  doGreet() {
     this.greeting.init(this);
   }
 
-  doPrepare(data) {
-    if (typeof data !== `undefined`) {
-      this._gameData = data;
-    }
-    this._game = new Game(this, this._gameData);
+  doPrepare() {
+    this._game = this._game.reset() || new Game(this, this._gameData);
     this.rules.init(this);
   }
 
   doStepGame(hash) {
+    this._game = this._game || new Game(this, this._gameData);
     this._game.state = hash;
-    if (this._game.hasNextQuestion) {
+    if (this._game.isRunning) {
       this._game.step();
       const presenter = this._questionViews[this._game.currentQuestion.type]();
       presenter.init(this);
@@ -251,7 +239,10 @@ class Application {
 
   loadGameData(callback) {
     this.doIntro();
-    DataHandler.loadGameData(callback);
+    DataHandler.loadGameData((data) => {
+      this._gameData = data;
+      callback();
+    });
   }
 }
 

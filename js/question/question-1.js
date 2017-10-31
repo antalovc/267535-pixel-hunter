@@ -17,6 +17,7 @@ export default class Question1 extends QuestionBase {
       this.answer(this._subanswers.every((subanswer) => {
         return subanswer;
       }));
+      this._subanswers = [null, null];
     }
   }
 }

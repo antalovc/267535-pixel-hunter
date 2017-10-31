@@ -38,7 +38,6 @@ export default class Game {
 
     this._app = app;
     this._playerName = ``;
-    this._finished = false;
   }
 
   get app() {
@@ -73,16 +72,8 @@ export default class Game {
     return this._playerName;
   }
 
-  get hasNextQuestion() {
-    return this._statistics.answers.length < Game.questionsTotal && this._statistics.lives;
-  }
-
   get isRunning() {
-    return !this._finished && this._statistics.lives;
-  }
-
-  get finished() {
-    return this._finished;
+    return this._statistics.answers.length < Game.questionsTotal && this._statistics.lives;
   }
 
   get state() {
@@ -146,8 +137,12 @@ export default class Game {
   }
 
   stop() {
-    this._finished = true;
     this._statistics.update(true);
+  }
+
+  reset() {
+    this._statistics.reset();
+    return this;
   }
 
 }

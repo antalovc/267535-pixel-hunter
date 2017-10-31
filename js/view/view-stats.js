@@ -9,7 +9,7 @@ export default class ViewStats extends ViewAbstract {
   }
 
   get template() {
-    return `<h1>${this._statistics.lives ? `Победа!` : `Поражение`}</h1>`;
+    return `<h1>${this.headerContents}</h1>`;
   }
 
   get templateTag() {
@@ -24,10 +24,15 @@ export default class ViewStats extends ViewAbstract {
     return ``;
   }
 
+  get headerContents() {
+    return `${this._statistics.lives ? `Победа!` : `Поражение`}`;
+  }
+
   update(statistics, previousStatistics) {
     this._statistics = statistics;
     this._previousStatistics = previousStatistics;
     const header = this.element.removeChild(this.element.querySelector(`h1`));
+    header.innerHTML = this.headerContents;
     this.element.innerHTML = ``;
     this.element.appendChild(header);
     this.addInnerViews();
