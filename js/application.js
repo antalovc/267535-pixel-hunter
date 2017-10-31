@@ -199,7 +199,11 @@ class Application {
   }
 
   doPrepare() {
-    this._game = this._game.reset() || new Game(this, this._gameData);
+    if (this._game) {
+      this._game.reset();
+    } else {
+      this._game = new Game(this, this._gameData);
+    }
     this.rules.init(this);
   }
 
