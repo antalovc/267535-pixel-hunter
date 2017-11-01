@@ -92,12 +92,13 @@ export default class DataHandler {
 
   static createPicturePromise(picture) {
     return new Promise((resolve, reject) => {
-      picture.image = new Image();
-      picture.image.src = picture.path;
-      picture.image.onload = () => {
+      const image = new Image();
+      image.src = picture.path;
+      image.onload = () => {
+        picture.image = image;
         resolve(picture);
       };
-      picture.image.onerror = (e) => {
+      image.onerror = (e) => {
         reject(e);
       };
     });

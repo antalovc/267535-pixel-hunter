@@ -1,13 +1,11 @@
 import ViewQuestionAbstract from './view-question-abstract.js';
 
-const CLASS_GAME_CONTENT = `game__content`;
-
 export default class ViewQuestion1 extends ViewQuestionAbstract {
 
   get template() {
     return `
     ${this.taskElement}
-    <form class="${CLASS_GAME_CONTENT}">
+    <form class="${ViewQuestionAbstract.CLASS_GAME_CONTENT}">
       ${this.picturesElements}
     </form>`;
   }
@@ -15,8 +13,7 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
   get picturesElements() {
     return this._currentQuestion.pictures.reduce((result, picture, index) => {
       return result + `
-      <div class="game__option" width="${picture.width}" height="${picture.height}">
-        <img src="${picture.path}" alt="Option ${index + 1}">
+      <div class="${ViewQuestionAbstract.CLASS_GAME_OPTION}" width="${picture.width}" height="${picture.height}">
         <label class="game__answer game__answer--photo">
           <input name="question${index + 1}" type="radio" value="photo">
           <span>Фото</span>
@@ -42,13 +39,20 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
 
   update(game) {
     this._currentQuestion = game.currentQuestion;
-    Array.from(this.element.querySelectorAll(`.${CLASS_GAME_CONTENT} img`)).forEach((img, index) => {
-      img.setAttribute(`src`, this._currentQuestion.pictures[index].path);
+    this._currentQuestion.pictures.forEach((picture, index) => {
+      this.replaceImageElement(picture, index);
     });
     Array.from(this.element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {
       radio.checked = false;
     });
     super.update(game);
+  }
+
+  addInnerViews() {
+    const pictures = this._currentQuestion.pictures;
+    this._element.querySelectorAll(`.${ViewQuestionAbstract.CLASS_GAME_OPTION}`).forEach((optionElement, index) => {
+      optionElement.insertAdjacentElement(`afterbegin`, this.getImageElement(pictures[index]));
+    });
   }
 
   onSubAnswer() {

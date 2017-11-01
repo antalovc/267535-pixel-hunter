@@ -56,9 +56,9 @@
 }
 
 .game__option {
-  display:flex;
+  /*display:flex;
   justify-content:center;
-  align-items:center;
+  align-items:center;*/
 
   position: relative;
   border: 10px solid transparent;
@@ -69,11 +69,6 @@
 
   text-align: center;
   vertical-align: middle;
-}
-
-.game__option img {
-  max-height:100%;
-  max-width: 100%;
 }
 
 .game__answer input {

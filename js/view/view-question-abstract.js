@@ -1,11 +1,15 @@
 import ViewAbstract from './view-abstract.js';
 
+const CLASS_GAME_OPTION = `game__option`;
+const CLASS_GAME_CONTENT = `game__content`;
+
 export default class ViewQuestionAbstract extends ViewAbstract {
 
   constructor(game) {
     super();
     this._currentQuestion = game.currentQuestion;
     this._statistics = game.statistics;
+    this._imageElements = {};
   }
 
   get templateTag() {
@@ -26,6 +30,28 @@ export default class ViewQuestionAbstract extends ViewAbstract {
 
   get picturesElements() {
     throw new Error(`Abstract method called`);
+  }
+
+  static get CLASS_GAME_OPTION() {
+    return CLASS_GAME_OPTION;
+  }
+  static get CLASS_GAME_CONTENT() {
+    return CLASS_GAME_CONTENT;
+  }
+
+  getImageElement(picture, index) {
+    const count = index || 0 + 1;
+    picture.image.alt = `Option ${count}`;
+    this._imageElements[count] = picture.image;
+    return picture.image;
+  }
+
+  replaceImageElement(picture, index) {
+    if (Object.keys(this._imageElements).length === 0) {
+      return;
+    }
+    const oldImageElement = this._imageElements[index || 0 + 1];
+    oldImageElement.parentNode.replaceChild(this.getImageElement(picture), oldImageElement);
   }
 
   onSubAnswer() {
