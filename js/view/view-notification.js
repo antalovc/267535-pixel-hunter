@@ -19,7 +19,7 @@ export default class ViewNotification extends ViewAbstract {
         <button class="${CLASS_BUTTON_PLAY}" type="button" title="Играть дальше">
           Играть дальше
         </button>
-      </div>`
+      </div>`;
   }
 
   get templateTag() {

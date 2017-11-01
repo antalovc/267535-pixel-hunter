@@ -8,31 +8,38 @@ const CONFIG_SERVER = {
   STATS: `stats/:`
 };
 
+const CLASS_ERROR = `error`;
+
 export default class DataHandler {
 
   static onError(error) {
-    const node = document.createElement(`div`);
-    node.style = `width: 180px; margin: 0 auto; text-align: center; background-color: red;`;
-
-    node.textContent = error;
-    document.body.insertAdjacentElement(`afterbegin`, node);
+    let node = document.querySelector(`.${CLASS_ERROR}`);
+    if (node) {
+      node.textContent = error;
+    } else {
+      node = document.createElement(`div`);
+      node.classList.add(CLASS_ERROR);
+      node.textContent = error;
+      document.body.insertAdjacentElement(`afterbegin`, node);
+    }
   }
+
+  /* static fetch(url) {
+    return new Promise((resolve, reject) => {
+      fetch(url)
+          .then(DataHandler.checkStatus)
+          .then(resolve, reject);
+    });
+  } */
 
   static loadGameData(callback) {
     fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.DATA}`)
-        .then(DataHandler.checkStatus)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`);
-        })
+        .then(DataHandler.jsonLoadResponse)
         .then((data) => {
           return data.map((datum) => {
-            return DataHandler.processQuestion(datum);
+            return DataHandler.adaptQuestion(datum);
           });
         })
-        // .then((questionsPromises) => Promise.all(questionsPromises))
         .then((questions) => {
           return questions.map((question) => {
             return createQuestion(question);
@@ -45,24 +52,13 @@ export default class DataHandler {
   }
 
   static loadStatsData(name, callback) {
-    return fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`)
-        .then(DataHandler.checkStatus)
-        .then((res) => {
-          return res.json();
-        })
-        .then((previousStats) => {
-          return previousStats.reduceRight((result, previousStat) => {
-            result.push(new Statistics({
-              lives: previousStat.lives,
-              answers: previousStat.stats
-            }));
-            return result;
-          }, []);
-        })
+    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`)
+        .then(DataHandler.jsonLoadResponse)
+        .then(DataHandler.adaptStats)
         .then((previousStatistics) => {
           callback(previousStatistics);
         })
-        .catch(callback([]));
+        .catch(DataHandler.onError);
   }
 
   static saveStatsData(name, results) {
@@ -73,12 +69,15 @@ export default class DataHandler {
       },
       method: `POST`
     };
-    return fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config)
-        .then(DataHandler.checkStatus)
+    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config)
         .catch(DataHandler.onError);
   }
 
-  static processQuestion(datum) {
+  static jsonLoadResponse(response) {
+    return response.ok ? response.json() : [];
+  }
+
+  static adaptQuestion(datum) {
     const question = {};
     question.type = datum.type;
     question.text = datum.question;
@@ -95,11 +94,14 @@ export default class DataHandler {
     return question;
   }
 
-  static checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    } else {
-      throw new Error(response.statusText);
-    }
+  static adaptStats(datum) {
+    return datum.reduceRight((result, previousStat) => {
+      result.push(new Statistics({
+        lives: previousStat.lives,
+        answers: previousStat.stats
+      }));
+      return result;
+    }, []);
   }
+
 }
