@@ -40,7 +40,7 @@ export default class ViewQuestionAbstract extends ViewAbstract {
   }
 
   getImageElement(picture, index) {
-    const count = index || 0 + 1;
+    const count = (index || 0) + 1;
     picture.image.alt = `Option ${count}`;
     this._imageElements[count] = picture.image;
     return picture.image;
@@ -50,8 +50,11 @@ export default class ViewQuestionAbstract extends ViewAbstract {
     if (Object.keys(this._imageElements).length === 0) {
       return;
     }
-    const oldImageElement = this._imageElements[index || 0 + 1];
-    oldImageElement.parentNode.replaceChild(this.getImageElement(picture), oldImageElement);
+    const count = (index || 0) + 1;
+    const oldImageElement = this._imageElements[count];
+    const newImageElement = this.getImageElement(picture, index);
+    oldImageElement.parentNode.replaceChild(newImageElement, oldImageElement);
+    this._imageElements[count] = newImageElement;
   }
 
   onSubAnswer() {
