@@ -30,7 +30,7 @@ export default class ViewLives extends ViewAbstract {
   }
 
   get heartsElements() {
-    const currentLives = this._game.lives;
+    const currentLives = this._game ? this._game.lives : 0;
     let res = ``;
     for (let i = 0; i < Game.livesTotal; i++) {
       res += `<img src="img/heart__${i < currentLives ? `full` : `empty`}.svg" class="game__heart" alt="Life" width="32" height="32">`;

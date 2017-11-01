@@ -1,30 +1,7 @@
 import {Statistics} from './statistics.js';
-import Answer from './answer.js';
 
 const NUMBER_GAME_LIVES = 3;
 const NUMBER_GAME_QUESTION = 10;
-
-const STATE_DELIMITER = `&`;
-const STATE_EQUALER = `=`;
-const ROUTES_PARAMS = {
-  NAME: `name`,
-  LIVES: `lives`,
-  STATS: `stats`
-};
-
-const ANSWER_TO_CODE = {
-  [Answer.ANSWER_DESCRIPTIONS.WRONG]: 0,
-  [Answer.ANSWER_DESCRIPTIONS.SLOW]: 1,
-  [Answer.ANSWER_DESCRIPTIONS.CORRECT]: 2,
-  [Answer.ANSWER_DESCRIPTIONS.FAST]: 3
-};
-
-const CODE_TO_ANSWER = [
-  Answer.ANSWER_DESCRIPTIONS.WRONG,
-  Answer.ANSWER_DESCRIPTIONS.SLOW,
-  Answer.ANSWER_DESCRIPTIONS.CORRECT,
-  Answer.ANSWER_DESCRIPTIONS.FAST
-];
 
 export default class Game {
 
@@ -38,6 +15,7 @@ export default class Game {
 
     this._app = app;
     this._playerName = ``;
+    this._answered = false;
   }
 
   get app() {
@@ -77,10 +55,17 @@ export default class Game {
   }
 
   get state() {
-    const nameHash = `${ROUTES_PARAMS.NAME}${STATE_EQUALER}${this._playerName}`;
-    const livesHash = `${ROUTES_PARAMS.LIVES}${STATE_EQUALER}${this._statistics.lives}`;
-    const statsHash = `${ROUTES_PARAMS.STATS}${STATE_EQUALER}${this.answersToCode(this._statistics.answers)}`;
-    return `${nameHash}${STATE_DELIMITER}${livesHash}${STATE_DELIMITER}${statsHash}`;
+    return {
+      stats: this._statistics.answers,
+      lives: this._statistics._lives,
+      name: this._playerName
+    };
+  }
+
+  set state(state) {
+    this._statistics.answers = state.stats;
+    this._statistics._lives = state.lives;
+    this._playerName = state.name;
   }
 
   get results() {
@@ -90,38 +75,8 @@ export default class Game {
     };
   }
 
-  static checkState(state) {
-    const statesObject = state.split(STATE_DELIMITER).reduce((result, parameter) => {
-      const splitPosition = parameter.indexOf(STATE_EQUALER);
-      result[parameter.slice(0, splitPosition)] = parameter.slice(splitPosition + 1);
-      return result;
-    }, {});
-
-    return Object.values(ROUTES_PARAMS).every((value) => {
-      return statesObject.hasOwnProperty(value);
-    }) ? statesObject : false;
-  }
-
-  set state(state) {
-    const statesObject = Game.checkState(state);
-
-    if (statesObject) {
-      this._statistics.answers = this.codeToAnswers(statesObject[ROUTES_PARAMS.STATS]);
-      this._statistics._lives = +statesObject[ROUTES_PARAMS.LIVES];
-      this._playerName = statesObject[ROUTES_PARAMS.NAME];
-    }
-  }
-
-  codeToAnswers(stats) {
-    return stats.split(``).map((stat) => {
-      return CODE_TO_ANSWER[stat];
-    });
-  }
-
-  answersToCode(answers) {
-    return answers.map((answer) => {
-      return ANSWER_TO_CODE[answer];
-    }).join(``);
+  get answered() {
+    return this._answered;
   }
 
   answer(isCorrect, time) {
@@ -129,10 +84,12 @@ export default class Game {
       this._statistics.burnLife();
     }
     this._statistics.answer(isCorrect, time);
+    this._answered = true;
     this._app.stepGame();
   }
 
   step() {
+    this._answered = false;
     this._statistics.update();
   }
 
