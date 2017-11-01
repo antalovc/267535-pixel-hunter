@@ -1,13 +1,13 @@
-import ViewStatsBar from '../view/view-stats-bar';
+import ViewStatsBar from '../view/view-stats-bar.js';
 
 export default class PresenterStatsBar {
 
-  constructor(app) {
-    this._statsBarView = new ViewStatsBar(app.game.statistics);
+  constructor(statistics) {
+    this._statsBarView = new ViewStatsBar(statistics);
   }
 
-  update(app) {
-    this._statsBarView.update(app.game.statistics);
+  init(statistics) {
+    this._statsBarView.update(statistics);
   }
 
   get element() {

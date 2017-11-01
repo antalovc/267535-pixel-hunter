@@ -2,6 +2,7 @@ import {Statistics} from './statistics.js';
 import Answer from './answer.js';
 
 const NUMBER_GAME_LIVES = 3;
+const NUMBER_GAME_QUESTION = 10;
 
 const STATE_DELIMITER = `&`;
 const STATE_EQUALER = `=`;
@@ -10,12 +11,14 @@ const ROUTES_PARAMS = {
   LIVES: `lives`,
   STATS: `stats`
 };
+
 const ANSWER_TO_CODE = {
   [Answer.ANSWER_DESCRIPTIONS.WRONG]: 0,
   [Answer.ANSWER_DESCRIPTIONS.SLOW]: 1,
   [Answer.ANSWER_DESCRIPTIONS.CORRECT]: 2,
   [Answer.ANSWER_DESCRIPTIONS.FAST]: 3
 };
+
 const CODE_TO_ANSWER = [
   Answer.ANSWER_DESCRIPTIONS.WRONG,
   Answer.ANSWER_DESCRIPTIONS.SLOW,
@@ -26,48 +29,38 @@ const CODE_TO_ANSWER = [
 export default class Game {
 
   constructor(app, questions) {
-    this._lives = NUMBER_GAME_LIVES;
-    this._livesTotal = NUMBER_GAME_LIVES;
-
     app.timer.callback = () => {
       this.currentQuestion.answer(false);
     };
 
     this._questions = questions;
-    this._answers = [];
-    this._statistics = null;
+    this._statistics = new Statistics();
 
     this._app = app;
     this._playerName = ``;
-    this._finished = false;
   }
 
   get app() {
     return this._app;
   }
 
-  get livesTotal() {
-    return this._livesTotal;
+  static get livesTotal() {
+    return NUMBER_GAME_LIVES;
   }
 
-  get questionsTotal() {
-    return this._questions.length;
+  static get questionsTotal() {
+    return NUMBER_GAME_QUESTION;
   }
 
   get lives() {
-    return this._lives >= 0 ? this._lives : 0;
-  }
-
-  get answers() {
-    return this._answers;
+    return this._statistics.lives;
   }
 
   get currentQuestion() {
-    return this._questions[this._answers.length];
+    return this._questions[this._statistics.answers.length];
   }
 
   get statistics() {
-    this._statistics = this._statistics || new Statistics(this);
     return this._statistics;
   }
 
@@ -79,29 +72,22 @@ export default class Game {
     return this._playerName;
   }
 
-  get hasNextQuestion() {
-    return this._answers.length < this.questionsTotal && this.lives;
-  }
-
   get isRunning() {
-    return !this._finished && this.lives;
-  }
-
-  get finished() {
-    return this._finished;
+    return this._statistics.answers.length < Game.questionsTotal && this._statistics.lives;
   }
 
   get state() {
     const nameHash = `${ROUTES_PARAMS.NAME}${STATE_EQUALER}${this._playerName}`;
-    const livesHash = `${ROUTES_PARAMS.LIVES}${STATE_EQUALER}${this._lives}`;
-    const statsHash = `${ROUTES_PARAMS.STATS}${STATE_EQUALER}${this.questionsState}`;
+    const livesHash = `${ROUTES_PARAMS.LIVES}${STATE_EQUALER}${this._statistics.lives}`;
+    const statsHash = `${ROUTES_PARAMS.STATS}${STATE_EQUALER}${this.answersToCode(this._statistics.answers)}`;
     return `${nameHash}${STATE_DELIMITER}${livesHash}${STATE_DELIMITER}${statsHash}`;
   }
 
-  get questionsState() {
-    return this._answers.map((answer) => {
-      return ANSWER_TO_CODE[answer];
-    }).join(``);
+  get results() {
+    return {
+      stats: this._statistics.answers,
+      lives: this._statistics.lives
+    };
   }
 
   static checkState(state) {
@@ -120,34 +106,43 @@ export default class Game {
     const statesObject = Game.checkState(state);
 
     if (statesObject) {
-      this._answers = this.generateAnswers(statesObject[ROUTES_PARAMS.STATS]);
-      this._lives = +statesObject[ROUTES_PARAMS.LIVES];
+      this._statistics.answers = this.codeToAnswers(statesObject[ROUTES_PARAMS.STATS]);
+      this._statistics._lives = +statesObject[ROUTES_PARAMS.LIVES];
       this._playerName = statesObject[ROUTES_PARAMS.NAME];
     }
-    this._statistics = null;
   }
 
-  generateAnswers(stats) {
+  codeToAnswers(stats) {
     return stats.split(``).map((stat) => {
       return CODE_TO_ANSWER[stat];
     });
   }
 
+  answersToCode(answers) {
+    return answers.map((answer) => {
+      return ANSWER_TO_CODE[answer];
+    }).join(``);
+  }
+
   answer(isCorrect, time) {
     if (!isCorrect) {
-      this._lives--;
+      this._statistics.burnLife();
     }
-    this._answers.push(Answer.generateDescription(isCorrect, time));
+    this._statistics.answer(isCorrect, time);
     this._app.stepGame();
   }
 
   step() {
-    this.statistics.update(this);
+    this._statistics.update();
   }
 
   stop() {
-    this._finished = true;
-    this.statistics.update(this);
+    this._statistics.update(true);
+  }
+
+  reset() {
+    this._statistics.reset();
+    return this;
   }
 
 }

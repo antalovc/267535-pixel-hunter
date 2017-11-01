@@ -5,7 +5,7 @@ export default class PresenterHeader {
   constructor(app) {
     this._headerView = new ViewHeader(app);
     this._headerView.onBackClicked = () => {
-      app.greet();
+      app.tryNotify();
     };
   }
 

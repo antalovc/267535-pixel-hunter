@@ -1,4 +1,7 @@
 import Answer from './answer.js';
+import Game from './game.js';
+import StatsBar from './presenter/presenter-stats-bar.js';
+import StatsTable from './presenter/presenter-stats-table.js';
 
 const STATISTICS_CONFIG = {
   POINTS_ANSWER_VALID: 100,
@@ -9,17 +12,37 @@ const STATISTICS_CONFIG = {
 
 class Statistics {
 
-  constructor(game) {
+  constructor(config) {
     this._stats = null;
-    this._game = game;
-
-    this.calculateResulting();
-
     this._statsBar = null;
+    this._statsTable = null;
+
+    const isConfigured = typeof config !== `undefined`;
+    this._lives = isConfigured ? config.lives : Game.livesTotal;
+    this._answers = isConfigured ? config.answers : [];
+    if (isConfigured) {
+      this.calculateResulting();
+    }
+  }
+
+  get lives() {
+    return this._lives >= 0 ? this._lives : 0;
+  }
+
+  set lives(lives) {
+    this._lives = lives;
+  }
+
+  get answers() {
+    return this._answers;
+  }
+
+  set answers(answers) {
+    this._answers = answers;
   }
 
   get questionsTotal() {
-    return this._stats.questionsTotal;
+    return Game.questionsTotal;
   }
 
   get totalPoints() {
@@ -28,6 +51,16 @@ class Statistics {
 
   get correctsAmount() {
     return this._stats.correctsAmount;
+  }
+
+  get statsBar() {
+    this._statsBar = this._statsBar ? this._statsBar : new StatsBar(this);
+    return this._statsBar;
+  }
+
+  get statsTable() {
+    this._statsTable = this._statsTable ? this._statsTable : new StatsTable(this);
+    return this._statsTable;
   }
 
   get correctsPoints() {
@@ -50,25 +83,29 @@ class Statistics {
     return this.slowsAmount * STATISTICS_CONFIG.POINTS_ANSWER_SLOW;
   }
 
-  get livesAmount() {
-    return this._stats.livesAmount;
-  }
-
   get livesPoints() {
-    return this.livesAmount * STATISTICS_CONFIG.POINTS_LIVE_SPARE;
+    return this.lives * STATISTICS_CONFIG.POINTS_LIVE_SPARE;
   }
 
-  get answers() {
-    return this._stats.answers;
+  answer(isCorrect, time) {
+    this._answers.push(Answer.generateDescription(isCorrect, time));
   }
 
-  get statsBar() {
-    return this._game.app.statsBar;
+  burnLife() {
+    this._lives--;
   }
 
-  update() {
-    this.calculateResulting();
-    this.statsBar.update(this._game.app);
+  update(calculateResulting) {
+    this.statsBar.init(this);
+    if (calculateResulting) {
+      this.calculateResulting();
+      this.statsTable.init(this);
+    }
+  }
+
+  reset() {
+    this._lives = Game.livesTotal;
+    this._answers = [];
   }
 
   resetStats() {
@@ -76,15 +113,14 @@ class Statistics {
       correctsAmount: 0,
       fastsAmount: 0,
       slowsAmount: 0,
-      livesAmount: this._game.lives,
-      answers: this._game.answers,
-      questionsTotal: this._game.questionsTotal
+      answers: [],
+      questionsTotal: Game.questionsTotal
     };
   }
 
   calculateResulting() {
     this.resetStats();
-    this._game.answers.forEach((answer) => {
+    this._answers.forEach((answer) => {
       const stats = this._stats;
       switch (answer) {
         case Answer.ANSWER_DESCRIPTIONS.FAST:

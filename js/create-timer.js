@@ -1,6 +1,7 @@
 const TIME_TICK = 1; // seconds
 const TIME_MSEC_TO_SEC = 1000;
 const TIME_MAX = 30; // seconds
+const TIME_LOW = 5; // seconds
 
 class Timer {
 
@@ -61,6 +62,10 @@ class Timer {
     if (typeof this._callback === `function`) {
       this._callback();
     }
+  }
+
+  isLow() {
+    return this.timeLeft < TIME_LOW;
   }
 
   onTick() {

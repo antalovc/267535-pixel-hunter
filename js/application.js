@@ -7,8 +7,8 @@ import Question1 from './presenter/presenter-question-1.js';
 import Question2 from './presenter/presenter-question-2.js';
 import Question3 from './presenter/presenter-question-3.js';
 import Stats from './presenter/presenter-stats.js';
+import Notification from './presenter/presenter-notification.js';
 import QuestionBase from './question/question-base.js';
-import StatsBar from './presenter/presenter-stats-bar.js';
 import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
@@ -37,7 +37,7 @@ class Application {
     this._question2 = null;
     this._question3 = null;
     this._stats = null;
-    this._statsBar = null;
+    this._notification = null;
 
     this._questionViews = {
       [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
@@ -119,21 +119,18 @@ class Application {
     return this._stats;
   }
 
-  get statsBar() {
-    this._statsBar = this._statsBar ? this._statsBar : new StatsBar(this);
-    return this._statsBar;
+  get notification() {
+    this._notification = this._notification ? this._notification : new Notification(this);
+    return this._notification;
   }
 
   // routing part ================================================
 
   greet() {
-    this._game = null;
-    this._gameData = null;
     location.hash = ROUTES_KEYS.GREET;
   }
 
   prepare() {
-    this._game = null;
     location.hash = ROUTES_KEYS.RULES;
   }
 
@@ -147,7 +144,6 @@ class Application {
   }
 
   initUnknown() {
-    this._game = null;
     this.doGreet();
   }
 
@@ -155,30 +151,27 @@ class Application {
     if (this._gameData) {
       this.doGreet();
     } else {
-      this.loadGameData((data) => {
-        this.doGreet(data);
+      this.loadGameData(() => {
+        this.doGreet();
       });
     }
   }
 
   initPrepare() {
     if (this._gameData) {
-      this.doPrepare(this._gameData);
+      this.doPrepare();
     } else {
-      this.loadGameData((data) => {
-        this.doPrepare(data);
+      this.loadGameData(() => {
+        this.doPrepare();
       });
     }
   }
 
   initGame(hash) {
-    if (this._game && !this._game.finished) {
+    if (this._game) {
       this.doStepGame(hash);
     } else {
-      this._game = null;
-      this.loadGameData((data) => {
-        this._gameData = data;
-        this._game = new Game(this, this._gameData);
+      this.loadGameData(() => {
         this.doStepGame(hash);
       });
     }
@@ -204,34 +197,44 @@ class Application {
 
   // game part ===================================================
 
+  tryNotify() {
+    if (this._game.isRunning) {
+      this.notification.init();
+    } else {
+      this.greet();
+    }
+  }
+
   doIntro() {
     this.intro.init(this);
   }
 
-  doGreet(data) {
-    if (typeof data !== `undefined`) {
-      this._gameData = data;
-    }
+  doGreet() {
     this.greeting.init(this);
   }
 
-  doPrepare(data) {
-    if (typeof data !== `undefined`) {
-      this._gameData = data;
+  doPrepare() {
+    if (this._game) {
+      this._game.reset();
+    } else {
+      this._game = new Game(this, this._gameData);
     }
-    this._game = new Game(this, this._gameData);
     this.rules.init(this);
   }
 
   doStepGame(hash) {
+    this._game = this._game || new Game(this, this._gameData);
     this._game.state = hash;
-    if (this._game.hasNextQuestion) {
+    if (this._game.isRunning) {
       this._game.step();
       const presenter = this._questionViews[this._game.currentQuestion.type]();
       presenter.init(this);
     } else {
       this._game.stop();
-      this.stats.init(this);
+      DataHandler.loadStatsData(this._game.playerName, (previousStatistics) => {
+        this.stats.init(this, previousStatistics);
+        DataHandler.saveStatsData(this._game.playerName, this._game.results);
+      });
     }
   }
 
@@ -253,9 +256,20 @@ class Application {
     this._mainElement.insertBefore(view.element, this._footer.element);
   }
 
+  addNotification(view) {
+    this._viewContent.element.insertAdjacentElement(`beforebegin`, view);
+  }
+
+  removeNotification(view) {
+    this._mainElement.removeChild(view);
+  }
+
   loadGameData(callback) {
     this.doIntro();
-    DataHandler.loadGameData(callback);
+    DataHandler.loadGameData((data) => {
+      this._gameData = data;
+      callback();
+    });
   }
 }
 

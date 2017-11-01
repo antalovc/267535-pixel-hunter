@@ -1,5 +1,8 @@
 import ViewAbstract from './view-abstract.js';
 
+const CLASS_RULES_INPUT = `rules__input`;
+const CLASS_RULES_BUTTON = `rules__button`;
+
 export default class ViewRules extends ViewAbstract {
 
   get template() {
@@ -15,8 +18,8 @@ export default class ViewRules extends ViewAbstract {
         Готовы?
       </p>
       <form class="rules__form">
-        <input class="rules__input" type="text" placeholder="Ваше Имя" required>
-        <button class="rules__button  continue" type="submit" disabled>Go!</button>
+        <input class="${CLASS_RULES_INPUT}" type="text" placeholder="Ваше Имя" required>
+        <button class="${CLASS_RULES_BUTTON}  continue" type="submit" disabled>Go!</button>
       </form>`;
   }
 
@@ -43,8 +46,8 @@ export default class ViewRules extends ViewAbstract {
 
   bind() {
     const viewElement = this.element;
-    const formInputElement = viewElement.querySelector(`.rules__input`);
-    const formSubmitElement = viewElement.querySelector(`.rules__button`);
+    const formInputElement = viewElement.querySelector(`.${CLASS_RULES_INPUT}`);
+    const formSubmitElement = viewElement.querySelector(`.${CLASS_RULES_BUTTON}`);
 
     const checkValidityCallback = () => {
       formSubmitElement.disabled = !formInputElement.checkValidity();

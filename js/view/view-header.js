@@ -1,6 +1,8 @@
 import ViewAbstract from './view-abstract.js';
-import getLives from '../presenter/get-lives.js';
-import getTimer from '../presenter/get-timer.js';
+import Lives from '../presenter/presenter-lives.js';
+import Timer from '../presenter/presenter-timer.js';
+
+const CLASS_BUTTON_BACK = `back`;
 
 export default class ViewHeader extends ViewAbstract {
 
@@ -15,7 +17,7 @@ export default class ViewHeader extends ViewAbstract {
   get template() {
     return `
     <div class="header__back">
-      <button class="back">
+      <button class="${CLASS_BUTTON_BACK}">
         <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
         <img src="img/logo_small.svg" width="101" height="44">
       </button>
@@ -35,17 +37,17 @@ export default class ViewHeader extends ViewAbstract {
   }
 
   get timerView() {
-    this._timer = this._timer || getTimer(this._app);
+    this._timer = this._timer || new Timer(this._app);
     return this._timer;
   }
 
   get livesView() {
-    this._lives = this._lives || getLives(this._game);
+    this._lives = this._lives || new Lives(this._app);
     return this._lives;
   }
 
   bind() {
-    this.element.querySelector(`.back`).addEventListener(`click`, () => {
+    this.element.querySelector(`.${CLASS_BUTTON_BACK}`).addEventListener(`click`, () => {
       this.onBackClicked();
     });
   }
@@ -77,7 +79,7 @@ export default class ViewHeader extends ViewAbstract {
       if (element.parentNode !== this._element) {
         this._element.appendChild(element);
       }
-      elementObject.update(this._game);
+      elementObject.init(this._app);
     } else if (element.parentNode === this._element) {
       this._element.removeChild(element);
     }

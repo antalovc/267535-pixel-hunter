@@ -1,48 +1,75 @@
 import Picture from '../picture.js';
 import createQuestion from '../question/create-question.js';
+import {Statistics} from '../statistics.js';
+
+const CONFIG_SERVER = {
+  URL: `https://es.dump.academy/pixel-hunter/`,
+  DATA: `questions`,
+  STATS: `stats/:`
+};
+
+const CLASS_ERROR = `error`;
 
 export default class DataHandler {
 
   static onError(error) {
-    const node = document.createElement(`div`);
-    node.style = `width: 180px; margin: 0 auto; text-align: center; background-color: red;`;
-
-    node.textContent = error;
-    document.body.insertAdjacentElement(`afterbegin`, node);
+    let node = document.querySelector(`.${CLASS_ERROR}`);
+    if (node) {
+      node.textContent = error;
+    } else {
+      node = document.createElement(`div`);
+      node.classList.add(CLASS_ERROR);
+      node.textContent = error;
+      document.body.insertAdjacentElement(`afterbegin`, node);
+    }
   }
 
   static loadGameData(callback) {
-    fetch(`https://es.dump.academy/pixel-hunter/questions`)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`);
-        })
+    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.DATA}`)
+        .then(DataHandler.jsonLoadResponse)
         .then((data) => {
           return data.map((datum) => {
-            return DataHandler.processQuestion(datum);
+            return DataHandler.adaptQuestion(datum);
           });
         })
-        // .then((questionsPromises) => Promise.all(questionsPromises))
         .then((questions) => {
           return questions.map((question) => {
             return createQuestion(question);
           });
         })
-        .then((questions) => callback(questions))
+        .then((questions) => {
+          callback(questions);
+        })
         .catch(DataHandler.onError);
   }
 
-  static loadResultData() {
-
+  static loadStatsData(name, callback) {
+    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`)
+        .then(DataHandler.jsonLoadResponse)
+        .then(DataHandler.adaptStats)
+        .then((previousStatistics) => {
+          callback(previousStatistics);
+        })
+        .catch(DataHandler.onError);
   }
 
-  static saveResultData() {
-
+  static saveStatsData(name, results) {
+    const config = {
+      body: JSON.stringify(results),
+      headers: {
+        'Content-Type': `application/json`
+      },
+      method: `POST`
+    };
+    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config)
+        .catch(DataHandler.onError);
   }
 
-  static processQuestion(datum) {
+  static jsonLoadResponse(response) {
+    return response.ok ? response.json() : [];
+  }
+
+  static adaptQuestion(datum) {
     const question = {};
     question.type = datum.type;
     question.text = datum.question;
@@ -58,4 +85,15 @@ export default class DataHandler {
 
     return question;
   }
+
+  static adaptStats(datum) {
+    return datum.reduceRight((result, previousStat) => {
+      result.push(new Statistics({
+        lives: previousStat.lives,
+        answers: previousStat.stats
+      }));
+      return result;
+    }, []);
+  }
+
 }

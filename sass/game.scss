@@ -17,6 +17,26 @@
   transform: translateX(-50%);
 }
 
+.game__timer.blinking{
+  -webkit-animation: blinker 0.5s linear infinite;
+  -moz-animation: blinker 0.5s linear infinite;
+  -o-animation: blinker 0.5s linear infinite;
+  animation: blinker 0.5s linear infinite;
+}
+
+@-webkit-keyframes blinker {
+  50% { opacity: 0; }
+}
+@-moz-keyframes blinker {
+  50% { opacity: 0; }
+}
+@-o-keyframes blinker {
+  50% { opacity: 0; }
+}
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
 .game__lives {
   position: absolute;
   top: 20px;
