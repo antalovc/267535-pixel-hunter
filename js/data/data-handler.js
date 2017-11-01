@@ -24,14 +24,6 @@ export default class DataHandler {
     }
   }
 
-  /* static fetch(url) {
-    return new Promise((resolve, reject) => {
-      fetch(url)
-          .then(DataHandler.checkStatus)
-          .then(resolve, reject);
-    });
-  } */
-
   static loadGameData(callback) {
     fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.DATA}`)
         .then(DataHandler.jsonLoadResponse)
