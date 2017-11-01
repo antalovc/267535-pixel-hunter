@@ -1,5 +1,4 @@
 import Answer from './answer.js';
-import Game from './game.js';
 
 const STATE_DELIMITER = `&`;
 const STATE_EQUALER = `=`;
