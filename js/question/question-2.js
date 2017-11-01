@@ -1,6 +1,6 @@
-import QuestionBase from './question-base.js';
+import QuestionAbstract from './question-abstract.js';
 
-export default class Question2 extends QuestionBase {
+export default class Question2 extends QuestionAbstract {
 
   constructor(data) {
     super(data);

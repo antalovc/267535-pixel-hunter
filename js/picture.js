@@ -5,6 +5,7 @@ export default class Picture {
     this._isPhoto = config.isPhoto;
     this._width = config.width;
     this._height = config.height;
+    this._image = null;
   }
 
   get path() {
@@ -21,5 +22,13 @@ export default class Picture {
 
   get height() {
     return this._height;
+  }
+
+  get image() {
+    return this._image;
+  }
+
+  set image(image) {
+    this._image = image;
   }
 }

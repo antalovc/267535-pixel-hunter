@@ -27,16 +27,8 @@ export default class DataHandler {
   static loadGameData(callback) {
     fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.DATA}`)
         .then(DataHandler.jsonLoadResponse)
-        .then((data) => {
-          return data.map((datum) => {
-            return DataHandler.adaptQuestion(datum);
-          });
-        })
-        .then((questions) => {
-          return questions.map((question) => {
-            return createQuestion(question);
-          });
-        })
+        .then(DataHandler.adaptQuestions)
+        .then(DataHandler.resolvePicturesPromises)
         .then((questions) => {
           callback(questions);
         })
@@ -69,21 +61,46 @@ export default class DataHandler {
     return response.ok ? response.json() : [];
   }
 
-  static adaptQuestion(datum) {
-    const question = {};
-    question.type = datum.type;
-    question.text = datum.question;
-
-    question.pictures = datum.answers.map((answer) => {
-      return new Picture({
-        path: answer.image.url,
-        isPhoto: answer.type === `photo`,
-        width: answer.image.width,
-        height: answer.image.height
+  static adaptQuestions(data) {
+    return data.map((datum) => {
+      return createQuestion({
+        type: datum.type,
+        text: datum.question,
+        pictures: datum.answers.map((answer) => {
+          return new Picture({
+            path: answer.image.url,
+            isPhoto: answer.type === `photo`,
+            width: answer.image.width,
+            height: answer.image.height
+          });
+        })
       });
     });
+  }
 
-    return question;
+  static resolvePicturesPromises(questions) {
+    return Promise.all(questions.reduce((picturesPromises, question) => {
+      return [...picturesPromises, ...question.pictures.map(DataHandler.createPicturePromise)];
+    }, []))
+        .then(() => {
+          return questions;
+        })
+        .catch((error) => {
+          throw error;
+        });
+  }
+
+  static createPicturePromise(picture) {
+    return new Promise((resolve, reject) => {
+      picture.image = new Image();
+      picture.image.src = picture.path;
+      picture.image.onload = () => {
+        resolve(picture);
+      };
+      picture.image.onerror = (e) => {
+        reject(e);
+      };
+    });
   }
 
   static adaptStats(datum) {

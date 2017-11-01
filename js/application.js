@@ -8,7 +8,7 @@ import Question2 from './presenter/presenter-question-2.js';
 import Question3 from './presenter/presenter-question-3.js';
 import Stats from './presenter/presenter-stats.js';
 import Notification from './presenter/presenter-notification.js';
-import QuestionBase from './question/question-base.js';
+import QuestionAbstract from './question/question-abstract.js';
 import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
@@ -40,13 +40,13 @@ class Application {
     this._notification = null;
 
     this._questionViews = {
-      [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
+      [QuestionAbstract.QUESTION_TYPE.TYPE_1]: () => {
         return this.question1;
       },
-      [QuestionBase.QUESTION_TYPE.TYPE_2]: () => {
+      [QuestionAbstract.QUESTION_TYPE.TYPE_2]: () => {
         return this.question2;
       },
-      [QuestionBase.QUESTION_TYPE.TYPE_3]: () => {
+      [QuestionAbstract.QUESTION_TYPE.TYPE_3]: () => {
         return this.question3;
       }
     };
