@@ -8,13 +8,13 @@ export default (data) => {
   let newQuestion = null;
 
   switch (data.type) {
-    case QuestionAbstract.QUESTION_TYPE.TYPE_1:
+    case QuestionAbstract.QuestionType.TYPE_1:
       newQuestion = new Question1(data);
       break;
-    case QuestionAbstract.QUESTION_TYPE.TYPE_2:
+    case QuestionAbstract.QuestionType.TYPE_2:
       newQuestion = new Question2(data);
       break;
-    case QuestionAbstract.QUESTION_TYPE.TYPE_3:
+    case QuestionAbstract.QuestionType.TYPE_3:
       newQuestion = new Question3(data);
       break;
   }

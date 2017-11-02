@@ -17,7 +17,7 @@ import stateAdapter from './state-adapter.js';
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
-const ROUTES_KEYS = {
+const RouteKey = {
   GREET: ``,
   RULES: `rules`,
 };
@@ -41,13 +41,13 @@ class Application {
     this._notification = null;
 
     this._questionViews = {
-      [QuestionAbstract.QUESTION_TYPE.TYPE_1]: () => {
+      [QuestionAbstract.QuestionType.TYPE_1]: () => {
         return this.question1;
       },
-      [QuestionAbstract.QUESTION_TYPE.TYPE_2]: () => {
+      [QuestionAbstract.QuestionType.TYPE_2]: () => {
         return this.question2;
       },
-      [QuestionAbstract.QUESTION_TYPE.TYPE_3]: () => {
+      [QuestionAbstract.QuestionType.TYPE_3]: () => {
         return this.question3;
       }
     };
@@ -128,11 +128,11 @@ class Application {
   // routing part ================================================
 
   greet() {
-    location.hash = ROUTES_KEYS.GREET;
+    location.hash = RouteKey.GREET;
   }
 
   prepare() {
-    location.hash = ROUTES_KEYS.RULES;
+    location.hash = RouteKey.RULES;
   }
 
   startGame(name) {
@@ -186,10 +186,10 @@ class Application {
   init(hash) {
     this._timer.reset();
     switch (hash) {
-      case ROUTES_KEYS.GREET:
+      case RouteKey.GREET:
         this.initGreet();
         break;
-      case ROUTES_KEYS.RULES:
+      case RouteKey.RULES:
         this.initPrepare();
         break;
       default:

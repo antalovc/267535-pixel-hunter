@@ -9,17 +9,17 @@ const ROUTES_PARAMS = {
 };
 
 const ANSWER_TO_CODE = {
-  [Answer.ANSWER_DESCRIPTIONS.WRONG]: 0,
-  [Answer.ANSWER_DESCRIPTIONS.SLOW]: 1,
-  [Answer.ANSWER_DESCRIPTIONS.CORRECT]: 2,
-  [Answer.ANSWER_DESCRIPTIONS.FAST]: 3
+  [Answer.AnswerType.WRONG]: 0,
+  [Answer.AnswerType.SLOW]: 1,
+  [Answer.AnswerType.CORRECT]: 2,
+  [Answer.AnswerType.FAST]: 3
 };
 
 const CODE_TO_ANSWER = [
-  Answer.ANSWER_DESCRIPTIONS.WRONG,
-  Answer.ANSWER_DESCRIPTIONS.SLOW,
-  Answer.ANSWER_DESCRIPTIONS.CORRECT,
-  Answer.ANSWER_DESCRIPTIONS.FAST
+  Answer.AnswerType.WRONG,
+  Answer.AnswerType.SLOW,
+  Answer.AnswerType.CORRECT,
+  Answer.AnswerType.FAST
 ];
 
 class StateAdapter {

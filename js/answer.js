@@ -6,13 +6,13 @@ export default class Answer {
   static generateDescription(isCorrect, time) {
     let result = ``;
     if (!isCorrect) {
-      result = Answer.ANSWER_DESCRIPTIONS.WRONG;
+      result = Answer.AnswerType.WRONG;
     } else if (Answer.isFast(time)) {
-      result = Answer.ANSWER_DESCRIPTIONS.FAST;
+      result = Answer.AnswerType.FAST;
     } else if (Answer.isSlow(time)) {
-      result = Answer.ANSWER_DESCRIPTIONS.SLOW;
+      result = Answer.AnswerType.SLOW;
     } else {
-      result = Answer.ANSWER_DESCRIPTIONS.CORRECT;
+      result = Answer.AnswerType.CORRECT;
     }
     return result;
   }
@@ -33,7 +33,7 @@ export default class Answer {
     return TIME_FAST;
   }
 
-  static get ANSWER_DESCRIPTIONS() {
+  static get AnswerType() {
     return {
       FAST: `fast`,
       CORRECT: `correct`,

@@ -123,15 +123,15 @@ class Statistics {
     this._answers.forEach((answer) => {
       const stats = this._stats;
       switch (answer) {
-        case Answer.ANSWER_DESCRIPTIONS.FAST:
+        case Answer.AnswerType.FAST:
           stats.correctsAmount++;
           stats.fastsAmount++;
           break;
-        case Answer.ANSWER_DESCRIPTIONS.SLOW:
+        case Answer.AnswerType.SLOW:
           stats.correctsAmount++;
           stats.slowsAmount++;
           break;
-        case Answer.ANSWER_DESCRIPTIONS.CORRECT:
+        case Answer.AnswerType.CORRECT:
           stats.correctsAmount++;
           break;
       }
