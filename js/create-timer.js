@@ -10,6 +10,18 @@ class Timer {
     this.initialise(timeout);
   }
 
+  get timeLeft() {
+    return this._timeLeft;
+  }
+
+  get timeElapsed() {
+    return this._timeElapsed;
+  }
+
+  set callback(callback) {
+    this._callback = callback;
+  }
+
   initialise(timeout) {
     this._timeLeft = timeout > 0 ? timeout : TIME_MAX;
     this._timeElapsed = 0;
@@ -44,18 +56,6 @@ class Timer {
   reset(timeout) {
     clearInterval(this._timer);
     this.initialise(timeout);
-  }
-
-  get timeLeft() {
-    return this._timeLeft;
-  }
-
-  get timeElapsed() {
-    return this._timeElapsed;
-  }
-
-  set callback(callback) {
-    this._callback = callback;
   }
 
   _call() {

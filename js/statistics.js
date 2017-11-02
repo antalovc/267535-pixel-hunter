@@ -3,7 +3,7 @@ import Game from './game.js';
 import StatsBar from './presenter/presenter-stats-bar.js';
 import StatsTable from './presenter/presenter-stats-table.js';
 
-const STATISTICS_CONFIG = {
+const StatisticsConfig = {
   POINTS_ANSWER_VALID: 100,
   POINTS_ANSWER_FAST: 50,
   POINTS_ANSWER_SLOW: -50,
@@ -64,7 +64,7 @@ class Statistics {
   }
 
   get correctsPoints() {
-    return this.correctsAmount * STATISTICS_CONFIG.POINTS_ANSWER_VALID;
+    return this.correctsAmount * StatisticsConfig.POINTS_ANSWER_VALID;
   }
 
   get fastsAmount() {
@@ -72,7 +72,7 @@ class Statistics {
   }
 
   get fastsPoints() {
-    return this.fastsAmount * STATISTICS_CONFIG.POINTS_ANSWER_FAST;
+    return this.fastsAmount * StatisticsConfig.POINTS_ANSWER_FAST;
   }
 
   get slowsAmount() {
@@ -80,11 +80,11 @@ class Statistics {
   }
 
   get slowsPoints() {
-    return this.slowsAmount * STATISTICS_CONFIG.POINTS_ANSWER_SLOW;
+    return this.slowsAmount * StatisticsConfig.POINTS_ANSWER_SLOW;
   }
 
   get livesPoints() {
-    return this.lives * STATISTICS_CONFIG.POINTS_LIVE_SPARE;
+    return this.lives * StatisticsConfig.POINTS_LIVE_SPARE;
   }
 
   answer(isCorrect, time) {
@@ -139,4 +139,4 @@ class Statistics {
   }
 }
 
-export {Statistics, STATISTICS_CONFIG};
+export {Statistics, StatisticsConfig};

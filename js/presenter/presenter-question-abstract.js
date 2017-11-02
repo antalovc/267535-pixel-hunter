@@ -4,6 +4,10 @@ class PresenterQuestionAbstract {
     this._questionView = null;
   }
 
+  get element() {
+    return this._questionView.element;
+  }
+
   init(app) {
     const timer = app.timer;
     const game = app.game;
@@ -20,9 +24,6 @@ class PresenterQuestionAbstract {
     timer.start();
   }
 
-  get element() {
-    return this._questionView.element;
-  }
 }
 
 export default PresenterQuestionAbstract;

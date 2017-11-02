@@ -9,11 +9,12 @@ export default class PresenterHeader {
     };
   }
 
+  get element() {
+    return this._headerView.element;
+  }
+
   init(app) {
     this._headerView.update(app);
   }
 
-  get element() {
-    return this._headerView.element;
-  }
 }

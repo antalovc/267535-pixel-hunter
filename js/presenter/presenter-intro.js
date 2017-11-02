@@ -6,11 +6,12 @@ export default class PresenterIntro {
     this._introView = new ViewIntro();
   }
 
+  get element() {
+    return this._introView.element;
+  }
+
   init(app) {
     app.setScreen(this, app.NO_HEADER);
   }
 
-  get element() {
-    return this._introView.element;
-  }
 }

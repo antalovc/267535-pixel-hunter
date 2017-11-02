@@ -46,15 +46,15 @@ export default class ViewRules extends ViewAbstract {
 
   bind() {
     const viewElement = this.element;
-    const formInputElement = viewElement.querySelector(`.${CLASS_RULES_INPUT}`);
-    const formSubmitElement = viewElement.querySelector(`.${CLASS_RULES_BUTTON}`);
+    const inputElement = viewElement.querySelector(`.${CLASS_RULES_INPUT}`);
+    const submitElement = viewElement.querySelector(`.${CLASS_RULES_BUTTON}`);
 
     const checkValidityCallback = () => {
-      formSubmitElement.disabled = !formInputElement.checkValidity();
+      submitElement.disabled = !inputElement.checkValidity();
     };
 
-    formInputElement.addEventListener(`input`, checkValidityCallback);
-    formSubmitElement.addEventListener(`click`, (evt) => {
+    inputElement.addEventListener(`input`, checkValidityCallback);
+    submitElement.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       this.onStartClicked();
     });

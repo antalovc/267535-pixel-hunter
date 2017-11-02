@@ -6,11 +6,12 @@ export default class PresenterLives {
     this._livesView = new ViewLives(app.game);
   }
 
+  get element() {
+    return this._livesView.element;
+  }
+
   init(app) {
     this._livesView.update(app.game);
   }
 
-  get element() {
-    return this._livesView.element;
-  }
 }

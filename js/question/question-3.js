@@ -13,10 +13,6 @@ export default class Question3 extends QuestionAbstract {
     }, 0) === 1;
   }
 
-  get isIntrusPhoto() {
-    return this._isIntrusPhoto;
-  }
-
   subanswer(nPicture) {
     this.answer(this._pictures[nPicture - 1].isPhoto === this._isIntrusPhoto);
   }

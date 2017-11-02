@@ -22,14 +22,6 @@ export default class Game {
     return this._app;
   }
 
-  static get livesTotal() {
-    return NUMBER_GAME_LIVES;
-  }
-
-  static get questionsTotal() {
-    return NUMBER_GAME_QUESTION;
-  }
-
   get lives() {
     return this._statistics.lives;
   }
@@ -100,6 +92,14 @@ export default class Game {
   reset() {
     this._statistics.reset();
     return this;
+  }
+
+  static get livesTotal() {
+    return NUMBER_GAME_LIVES;
+  }
+
+  static get questionsTotal() {
+    return NUMBER_GAME_QUESTION;
   }
 
 }

@@ -32,13 +32,6 @@ export default class ViewQuestionAbstract extends ViewAbstract {
     throw new Error(`Abstract method called`);
   }
 
-  static get CLASS_GAME_OPTION() {
-    return CLASS_GAME_OPTION;
-  }
-  static get CLASS_GAME_CONTENT() {
-    return CLASS_GAME_CONTENT;
-  }
-
   getImageElement(picture, index) {
     const count = (index || 0) + 1;
     picture.image.alt = `Option ${count}`;
@@ -57,10 +50,6 @@ export default class ViewQuestionAbstract extends ViewAbstract {
     this._imageElements[count] = newImageElement;
   }
 
-  onSubAnswer() {
-    throw new Error(`Abstract method called`);
-  }
-
   update(game) {
     this._statistics = game.statistics;
     if (this._statistics.statsBar.element.parentNode !== this.element) {
@@ -70,6 +59,18 @@ export default class ViewQuestionAbstract extends ViewAbstract {
 
   addInnerViews() {
     this._element.appendChild(this._statistics.statsBar.element);
+  }
+
+  onSubAnswer() {
+    throw new Error(`Abstract method called`);
+  }
+
+  static get CLASS_GAME_OPTION() {
+    return CLASS_GAME_OPTION;
+  }
+
+  static get CLASS_GAME_CONTENT() {
+    return CLASS_GAME_CONTENT;
   }
 
 }

@@ -9,12 +9,13 @@ export default class PresenterRules {
     };
   }
 
+  get element() {
+    return this._rulesView.element;
+  }
+
   init(app) {
     this._rulesView.update();
     app.setScreen(this, app.NO_HEADER);
   }
 
-  get element() {
-    return this._rulesView.element;
-  }
 }

@@ -23,11 +23,6 @@ export default class ViewStatsBar extends ViewAbstract {
     return ``;
   }
 
-  update(statistics) {
-    this._statistics = statistics;
-    this.element.innerHTML = `${this.items}`;
-  }
-
   get items() {
     let items = this._statistics.answers.reduce((result, description) => {
       return result + `<li class="stats__result stats__result--${description}"></li>\n`;
@@ -36,6 +31,11 @@ export default class ViewStatsBar extends ViewAbstract {
       items += `<li class="stats__result stats__result--unknown"></li>\n`;
     }
     return items;
+  }
+
+  update(statistics) {
+    this._statistics = statistics;
+    this.element.innerHTML = `${this.items}`;
   }
 
 }

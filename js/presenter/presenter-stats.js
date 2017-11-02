@@ -6,12 +6,13 @@ export default class PresenterStats {
     this._statsView = new ViewStats(app.game ? app.game.statistics : null);
   }
 
+  get element() {
+    return this._statsView.element;
+  }
+
   init(app, previousStatistics) {
     this._statsView.update(app.game ? app.game.statistics : null, previousStatistics);
     app.setScreen(this, app.HAS_HEADER);
   }
 
-  get element() {
-    return this._statsView.element;
-  }
 }
