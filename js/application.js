@@ -29,7 +29,7 @@ class Application {
 
     this._header = null;
     this._footer = new Footer();
-    this._viewContent = null;
+    this._view = null;
 
     this._intro = null;
     this._greeting = null;
@@ -123,6 +123,11 @@ class Application {
   get notification() {
     this._notification = this._notification ? this._notification : new Notification(this);
     return this._notification;
+  }
+
+  get header() {
+    this._header = this._header ? this._header : new Header(this);
+    return this._header;
   }
 
   // routing part ================================================
@@ -257,25 +262,26 @@ class Application {
   }
 
   setScreen(view, hasHeader) {
-    const isHeaderShown = this._header && this._header.element.parentNode === this._mainElement;
+    const isHeaderShown = this.header.element.parentNode === this._mainElement;
     if (hasHeader && !isHeaderShown) {
-      this._header = new Header(this);
-      this._mainElement.insertBefore(this._header.element, this._mainElement.firstChild);
+      this.header.init(this);
+      this._mainElement.insertBefore(this.header.element, this._mainElement.firstChild);
     } else if (hasHeader) {
-      this._header.init(this);
+      this.header.init(this);
     } else if (isHeaderShown) {
-      this._mainElement.removeChild(this._header.element);
+      this._mainElement.removeChild(this.header.element);
     }
 
-    if (this._viewContent) {
-      this._mainElement.removeChild(this._viewContent.element);
+    const currentView = this._view;
+    if (currentView) {
+      this._mainElement.removeChild(currentView.element);
     }
-    this._viewContent = view;
+    this._view = view;
     this._mainElement.insertBefore(view.element, this._footer.element);
   }
 
   addNotification(view) {
-    this._viewContent.element.insertAdjacentElement(`beforebegin`, view);
+    this._view.element.insertAdjacentElement(`beforebegin`, view);
   }
 
   removeNotification(view) {
