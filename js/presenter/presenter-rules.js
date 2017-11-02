@@ -5,7 +5,7 @@ export default class PresenterRules {
   constructor(app) {
     this._rulesView = new ViewRules();
     this._rulesView.onStartClicked = () => {
-      app.startGame(this._rulesView.playerName);
+      app.startGame(this._rulesView.name);
     };
   }
 

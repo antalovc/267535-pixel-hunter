@@ -35,13 +35,13 @@ export default class ViewRules extends ViewAbstract {
     return ``;
   }
 
-  get playerNameElement() {
-    this._playerNameElement = this._playerNameElement || this.element.querySelector(`.rules__input`);
-    return this._playerNameElement;
+  get nameElement() {
+    this._nameElement = this._nameElement || this.element.querySelector(`.rules__input`);
+    return this._nameElement;
   }
 
-  get playerName() {
-    return this.playerNameElement.value;
+  get name() {
+    return this.nameElement.value;
   }
 
   bind() {
@@ -61,7 +61,7 @@ export default class ViewRules extends ViewAbstract {
   }
 
   update() {
-    this.playerNameElement.value = ``;
+    this.nameElement.value = ``;
   }
 
   onStartClicked() {

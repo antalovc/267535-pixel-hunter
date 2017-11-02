@@ -14,7 +14,7 @@ export default class Game {
     this._statistics = new Statistics();
 
     this._app = app;
-    this._playerName = ``;
+    this._name = ``;
     this._answered = false;
   }
 
@@ -42,12 +42,12 @@ export default class Game {
     return this._statistics;
   }
 
-  set playerName(playerName) {
-    this._playerName = playerName;
+  set name(name) {
+    this._name = name;
   }
 
-  get playerName() {
-    return this._playerName;
+  get name() {
+    return this._name;
   }
 
   get isRunning() {
@@ -58,14 +58,14 @@ export default class Game {
     return {
       stats: this._statistics.answers,
       lives: this._statistics._lives,
-      name: this._playerName
+      name: this._name
     };
   }
 
   set state(state) {
     this._statistics.answers = state.stats;
     this._statistics._lives = state.lives;
-    this._playerName = state.name;
+    this._name = state.name;
   }
 
   get results() {

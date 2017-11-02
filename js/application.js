@@ -136,7 +136,7 @@ class Application {
   }
 
   startGame(name) {
-    this._game.playerName = name;
+    this._game.name = name;
     this.stepGame();
   }
 
@@ -243,7 +243,7 @@ class Application {
       presenter.init(this);
     } else {
       this._game.stop();
-      this.doFinish(this._game.playerName, this._game.answered ? this._game.results : null);
+      this.doFinish(this._game.name, this._game.answered ? this._game.results : null);
     }
   }
 
