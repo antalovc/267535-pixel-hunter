@@ -8,17 +8,18 @@ import Question2 from './presenter/presenter-question-2.js';
 import Question3 from './presenter/presenter-question-3.js';
 import Stats from './presenter/presenter-stats.js';
 import Notification from './presenter/presenter-notification.js';
-import QuestionBase from './question/question-base.js';
+import QuestionAbstract from './question/question-abstract.js';
 import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
+import stateAdapter from './state-adapter.js';
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
 const ROUTES_KEYS = {
   GREET: ``,
-  RULES: `rules`
+  RULES: `rules`,
 };
 
 class Application {
@@ -40,13 +41,13 @@ class Application {
     this._notification = null;
 
     this._questionViews = {
-      [QuestionBase.QUESTION_TYPE.TYPE_1]: () => {
+      [QuestionAbstract.QUESTION_TYPE.TYPE_1]: () => {
         return this.question1;
       },
-      [QuestionBase.QUESTION_TYPE.TYPE_2]: () => {
+      [QuestionAbstract.QUESTION_TYPE.TYPE_2]: () => {
         return this.question2;
       },
-      [QuestionBase.QUESTION_TYPE.TYPE_3]: () => {
+      [QuestionAbstract.QUESTION_TYPE.TYPE_3]: () => {
         return this.question3;
       }
     };
@@ -140,7 +141,7 @@ class Application {
   }
 
   stepGame() {
-    location.hash = this._game.state;
+    location.hash = stateAdapter.getStateHash(this._game.state);
   }
 
   initUnknown() {
@@ -167,14 +168,19 @@ class Application {
     }
   }
 
-  initGame(hash) {
+  initGame(state) {
     if (this._game) {
-      this.doStepGame(hash);
+      this.doStepGame(state);
     } else {
       this.loadGameData(() => {
-        this.doStepGame(hash);
+        this.doStepGame(state);
       });
     }
+  }
+
+  initStats(state) {
+    this._game = null;
+    this.doFinish(state.name);
   }
 
   init(hash) {
@@ -187,8 +193,11 @@ class Application {
         this.initPrepare();
         break;
       default:
-        if (Game.checkState(hash)) {
-          this.initGame(hash);
+        stateAdapter.init(hash);
+        if (stateAdapter.isGameState()) {
+          this.initGame(stateAdapter.state);
+        } else if (stateAdapter.isStatsState()) {
+          this.initStats(stateAdapter.state);
         } else {
           this.initUnknown();
         }
@@ -198,7 +207,7 @@ class Application {
   // game part ===================================================
 
   tryNotify() {
-    if (this._game.isRunning) {
+    if (this. _game && this._game.isRunning) {
       this.notification.init();
     } else {
       this.greet();
@@ -210,6 +219,9 @@ class Application {
   }
 
   doGreet() {
+    if (this._game) {
+      this._game.reset();
+    }
     this.greeting.init(this);
   }
 
@@ -222,20 +234,26 @@ class Application {
     this.rules.init(this);
   }
 
-  doStepGame(hash) {
+  doStepGame(state) {
     this._game = this._game || new Game(this, this._gameData);
-    this._game.state = hash;
+    this._game.state = state;
     if (this._game.isRunning) {
       this._game.step();
       const presenter = this._questionViews[this._game.currentQuestion.type]();
       presenter.init(this);
     } else {
       this._game.stop();
-      DataHandler.loadStatsData(this._game.playerName, (previousStatistics) => {
-        this.stats.init(this, previousStatistics);
-        DataHandler.saveStatsData(this._game.playerName, this._game.results);
-      });
+      this.doFinish(this._game.playerName, this._game.answered ? this._game.results : null);
     }
+  }
+
+  doFinish(name, stats) {
+    DataHandler.loadStatsData(name, (previousStatistics) => {
+      this.stats.init(this, previousStatistics);
+      if (stats) {
+        DataHandler.saveStatsData(name, stats);
+      }
+    });
   }
 
   setScreen(view, hasHeader) {

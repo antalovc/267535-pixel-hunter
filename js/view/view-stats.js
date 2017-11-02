@@ -25,7 +25,7 @@ export default class ViewStats extends ViewAbstract {
   }
 
   get headerContents() {
-    return `${this._statistics.lives ? `Победа!` : `Поражение`}`;
+    return this._statistics ? `${this._statistics.lives ? `Победа!` : `Поражение`}` : ``;
   }
 
   update(statistics, previousStatistics) {
@@ -39,9 +39,13 @@ export default class ViewStats extends ViewAbstract {
   }
 
   addInnerViews() {
-    this.element.appendChild(this._statistics.statsTable.element);
+    let indexIncrement = 0;
+    if (this._statistics) {
+      indexIncrement = 1;
+      this.element.appendChild(this._statistics.statsTable.element);
+    }
     this._previousStatistics.forEach((previousStatistic, index) => {
-      previousStatistic.statsTable.index = index + 1;
+      previousStatistic.statsTable.index = index + indexIncrement;
       this.element.appendChild(previousStatistic.statsTable.element);
     });
   }
