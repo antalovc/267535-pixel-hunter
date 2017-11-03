@@ -29,27 +29,11 @@ export default class QuestionBase {
   onAnswer() {
   }
 
-  static get QUESTION_TYPE() {
+  static get QuestionType() {
     return {
       TYPE_1: `two-of-two`,
       TYPE_2: `tinder-like`,
       TYPE_3: `one-of-three`
-    };
-  }
-
-  static get QUESTION_TYPES() {
-    return [
-      this.QUESTION_TYPE.TYPE_1,
-      this.QUESTION_TYPE.TYPE_2,
-      this.QUESTION_TYPE.TYPE_3
-    ];
-  }
-
-  static get QUESTION_TYPE_TO_NPICTURES() {
-    return {
-      [this.QUESTION_TYPE.TYPE_1]: 2,
-      [this.QUESTION_TYPE.TYPE_2]: 1,
-      [this.QUESTION_TYPE.TYPE_3]: 3
     };
   }
 

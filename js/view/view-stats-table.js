@@ -83,7 +83,6 @@ export default class ViewStatsTable extends ViewAbstract {
     this._element = null;
   }
 
-
   addInnerViews() {
     this.element.querySelector(`.${CLASS_RESULT_BAR}`).appendChild(this._statistics.statsBar.element);
   }

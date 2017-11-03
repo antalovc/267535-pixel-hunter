@@ -10,11 +10,12 @@ export default class PresenterTimer {
     };
   }
 
+  get element() {
+    return this._timerView.element;
+  }
+
   init() {
     this._timerView.update(this._timer.timeLeft, this._timer.isLow());
   }
 
-  get element() {
-    return this._timerView.element;
-  }
 }

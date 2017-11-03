@@ -13,11 +13,12 @@ import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
 import stateAdapter from './state-adapter.js';
+import {crossFade} from "./util.js";
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
 
-const ROUTES_KEYS = {
+const RouteKey = {
   GREET: ``,
   RULES: `rules`,
 };
@@ -29,7 +30,7 @@ class Application {
 
     this._header = null;
     this._footer = new Footer();
-    this._viewContent = null;
+    this._view = null;
 
     this._intro = null;
     this._greeting = null;
@@ -41,13 +42,13 @@ class Application {
     this._notification = null;
 
     this._questionViews = {
-      [QuestionAbstract.QUESTION_TYPE.TYPE_1]: () => {
+      [QuestionAbstract.QuestionType.TYPE_1]: () => {
         return this.question1;
       },
-      [QuestionAbstract.QUESTION_TYPE.TYPE_2]: () => {
+      [QuestionAbstract.QuestionType.TYPE_2]: () => {
         return this.question2;
       },
-      [QuestionAbstract.QUESTION_TYPE.TYPE_3]: () => {
+      [QuestionAbstract.QuestionType.TYPE_3]: () => {
         return this.question3;
       }
     };
@@ -125,18 +126,23 @@ class Application {
     return this._notification;
   }
 
+  get header() {
+    this._header = this._header ? this._header : new Header(this);
+    return this._header;
+  }
+
   // routing part ================================================
 
   greet() {
-    location.hash = ROUTES_KEYS.GREET;
+    location.hash = RouteKey.GREET;
   }
 
   prepare() {
-    location.hash = ROUTES_KEYS.RULES;
+    location.hash = RouteKey.RULES;
   }
 
   startGame(name) {
-    this._game.playerName = name;
+    this._game.name = name;
     this.stepGame();
   }
 
@@ -186,10 +192,10 @@ class Application {
   init(hash) {
     this._timer.reset();
     switch (hash) {
-      case ROUTES_KEYS.GREET:
+      case RouteKey.GREET:
         this.initGreet();
         break;
-      case ROUTES_KEYS.RULES:
+      case RouteKey.RULES:
         this.initPrepare();
         break;
       default:
@@ -243,7 +249,7 @@ class Application {
       presenter.init(this);
     } else {
       this._game.stop();
-      this.doFinish(this._game.playerName, this._game.answered ? this._game.results : null);
+      this.doFinish(this._game.name, this._game.answered ? this._game.results : null);
     }
   }
 
@@ -257,25 +263,73 @@ class Application {
   }
 
   setScreen(view, hasHeader) {
-    const isHeaderShown = this._header && this._header.element.parentNode === this._mainElement;
+    const isHeaderShown = this.header.element.parentNode === this._mainElement;
     if (hasHeader && !isHeaderShown) {
-      this._header = new Header(this);
-      this._mainElement.insertBefore(this._header.element, this._mainElement.firstChild);
+      this.header.init(this);
+      this._mainElement.insertBefore(this.header.element, this._mainElement.firstChild);
     } else if (hasHeader) {
-      this._header.init(this);
+      this.header.init(this);
     } else if (isHeaderShown) {
-      this._mainElement.removeChild(this._header.element);
+      this._mainElement.removeChild(this.header.element);
     }
 
-    if (this._viewContent) {
-      this._mainElement.removeChild(this._viewContent.element);
+    const currentView = this._view;
+    if (currentView) {
+      if (view === this._greeting && currentView === this._intro) {
+        this.swapViewElements(currentView.element, view.element);
+      } else {
+        this._mainElement.removeChild(currentView.element);
+      }
     }
-    this._viewContent = view;
+    this._view = view;
     this._mainElement.insertBefore(view.element, this._footer.element);
   }
 
+  swapViewElements(currentElement, swappingElement) {
+    const containerElement = this.prepareSwap(currentElement, swappingElement);
+    crossFade(currentElement, swappingElement, () => {
+      this.cleanupSwap(containerElement, currentElement, swappingElement);
+    });
+  }
+
+  prepareSwap(currentElement, swappingElement) {
+    const mainElement = this._mainElement;
+    const containerElement = document.createElement(`div`);
+
+    mainElement.insertBefore(containerElement, currentElement);
+    containerElement.appendChild(currentElement);
+
+    containerElement.style.overflow = `hidden`;
+    containerElement.style.position = `relative`;
+    containerElement.style.height = `${currentElement.clientHeight}px`;
+
+    containerElement.append(swappingElement);
+
+    swappingElement.style.position = `absolute`;
+    swappingElement.style.top = `0px`;
+    swappingElement.style.opacity = 0;
+
+    return containerElement;
+  }
+
+  cleanupSwap(containerElement, currentElement, swappingElement) {
+    const mainElement = this._mainElement;
+    containerElement.removeChild(currentElement);
+    currentElement.style.opacity = null;
+
+    swappingElement.style.position = null;
+    swappingElement.style.top = null;
+
+    containerElement.style.overflow = null;
+    containerElement.style.position = null;
+    containerElement.style.height = null;
+
+    mainElement.insertBefore(swappingElement, this._footer.element);
+    mainElement.removeChild(containerElement);
+  }
+
   addNotification(view) {
-    this._viewContent.element.insertAdjacentElement(`beforebegin`, view);
+    this._mainElement.insertBefore(view, this._mainElement.firstChild);
   }
 
   removeNotification(view) {

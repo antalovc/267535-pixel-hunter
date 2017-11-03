@@ -6,12 +6,12 @@ export default class PresenterStatsBar {
     this._statsBarView = new ViewStatsBar(statistics);
   }
 
-  init(statistics) {
-    this._statsBarView.update(statistics);
-  }
-
   get element() {
     return this._statsBarView.element;
+  }
+
+  init(statistics) {
+    this._statsBarView.update(statistics);
   }
 
 }

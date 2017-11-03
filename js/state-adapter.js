@@ -2,24 +2,24 @@ import Answer from './answer.js';
 
 const STATE_DELIMITER = `&`;
 const STATE_EQUALER = `=`;
-const ROUTES_PARAMS = {
+const RoutesParams = {
   NAME: `name`,
   LIVES: `lives`,
   STATS: `stats`
 };
 
-const ANSWER_TO_CODE = {
-  [Answer.ANSWER_DESCRIPTIONS.WRONG]: 0,
-  [Answer.ANSWER_DESCRIPTIONS.SLOW]: 1,
-  [Answer.ANSWER_DESCRIPTIONS.CORRECT]: 2,
-  [Answer.ANSWER_DESCRIPTIONS.FAST]: 3
+const CodeByAnswerType = {
+  [Answer.AnswerType.WRONG]: 0,
+  [Answer.AnswerType.SLOW]: 1,
+  [Answer.AnswerType.CORRECT]: 2,
+  [Answer.AnswerType.FAST]: 3
 };
 
-const CODE_TO_ANSWER = [
-  Answer.ANSWER_DESCRIPTIONS.WRONG,
-  Answer.ANSWER_DESCRIPTIONS.SLOW,
-  Answer.ANSWER_DESCRIPTIONS.CORRECT,
-  Answer.ANSWER_DESCRIPTIONS.FAST
+const AnswerTypeByCode = [
+  Answer.AnswerType.WRONG,
+  Answer.AnswerType.SLOW,
+  Answer.AnswerType.CORRECT,
+  Answer.AnswerType.FAST
 ];
 
 class StateAdapter {
@@ -37,15 +37,23 @@ class StateAdapter {
   }
 
   get lives() {
-    return (typeof this._stateObj[ROUTES_PARAMS.LIVES] !== `undefined`) ? +this._stateObj[ROUTES_PARAMS.LIVES] : null;
+    return (typeof this._stateObj[RoutesParams.LIVES] !== `undefined`) ? +this._stateObj[RoutesParams.LIVES] : null;
   }
 
   get name() {
-    return (typeof this._stateObj[ROUTES_PARAMS.NAME] !== `undefined`) ? this._stateObj[ROUTES_PARAMS.NAME] : null;
+    return (typeof this._stateObj[RoutesParams.NAME] !== `undefined`) ? this._stateObj[RoutesParams.NAME] : null;
   }
 
   get stats() {
-    return (typeof this._stateObj[ROUTES_PARAMS.STATS] !== `undefined`) ? this._stateObj[ROUTES_PARAMS.STATS] : null;
+    return (typeof this._stateObj[RoutesParams.STATS] !== `undefined`) ? this._stateObj[RoutesParams.STATS] : null;
+  }
+
+  get state() {
+    return {
+      stats: StateAdapter.codeToAnswers(this.stats),
+      lives: this.lives,
+      name: this.name
+    };
   }
 
   isGameState() {
@@ -57,29 +65,21 @@ class StateAdapter {
   }
 
   getStateHash(state) {
-    const nameHash = `${ROUTES_PARAMS.NAME}${STATE_EQUALER}${state.name}`;
-    const livesHash = `${ROUTES_PARAMS.LIVES}${STATE_EQUALER}${state.lives}`;
-    const statsHash = `${ROUTES_PARAMS.STATS}${STATE_EQUALER}${StateAdapter.answersToCode(state.stats)}`;
+    const nameHash = `${RoutesParams.NAME}${STATE_EQUALER}${state.name}`;
+    const livesHash = `${RoutesParams.LIVES}${STATE_EQUALER}${state.lives}`;
+    const statsHash = `${RoutesParams.STATS}${STATE_EQUALER}${StateAdapter.answersToCode(state.stats)}`;
     return `${nameHash}${STATE_DELIMITER}${livesHash}${STATE_DELIMITER}${statsHash}`;
-  }
-
-  get state() {
-    return {
-      stats: StateAdapter.codeToAnswers(this.stats),
-      lives: this.lives,
-      name: this.name
-    };
   }
 
   static codeToAnswers(stats) {
     return stats ? stats.split(``).map((stat) => {
-      return CODE_TO_ANSWER[stat];
+      return AnswerTypeByCode[stat];
     }) : [];
   }
 
   static answersToCode(answers) {
     return answers.map((answer) => {
-      return ANSWER_TO_CODE[answer];
+      return CodeByAnswerType[answer];
     }).join(``);
   }
 }

@@ -5,20 +5,20 @@ import Question3 from './question-3.js';
 
 export default (data) => {
 
-  let newQuestion = null;
+  let question = null;
 
   switch (data.type) {
-    case QuestionAbstract.QUESTION_TYPE.TYPE_1:
-      newQuestion = new Question1(data);
+    case QuestionAbstract.QuestionType.TYPE_1:
+      question = new Question1(data);
       break;
-    case QuestionAbstract.QUESTION_TYPE.TYPE_2:
-      newQuestion = new Question2(data);
+    case QuestionAbstract.QuestionType.TYPE_2:
+      question = new Question2(data);
       break;
-    case QuestionAbstract.QUESTION_TYPE.TYPE_3:
-      newQuestion = new Question3(data);
+    case QuestionAbstract.QuestionType.TYPE_3:
+      question = new Question3(data);
       break;
   }
 
-  return newQuestion;
+  return question;
 
 };

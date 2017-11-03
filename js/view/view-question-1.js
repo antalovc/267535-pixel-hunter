@@ -51,7 +51,7 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
   addInnerViews() {
     const pictures = this._currentQuestion.pictures;
     this._element.querySelectorAll(`.${ViewQuestionAbstract.CLASS_GAME_OPTION}`).forEach((optionElement, index) => {
-      optionElement.insertAdjacentElement(`afterbegin`, this.getImageElement(pictures[index], index));
+      optionElement.insertBefore(this.getImageElement(pictures[index], index), optionElement.firstChild);
     });
   }
 

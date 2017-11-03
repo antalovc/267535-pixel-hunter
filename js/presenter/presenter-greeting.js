@@ -9,11 +9,12 @@ export default class PresenterGreeting {
     };
   }
 
+  get element() {
+    return this._greetingView.element;
+  }
+
   init(app) {
     app.setScreen(this, app.NO_HEADER);
   }
 
-  get element() {
-    return this._greetingView.element;
-  }
 }

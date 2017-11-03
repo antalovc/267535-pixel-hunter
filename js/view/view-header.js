@@ -46,25 +46,6 @@ export default class ViewHeader extends ViewAbstract {
     return this._lives;
   }
 
-  bind() {
-    this.element.querySelector(`.${CLASS_BUTTON_BACK}`).addEventListener(`click`, () => {
-      this.onBackClicked();
-    });
-  }
-
-  addInnerViews() {
-    if (this.isGameRunning()) {
-      this._element.appendChild(this.timerView.element);
-      this._element.appendChild(this.livesView.element);
-    }
-  }
-
-  update(app) {
-    this._game = app.game;
-    this.updateTimer();
-    this.updateLives();
-  }
-
   updateTimer() {
     this.updateGameView(this.timerView);
   }
@@ -87,6 +68,25 @@ export default class ViewHeader extends ViewAbstract {
 
   isGameRunning() {
     return this._game && this._game.isRunning;
+  }
+
+  bind() {
+    this.element.querySelector(`.${CLASS_BUTTON_BACK}`).addEventListener(`click`, () => {
+      this.onBackClicked();
+    });
+  }
+
+  addInnerViews() {
+    if (this.isGameRunning()) {
+      this._element.appendChild(this.timerView.element);
+      this._element.appendChild(this.livesView.element);
+    }
+  }
+
+  update(app) {
+    this._game = app.game;
+    this.updateTimer();
+    this.updateLives();
   }
 
   onBackClicked() {

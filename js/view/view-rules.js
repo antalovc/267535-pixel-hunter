@@ -35,33 +35,33 @@ export default class ViewRules extends ViewAbstract {
     return ``;
   }
 
-  get playerNameElement() {
-    this._playerNameElement = this._playerNameElement || this.element.querySelector(`.rules__input`);
-    return this._playerNameElement;
+  get nameElement() {
+    this._nameElement = this._nameElement || this.element.querySelector(`.rules__input`);
+    return this._nameElement;
   }
 
-  get playerName() {
-    return this.playerNameElement.value;
+  get name() {
+    return this.nameElement.value;
   }
 
   bind() {
     const viewElement = this.element;
-    const formInputElement = viewElement.querySelector(`.${CLASS_RULES_INPUT}`);
-    const formSubmitElement = viewElement.querySelector(`.${CLASS_RULES_BUTTON}`);
+    const inputElement = viewElement.querySelector(`.${CLASS_RULES_INPUT}`);
+    const submitElement = viewElement.querySelector(`.${CLASS_RULES_BUTTON}`);
 
     const checkValidityCallback = () => {
-      formSubmitElement.disabled = !formInputElement.checkValidity();
+      submitElement.disabled = !inputElement.checkValidity();
     };
 
-    formInputElement.addEventListener(`input`, checkValidityCallback);
-    formSubmitElement.addEventListener(`click`, (evt) => {
+    inputElement.addEventListener(`input`, checkValidityCallback);
+    submitElement.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       this.onStartClicked();
     });
   }
 
   update() {
-    this.playerNameElement.value = ``;
+    this.nameElement.value = ``;
   }
 
   onStartClicked() {
