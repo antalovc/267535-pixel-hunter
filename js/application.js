@@ -13,6 +13,7 @@ import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
 import stateAdapter from './state-adapter.js';
+import {crossFade} from "./util.js";
 
 const HAS_HEADER = true;
 const NO_HEADER = false;
@@ -274,14 +275,61 @@ class Application {
 
     const currentView = this._view;
     if (currentView) {
-      this._mainElement.removeChild(currentView.element);
+      if (view === this._greeting && currentView === this._intro) {
+        this.swapViewElements(currentView.element, view.element);
+      } else {
+        this._mainElement.removeChild(currentView.element);
+      }
     }
     this._view = view;
     this._mainElement.insertBefore(view.element, this._footer.element);
   }
 
+  swapViewElements(currentElement, swappingElement) {
+    const containerElement = this.prepareSwap(currentElement, swappingElement);
+    crossFade(currentElement, swappingElement, () => {
+      this.cleanupSwap(containerElement, currentElement, swappingElement);
+    });
+  }
+
+  prepareSwap(currentElement, swappingElement) {
+    const mainElement = this._mainElement;
+    const containerElement = document.createElement(`div`);
+
+    mainElement.insertBefore(containerElement, currentElement);
+    containerElement.appendChild(currentElement);
+
+    containerElement.style.overflow = `hidden`;
+    containerElement.style.position = `relative`;
+    containerElement.style.height = `${currentElement.clientHeight}px`;
+
+    containerElement.append(swappingElement);
+
+    swappingElement.style.position = `absolute`;
+    swappingElement.style.top = `0px`;
+    swappingElement.style.opacity = 0;
+
+    return containerElement;
+  }
+
+  cleanupSwap(containerElement, currentElement, swappingElement) {
+    const mainElement = this._mainElement;
+    containerElement.removeChild(currentElement);
+    currentElement.style.opacity = null;
+
+    swappingElement.style.position = null;
+    swappingElement.style.top = null;
+
+    containerElement.style.overflow = null;
+    containerElement.style.position = null;
+    containerElement.style.height = null;
+
+    mainElement.insertBefore(swappingElement, this._footer.element);
+    mainElement.removeChild(containerElement);
+  }
+
   addNotification(view) {
-    this._view.element.insertAdjacentElement(`beforebegin`, view);
+    this._mainElement.insertBefore(view, this._mainElement.firstChild);
   }
 
   removeNotification(view) {
