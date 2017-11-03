@@ -42,7 +42,8 @@ export default class ViewQuestion2 extends ViewQuestionAbstract {
   }
 
   addInnerViews() {
-    this._element.querySelector(`.${ViewQuestionAbstract.CLASS_GAME_OPTION}`).insertAdjacentElement(`afterbegin`, this.getImageElement(this._currentQuestion.pictures[0]));
+    const optionElement = this._element.querySelector(`.${ViewQuestionAbstract.CLASS_GAME_OPTION}`);
+    optionElement.insertBefore(this.getImageElement(this._currentQuestion.pictures[0]), optionElement.firstChild);
   }
 
   onSubAnswer() {

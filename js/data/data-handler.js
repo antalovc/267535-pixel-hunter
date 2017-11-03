@@ -20,7 +20,7 @@ export default class DataHandler {
       node = document.createElement(`div`);
       node.classList.add(CLASS_ERROR);
       node.textContent = error;
-      document.body.insertAdjacentElement(`afterbegin`, node);
+      document.body.insertBefore(node, document.body.firstChild);
     }
   }
 
