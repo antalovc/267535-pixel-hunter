@@ -50,7 +50,7 @@ export default class ViewQuestionAbstract extends ViewAbstract {
     this._imageElements[count] = newImageElement;
   }
 
-  update(game) {
+  doUpdate(game) {
     this._statistics = game.statistics;
     if (this._statistics.statsBar.element.parentNode !== this.element) {
       this._element.appendChild(this._statistics.statsBar.element);

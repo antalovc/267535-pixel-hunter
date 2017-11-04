@@ -21,23 +21,48 @@ export default class ViewAbstract {
   get element() {
     if (!this._element) {
       this._element = this.render();
-      this.bind();
-      this.addInnerViews();
+      if (this.needsBind()) {
+        this.bind();
+      }
+      if (this.hasInnerViews()) {
+        this.addInnerViews();
+      }
     }
     return this._element;
+  }
+
+  update(...args) {
+    if (this.needsUpdate()) {
+      this.doUpdate(...args);
+    }
   }
 
   render() {
     return createElementFromTemplate(this.templateTag, this.template, this.templateClass, this.templateId);
   }
 
+  needsBind() {
+    throw new Error(`Abstract method called`);
+  }
+
   bind() {
+    throw new Error(`Abstract method called`);
+  }
+
+  hasInnerViews() {
+    throw new Error(`Abstract method called`);
   }
 
   addInnerViews() {
+    throw new Error(`Abstract method called`);
   }
 
-  update() {
+  needsUpdate() {
+    throw new Error(`Abstract method called`);
+  }
+
+  doUpdate() {
+    throw new Error(`Abstract method called`);
   }
 
 }

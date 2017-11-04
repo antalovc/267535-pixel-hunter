@@ -60,11 +60,24 @@ export default class ViewRules extends ViewAbstract {
     });
   }
 
-  update() {
+  doUpdate() {
     this.nameElement.value = ``;
   }
 
   onStartClicked() {
+    throw new Error(`Abstract method called`);
+  }
+
+  needsBind() {
+    return true;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }

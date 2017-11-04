@@ -44,8 +44,23 @@ export default class ViewNotification extends ViewAbstract {
   }
 
   onRestartClicked() {
+    throw new Error(`Abstract method called`);
   }
 
   onPlayClicked() {
+    throw new Error(`Abstract method called`);
   }
+
+  needsBind() {
+    return true;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return false;
+  }
+
 }

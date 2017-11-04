@@ -41,10 +41,6 @@ class Statistics {
     this._answers = answers;
   }
 
-  get questionsTotal() {
-    return Game.questionsTotal;
-  }
-
   get totalPoints() {
     return this.correctsPoints + this.fastsPoints + this.slowsPoints + this.livesPoints;
   }
@@ -137,6 +133,11 @@ class Statistics {
       }
     });
   }
+
+  static get questionsTotal() {
+    return Game.questionsTotal;
+  }
+
 }
 
 export {Statistics, StatisticsConfig};

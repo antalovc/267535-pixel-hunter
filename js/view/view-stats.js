@@ -28,7 +28,7 @@ export default class ViewStats extends ViewAbstract {
     return this._statistics ? `${this._statistics.lives ? `Победа!` : `Поражение`}` : ``;
   }
 
-  update(statistics, previousStatistics) {
+  doUpdate(statistics, previousStatistics) {
     this._statistics = statistics;
     this._previousStatistics = previousStatistics;
     const header = this.element.removeChild(this.element.querySelector(`h1`));
@@ -48,6 +48,18 @@ export default class ViewStats extends ViewAbstract {
       previousStatistic.statsTable.index = index + indexIncrement;
       this.element.appendChild(previousStatistic.statsTable.element);
     });
+  }
+
+  needsBind() {
+    return false;
+  }
+
+  hasInnerViews() {
+    return true;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }

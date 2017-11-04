@@ -30,4 +30,16 @@ export default class ViewFooter extends ViewAbstract {
     return ``;
   }
 
+  needsBind() {
+    return false;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return false;
+  }
+
 }

@@ -83,13 +83,26 @@ export default class ViewHeader extends ViewAbstract {
     }
   }
 
-  update(app) {
+  doUpdate(app) {
     this._game = app.game;
     this.updateTimer();
     this.updateLives();
   }
 
   onBackClicked() {
+    throw new Error(`Abstract method called`);
+  }
+
+  needsBind() {
+    return true;
+  }
+
+  hasInnerViews() {
+    return true;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }

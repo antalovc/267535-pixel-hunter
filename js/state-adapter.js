@@ -64,7 +64,7 @@ class StateAdapter {
     return this.name !== null;
   }
 
-  getStateHash(state) {
+  static getStateHash(state) {
     const nameHash = `${RoutesParams.NAME}${STATE_EQUALER}${state.name}`;
     const livesHash = `${RoutesParams.LIVES}${STATE_EQUALER}${state.lives}`;
     const statsHash = `${RoutesParams.STATS}${STATE_EQUALER}${StateAdapter.answersToCode(state.stats)}`;
@@ -84,4 +84,4 @@ class StateAdapter {
   }
 }
 
-export default new StateAdapter();
+export default StateAdapter;

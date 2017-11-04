@@ -12,7 +12,7 @@ import QuestionAbstract from './question/question-abstract.js';
 import Game from './game.js';
 import DataHandler from './data/data-handler.js';
 import createTimer from './create-timer.js';
-import stateAdapter from './state-adapter.js';
+import StateAdapter from './state-adapter.js';
 import {crossFade} from "./util.js";
 
 const HAS_HEADER = true;
@@ -27,6 +27,7 @@ class Application {
 
   constructor() {
     this._gameData = null;
+    this._stateAdapter = new StateAdapter();
 
     this._header = null;
     this._footer = new Footer();
@@ -147,7 +148,7 @@ class Application {
   }
 
   stepGame() {
-    location.hash = stateAdapter.getStateHash(this._game.state);
+    location.hash = StateAdapter.getStateHash(this._game.state);
   }
 
   initUnknown() {
@@ -199,11 +200,11 @@ class Application {
         this.initPrepare();
         break;
       default:
-        stateAdapter.init(hash);
-        if (stateAdapter.isGameState()) {
-          this.initGame(stateAdapter.state);
-        } else if (stateAdapter.isStatsState()) {
-          this.initStats(stateAdapter.state);
+        this._stateAdapter.init(hash);
+        if (this._stateAdapter.isGameState()) {
+          this.initGame(this._stateAdapter.state);
+        } else if (this._stateAdapter.isStatsState()) {
+          this.initStats(this._stateAdapter.state);
         } else {
           this.initUnknown();
         }

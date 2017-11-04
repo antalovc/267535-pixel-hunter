@@ -31,10 +31,22 @@ export default class ViewTimer extends ViewAbstract {
     this._element.classList.toggle(`blinking`, blink);
   }
 
-  update(time, blink) {
+  doUpdate(time, blink) {
     this._time = time;
     this.updateCounter();
     this.updateBlinking(blink);
+  }
+
+  needsBind() {
+    return false;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }
