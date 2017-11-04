@@ -27,6 +27,7 @@ export default class QuestionBase {
   }
 
   onAnswer() {
+    throw new Error(`Abstract method called`);
   }
 
   static get QuestionType() {

@@ -42,6 +42,20 @@ export default class ViewGreeting extends ViewAbstract {
   }
 
   onContinueClicked() {
+    throw new Error(`Abstract method called`);
   }
+
+  needsBind() {
+    return true;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return false;
+  }
+
 
 }

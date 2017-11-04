@@ -37,7 +37,7 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
     });
   }
 
-  update(game) {
+  doUpdate(game) {
     this._currentQuestion = game.currentQuestion;
     this._currentQuestion.pictures.forEach((picture, index) => {
       this.replaceImageElement(picture, index);
@@ -45,7 +45,7 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
     Array.from(this.element.querySelectorAll(`input[type="radio"]`)).forEach((radio) => {
       radio.checked = false;
     });
-    super.update(game);
+    super.doUpdate(game);
   }
 
   addInnerViews() {
@@ -55,7 +55,16 @@ export default class ViewQuestion1 extends ViewQuestionAbstract {
     });
   }
 
-  onSubAnswer() {
+  needsBind() {
+    return true;
+  }
+
+  hasInnerViews() {
+    return true;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }

@@ -2,10 +2,6 @@ const DEFAULT_FADE_STEPS_NUMBER = 10;
 const DEFAULT_FADE_TIME = 1; // sec
 const SEC_TO_MSEC = 1000;
 
-const getRandomBoolean = () => {
-  return Math.random() >= 0.5;
-};
-
 const createElementFromTemplate = (tagName, template, className, id) => {
   const containerElement = document.createElement(tagName);
   if (className) {
@@ -43,4 +39,4 @@ const crossFade = (elementOut, elementIn, callback) => {
   fade();
 };
 
-export {createElementFromTemplate, getRandomBoolean, crossFade};
+export {createElementFromTemplate, crossFade};

@@ -21,4 +21,16 @@ export default class ViewIntro extends ViewAbstract {
     return `main`;
   }
 
+  needsBind() {
+    return false;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return false;
+  }
+
 }

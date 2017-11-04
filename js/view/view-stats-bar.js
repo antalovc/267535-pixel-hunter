@@ -1,4 +1,5 @@
 import ViewAbstract from './view-abstract.js';
+import {Statistics} from '../statistics.js';
 
 export default class ViewStatsBar extends ViewAbstract {
 
@@ -27,15 +28,27 @@ export default class ViewStatsBar extends ViewAbstract {
     let items = this._statistics.answers.reduce((result, description) => {
       return result + `<li class="stats__result stats__result--${description}"></li>\n`;
     }, ``);
-    for (let i = this._statistics.answers.length; i < this._statistics.questionsTotal; i++) {
+    for (let i = this._statistics.answers.length; i < Statistics.questionsTotal; i++) {
       items += `<li class="stats__result stats__result--unknown"></li>\n`;
     }
     return items;
   }
 
-  update(statistics) {
+  doUpdate(statistics) {
     this._statistics = statistics;
     this.element.innerHTML = `${this.items}`;
+  }
+
+  needsBind() {
+    return false;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }

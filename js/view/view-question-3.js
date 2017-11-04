@@ -26,12 +26,12 @@ export default class ViewQuestion3 extends ViewQuestionAbstract {
     });
   }
 
-  update(game) {
+  doUpdate(game) {
     this._currentQuestion = game.currentQuestion;
     this._currentQuestion.pictures.forEach((picture, index) => {
       this.replaceImageElement(picture, index);
     });
-    super.update(game);
+    super.doUpdate(game);
   }
 
   addInnerViews() {
@@ -41,7 +41,16 @@ export default class ViewQuestion3 extends ViewQuestionAbstract {
     });
   }
 
-  onSubAnswer() {
+  needsBind() {
+    return true;
+  }
+
+  hasInnerViews() {
+    return true;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }

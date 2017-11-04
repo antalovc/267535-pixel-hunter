@@ -33,9 +33,21 @@ export default class ViewLives extends ViewAbstract {
     return res;
   }
 
-  update(game) {
+  doUpdate(game) {
     this._game = game;
     this._element.innerHTML = `${this.heartsElements}`;
+  }
+
+  needsBind() {
+    return false;
+  }
+
+  hasInnerViews() {
+    return false;
+  }
+
+  needsUpdate() {
+    return true;
   }
 
 }
