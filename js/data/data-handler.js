@@ -56,7 +56,7 @@ export default class DataHandler {
       method: `POST`
     };
     try {
-      await fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config)
+      await fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config);
     } catch (error) {
       DataHandler.onError(error.message);
     }
