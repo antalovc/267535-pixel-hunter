@@ -24,28 +24,30 @@ export default class DataHandler {
     }
   }
 
-  static loadGameData(callback) {
-    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.DATA}`)
-        .then(DataHandler.jsonLoadResponse)
-        .then(DataHandler.adaptQuestions)
-        .then(DataHandler.resolvePicturesPromises)
-        .then((questions) => {
-          callback(questions);
-        })
-        .catch(DataHandler.onError);
+  static async loadGameData(callback) {
+    try {
+      const response = await fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.DATA}`);
+      const responseData = await DataHandler.parseJsonResponse(response);
+      const questions = await DataHandler.adaptQuestions(responseData);
+      const questionsWithPictures = await DataHandler.resolvePicturesPromises(questions);
+      callback(questionsWithPictures);
+    } catch (error) {
+      DataHandler.onError(error.message);
+    }
   }
 
-  static loadStatsData(name, callback) {
-    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`)
-        .then(DataHandler.jsonLoadResponse)
-        .then(DataHandler.adaptStats)
-        .then((previousStatistics) => {
-          callback(previousStatistics);
-        })
-        .catch(DataHandler.onError);
+  static async loadStatsData(name, callback) {
+    try {
+      const response = await fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`);
+      const responseData = await DataHandler.parseJsonResponse(response);
+      const stats = await DataHandler.adaptStats(responseData);
+      callback(stats);
+    } catch (error) {
+      DataHandler.onError(error.message);
+    }
   }
 
-  static saveStatsData(name, results) {
+  static async saveStatsData(name, results) {
     const config = {
       body: JSON.stringify(results),
       headers: {
@@ -53,11 +55,14 @@ export default class DataHandler {
       },
       method: `POST`
     };
-    fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config)
-        .catch(DataHandler.onError);
+    try {
+      await fetch(`${CONFIG_SERVER.URL}${CONFIG_SERVER.STATS}${name}`, config)
+    } catch (error) {
+      DataHandler.onError(error.message);
+    }
   }
 
-  static jsonLoadResponse(response) {
+  static parseJsonResponse(response) {
     return response.ok ? response.json() : [];
   }
 
